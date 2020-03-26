@@ -1,0 +1,37 @@
+.dashboard{
+  height: 100vh;
+}
+
+button{
+  border: none;
+  outline: none;
+  background: none;
+}
+.dashboard .sidebar{
+  height: 100vh;
+  width: 350px;
+  border: 1px solid black;
+}
+
+.dashboard .sidebar .logo {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 350px;
+  height: 70px;
+  background-color: #1369DB;
+  color: whitesmoke;
+}
+.dashboard .sidebar .logo h1{
+  font-size: 23px;
+  font-family: 'Fredoka One', cursive;
+}
+
+.dashboard .sidebar .profil{
+  width: 350px;
+  height: 70px;
+  font-size: 23px;
+  font-family: 'Tajawal', sans-serif;
+  background-color: wheat;
+  text-align: center;
+}
