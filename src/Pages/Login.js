@@ -5,9 +5,32 @@ import '../styles/formlogin.css'
 import Button from '../Components/Button'
 
 class FormLogin extends Component{
-  render() { 
+  constructor(props){
+      super(props)
+      this.setState = {
+          username: '',
+          password: '',
+        }
+        this.onLogin = () => {
+          const {username, password} = this.state
+          if((username === 'admin') && (password === 'admin')){
+              this.setState = () => {
+                localStorage.setItem('token', 'true')
+                this.props.check()
+                this.props.history.push('/dashboard')
+          }
+        }
+        this.checkLogin = () => {
+          if(localStorage.getItem('token')){
+            this.props.history.push('/dashboard')
+          }
+        }
+      }
+      componentDidMount(){
+        this.checkLogin()
+      }
+    render(){ 
     return(
-      
       <div className="Login">
         <div className="Card">
           <h1 className="Title1">SHUTTLEBUS-ID</h1>

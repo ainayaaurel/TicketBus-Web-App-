@@ -2,7 +2,11 @@ import React, {Component} from 'react'
 import config from '../utils/config'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
-import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { 
+  Row, Col, Form, FormGroup, Input,
+  Table, Button, Modal, ModalHeader, 
+  ModalBody, ModalFooter, Container } 
+  from 'reactstrap'
 
 class Agents extends Component{
   constructor(props){
@@ -13,14 +17,19 @@ class Agents extends Component{
       selectedId: 0,
       startFrom: 1
   }
+  this.searchAgents = async (e) => {
+    const results = await axios.get(config.APP_BACKEND.concat(`agents?search[agents]=${e.target.value}`))
+    const {data} = results.data
+    const {pageInfo} = results.data
+    this.setState({agents:data, pageInfo})
+  }
 this.deleteData = async()=> {
   const results = await axios.delete(config.APP_BACKEND.concat(`agents/${this.state.selectedId}`))
   if(results.data.success){
     console.log('test')
     const newData = await axios.get(config.APP_BACKEND.concat('agents'))
     const {data} = newData.data
-    // const {pageInfo} = newData.data
-    this.setState({Agents:data, selectedId:0})
+    this.setState({agents:data, selectedId:0})
   }else {
     console.log(results.data)
     console.log("yes")
@@ -29,25 +38,37 @@ this.deleteData = async()=> {
 }
 async componentDidMount(){
   const results = await axios.get(config.APP_BACKEND.concat('agents'))
+  console.log('ini data', results)
   const {data} = results.data
-  this.setState({Agents:data})
+  this.setState({agents:data})
 }
   render(){
     console.log('data', this.state.agents)
     return(
       <>
+      <Container>
+        <Row>
+          <Col md={9}>
+            <Form>
+              <FormGroup>
+                <Input type='text' placeholder='Search Agents' onChange={this.searchAgents} />
+              </FormGroup>
+            </Form>
+          </Col>
+        </Row>
       <Table bordered>
       <thead>
         <tr>
           <th>No</th>
           <th>Name Agents</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
               {this.state.agents.length && this.state.agents.map((v,i)=>(
                 <tr key={this.state.agents[i].id}>
-                  <td>{v.id}</td>
-                  <td>{v.name}</td>
+                  <td>{this.state.agents[i].id}</td>
+                  <td>{this.state.agents[i].name}</td>
                   <td>
                     <Link className='btn btn-warning'>
                       Edit
@@ -68,6 +89,7 @@ async componentDidMount(){
         <Button color='danger' onClick={()=>this.setState({showModal: false, selectedId: 0})}>Cancel</Button>
       </ModalFooter>
     </Modal>
+    </Container>
     </>
     )
   }

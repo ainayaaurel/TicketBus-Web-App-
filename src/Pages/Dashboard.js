@@ -6,7 +6,7 @@ class Dashboard extends Component{
 
   componentDidMount(){
     console.log('asdsa')
-    localStorage.setItem('nama','asncjdncjdncjdcnjdcjdncdjcndjdncjdn')
+    localStorage.setItem('nama','asncjddncjdn') // untuk authentication nti muncul di
   }
   render(){
     
