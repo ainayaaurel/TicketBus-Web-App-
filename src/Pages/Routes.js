@@ -6,11 +6,11 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter, Container, Pagination } 
   from 'reactstrap'
 
-class Schedules extends Component{
+class Routes extends Component{
   constructor(props){
     super(props)
     this.state = {
-      schedules: [],
+      routes: [],
       pageInfo: {
         page: 0,
         perPage: 0,
@@ -26,38 +26,44 @@ class Schedules extends Component{
   }
   this.nextData = async() => {
     console.log('XSSSSSS')
-    const results = await axios.get(config.APP_BACKEND.concat(`schedules?page=${2}`))
+    const results = await axios.get(config.APP_BACKEND.concat(`routes?page=${2}`))
     const {data} = results.data
     const {pageInfo} = results.data
-    this.setState({schedules:data, pageInfo, startFrom: this.state.startFrom + pageInfo.perPage})
+    this.setState({routes:data, pageInfo, startFrom: this.state.startFrom + pageInfo.perPage})
   }
   this.prevData = async() => {
-    const results = await axios.get(config.APP_BACKEND.concat(`schedules?page=${1}`))
+    const results = await axios.get(config.APP_BACKEND.concat(`routes?page=${1}`))
     const {data} = results.data
     const {pageInfo} = results.data
-    this.setState({schedules:data, pageInfo, startFrom: this.state.startFrom - pageInfo.perPage})
+    this.setState({routes:data, pageInfo, startFrom: this.state.startFrom - pageInfo.perPage})
+  }
+  this.searchRoutes = async (e) => {
+    const results = await axios.get(config.APP_BACKEND.concat(`routes?search[routes]=${e.target.value}`))
+    const {data} = results.data
+    const {pageInfo} = results.data
+    this.setState({routes:data, pageInfo})
   }
   this.updateData = async()=> {
-    const results = await axios.update(config.APP_BACKEND.concat(`schedules/${this.state.selectedId}`))
+    const results = await axios.update(config.APP_BACKEND.concat(`routes/${this.state.selectedId}`))
     if(results.data.success){
       console.log('test')
-      const newData = await axios.get(config.APP_BACKEND.concat('schedules'))
+      const newData = await axios.get(config.APP_BACKEND.concat('routes'))
       const {data} = newData.data
       const {pageInfo} = newData.data
-      this.setState({schedules:data, selectedId:0, pageInfo})
+      this.setState({routes:data, selectedId:0, pageInfo})
     }else {
       console.log(results.data)
       console.log("yes")
     }
   }
   this.deleteData = async()=> {
-  const results = await axios.delete(config.APP_BACKEND.concat(`schedules/${this.state.selectedId}`))
+  const results = await axios.delete(config.APP_BACKEND.concat(`routes/${this.state.selectedId}`))
   if(results.data.success){
     console.log('test')
-    const newData = await axios.get(config.APP_BACKEND.concat('schedules'))
+    const newData = await axios.get(config.APP_BACKEND.concat('routes'))
     const {data} = newData.data
     const {pageInfo} = newData.data
-    this.setState({schedules:data, selectedId:0, pageInfo})
+    this.setState({routes:data, selectedId:0, pageInfo})
   }else {
     console.log(results.data)
     console.log("yes")
@@ -65,14 +71,13 @@ class Schedules extends Component{
 }
 }
 async componentDidMount(){
-  const results = await axios.get(config.APP_BACKEND.concat('schedules'))
-  console.log('ini schedules', results)
+  const results = await axios.get(config.APP_BACKEND.concat('routes'))
+  console.log('ini rute', results)
   const {data} = results.data
-  const {pageInfo} = results.data
-  this.setState({schedules:data, pageInfo})
+  this.setState({routes:data})
 }
   render(){
-    console.log('data', this.state.schedules)
+    console.log('data', this.state.routes)
     return(
       <>
       <Container>
@@ -80,7 +85,7 @@ async componentDidMount(){
           <Col md={12}>
             <Form>
               <FormGroup>
-                <Input type='text' placeholder='Search Schedules ...'/>
+                <Input type='text' placeholder='Search Routes ...' onChange={this.searchRoutes} />
               </FormGroup>
             </Form>
           </Col>
@@ -89,32 +94,22 @@ async componentDidMount(){
         <thead>
           <tr>
             <th>No</th>
-            <th>Departure</th>
-            <th>Arrival</th>
-            <th>Name Bus</th>
-            <th>Time</th>
-            <th>Class Bus</th>
-            <th>Capasity Consument</th>
-            <th>Price</th>
+            <th>Departure_at</th>
+            <th>Arrival_at</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-                {this.state.schedules.length && this.state.schedules.map((v,i)=>(
-                  <tr key={this.state.schedules[i].id}>
-                    <td>{(this.state.startFrom + i)}</td>
-                    <td>{this.state.schedules[i].departure_at}</td>
-                    <td>{this.state.schedules[i].arrival_at}</td>
-                    <td>{this.state.schedules[i].name}</td>
-                    <td>{this.state.schedules[i].time}</td>
-                    <td>{this.state.schedules[i].class}</td>
-                    <td>{this.state.schedules[i].sheets}</td>
-                    <td>{this.state.schedules[i].price}</td>
+                {this.state.routes.length && this.state.routes.map((v,i)=>(
+                  <tr key={this.state.routes[i].id}>
+                    <td>{this.state.routes[i].id}</td>
+                    <td>{this.state.routes[i].departure_at}</td>
+                    <td>{this.state.routes[i].arrival_at}</td>
                     <td>
-                      <Button className='btn btn-warning' onClick={()=>this.setState({showModal: true, selectedId: this.state.schedules[i].id})} color='green'>
+                      <Button className='btn btn-warning' onClick={()=>this.setState({showModal: true, selectedId: this.state.routes[i].id})} color='green'>
                         Edit
                       </Button>
-                      <Button className='ml-2' onClick={()=>this.setState({showModal: true, selectedId: this.state.schedules[i].id})} color='danger'>
+                      <Button className='ml-2' onClick={()=>this.setState({showModal: true, selectedId: this.state.routes[i].id})} color='danger'>
                           Delete
                       </Button>
                     </td>
@@ -129,10 +124,10 @@ async componentDidMount(){
             </Row>
             <Row>
               <Col md={6} className='text-center'>
-                <Pagination  onClick={this.prevData} color='primary'>Prev</Pagination>
+                <Pagination  onClick={this.prevData} >Prev</Pagination>
               </Col>
               <Col md={6} className='text-center'>
-                <Pagination  onClick={this.nextData} color='primary'>Next</Pagination>
+                <Pagination  onClick={this.nextData} >Next</Pagination>
               </Col>
         </Row>
       </Container>
@@ -156,4 +151,4 @@ async componentDidMount(){
     )
   }
 }
-export default Schedules
+export default Routes

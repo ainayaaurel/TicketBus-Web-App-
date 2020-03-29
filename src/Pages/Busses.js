@@ -5,6 +5,7 @@ import {
   Table, Row, Col, FormGroup, Form, Input, Button, 
   Modal, ModalHeader, ModalBody, ModalFooter, Container, Pagination } 
   from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 class Busses extends Component{
   constructor(props){
@@ -43,6 +44,19 @@ class Busses extends Component{
     const {pageInfo} = results.data
     this.setState({busses:data, pageInfo})
   }
+  this.createData = async()=> {
+    const results = await axios.update(config.APP_BACKEND.concat(`busses/${this.state.selectedId}`))
+    if(results.data.success){
+      console.log('test')
+      const newData = await axios.get(config.APP_BACKEND.concat('busses'))
+      const {data} = newData.data
+      const {pageInfo} = newData.data
+      this.setState({busses:data, selectedId:0, pageInfo})
+    }else {
+      console.log(results.data)
+      console.log("yes")
+    }
+  }
   this.updateData = async()=> {
     const results = await axios.update(config.APP_BACKEND.concat(`busses/${this.state.selectedId}`))
     if(results.data.success){
@@ -71,6 +85,7 @@ class Busses extends Component{
 }
 }
 async componentDidMount(){
+  console.log('Bingo!')
   const results = await axios.get(config.APP_BACKEND.concat('busses'))
   console.log('ini bus', results)
   const {data} = results.data
@@ -111,9 +126,9 @@ async componentDidMount(){
                     <td>{v.sheets}</td>
                     <td>{v.price}</td>
                     <td>
-                      <Button className='btn btn-warning' onClick={()=>this.setState({showModal: true, selectedId: this.state.busses[i].id})} color='green'>
+                      <Link className='btn btn-warning' to={`busses/edit/${v.id}`}>
                         Edit
-                      </Button>
+                      </Link>
                       <Button className='ml-2' onClick={()=>this.setState({showModal: true, selectedId: this.state.busses[i].id})} color='danger'>
                           Delete
                       </Button>
@@ -137,22 +152,14 @@ async componentDidMount(){
         </Row>
       </Container>
       <Modal isOpen={this.state.showModal}>
-      <ModalHeader>Edit User</ModalHeader>
-      <ModalBody>Want to Edit User?</ModalBody>
-      <ModalFooter>
-        <Button color='success' onClick={this.updateData}>OK</Button>
-        <Button color='danger' onClick={()=>this.setState({showModal: false, selectedId: 0})}>Cancel</Button>
-      </ModalFooter>
-    </Modal>
-    <Modal isOpen={this.state.showModal}>
-      <ModalHeader>Delete User</ModalHeader>
-      <ModalBody>Really want to delete?</ModalBody>
-      <ModalFooter>
-        <Button color='success' onClick={this.deleteData}>OK</Button>
-        <Button color='danger' onClick={()=>this.setState({showModal: false, selectedId: 0})}>Cancel</Button>
-      </ModalFooter>
-    </Modal>
-    </>
+            <ModalHeader>Alert</ModalHeader>
+            <ModalBody>
+                {this.state.modalMessage}
+            </ModalBody>
+            <ModalFooter>
+              <Button onClick={this.dismissModal}>Ok</Button>
+            </ModalFooter>
+          </Modal>
     )
   }
 }

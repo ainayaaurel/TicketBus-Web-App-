@@ -8,7 +8,7 @@ const Page = (props) => {
         <PaginationLink first href="#" />
       </PaginationItem>
       <PaginationItem>
-        <PaginationLink previous href="#" />
+        <PaginationLink onClick={this.prevData} color='primary' href="#" />
       </PaginationItem>
       <PaginationItem>
         <PaginationLink href="#">
@@ -26,17 +26,7 @@ const Page = (props) => {
         </PaginationLink>
       </PaginationItem>
       <PaginationItem>
-        <PaginationLink href="#">
-          4
-        </PaginationLink>
-      </PaginationItem>
-      <PaginationItem>
-        <PaginationLink href="#">
-          5
-        </PaginationLink>
-      </PaginationItem>
-      <PaginationItem>
-        <PaginationLink next href="#" />
+        <PaginationLink onClick={this.nextData} color='primary' href="#" />
       </PaginationItem>
       <PaginationItem>
         <PaginationLink last href="#" />
@@ -45,4 +35,17 @@ const Page = (props) => {
   );
 }
 
+<Row>
+  <Col md={12} className='text-right'>
+      Page {this.state.pageInfo.page}/{this.state.pageInfo.totalPage} Total Data {this.state.pageInfo.totalData} Limit {this.state.pageInfo.perPage}
+  </Col>
+</Row>
+<Row>
+  <Col md={6} className='text-center'>
+    <Pagination  onClick={this.prevData} color='primary'>Prev</Pagination>
+  </Col>
+  <Col md={6} className='text-center'>
+    <Pagination  onClick={this.nextData} color='primary'>Next</Pagination>
+  </Col>
+</Row>
 export default Page;

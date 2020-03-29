@@ -6,11 +6,11 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter, Container, Pagination } 
   from 'reactstrap'
 
-class Schedules extends Component{
+class BiodataUsers extends Component{
   constructor(props){
     super(props)
     this.state = {
-      schedules: [],
+      users_details: [],
       pageInfo: {
         page: 0,
         perPage: 0,
@@ -26,38 +26,25 @@ class Schedules extends Component{
   }
   this.nextData = async() => {
     console.log('XSSSSSS')
-    const results = await axios.get(config.APP_BACKEND.concat(`schedules?page=${2}`))
+    const results = await axios.get(config.APP_BACKEND.concat(`userdetails??page=${1}`))
     const {data} = results.data
     const {pageInfo} = results.data
-    this.setState({schedules:data, pageInfo, startFrom: this.state.startFrom + pageInfo.perPage})
+    this.setState({users_details:data, pageInfo, startFrom: this.state.startFrom + pageInfo.perPage})
   }
   this.prevData = async() => {
-    const results = await axios.get(config.APP_BACKEND.concat(`schedules?page=${1}`))
+    const results = await axios.get(config.APP_BACKEND.concat(`userdetails??page=${1}`))
     const {data} = results.data
     const {pageInfo} = results.data
-    this.setState({schedules:data, pageInfo, startFrom: this.state.startFrom - pageInfo.perPage})
-  }
-  this.updateData = async()=> {
-    const results = await axios.update(config.APP_BACKEND.concat(`schedules/${this.state.selectedId}`))
-    if(results.data.success){
-      console.log('test')
-      const newData = await axios.get(config.APP_BACKEND.concat('schedules'))
-      const {data} = newData.data
-      const {pageInfo} = newData.data
-      this.setState({schedules:data, selectedId:0, pageInfo})
-    }else {
-      console.log(results.data)
-      console.log("yes")
-    }
+    this.setState({users_details:data, pageInfo, startFrom: this.state.startFrom - pageInfo.perPage})
   }
   this.deleteData = async()=> {
-  const results = await axios.delete(config.APP_BACKEND.concat(`schedules/${this.state.selectedId}`))
+  const results = await axios.delete(config.APP_BACKEND.concat(`userdetails/${this.state.selectedId}`))
   if(results.data.success){
     console.log('test')
-    const newData = await axios.get(config.APP_BACKEND.concat('schedules'))
+    const newData = await axios.get(config.APP_BACKEND.concat('userdetails'))
     const {data} = newData.data
     const {pageInfo} = newData.data
-    this.setState({schedules:data, selectedId:0, pageInfo})
+    this.setState({users_details:data, selectedId:0, pageInfo})
   }else {
     console.log(results.data)
     console.log("yes")
@@ -65,14 +52,14 @@ class Schedules extends Component{
 }
 }
 async componentDidMount(){
-  const results = await axios.get(config.APP_BACKEND.concat('schedules'))
-  console.log('ini schedules', results)
+  const results = await axios.get(config.APP_BACKEND.concat('userdetails'))
+  console.log('ini data user', results)
   const {data} = results.data
   const {pageInfo} = results.data
-  this.setState({schedules:data, pageInfo})
+  this.setState({users_details:data, pageInfo})
 }
   render(){
-    console.log('data', this.state.schedules)
+    console.log('data', this.state.users_details)
     return(
       <>
       <Container>
@@ -80,7 +67,7 @@ async componentDidMount(){
           <Col md={12}>
             <Form>
               <FormGroup>
-                <Input type='text' placeholder='Search Schedules ...'/>
+                <Input type='text' placeholder='Search User ...'/>
               </FormGroup>
             </Form>
           </Col>
@@ -89,32 +76,30 @@ async componentDidMount(){
         <thead>
           <tr>
             <th>No</th>
-            <th>Departure</th>
-            <th>Arrival</th>
-            <th>Name Bus</th>
-            <th>Time</th>
-            <th>Class Bus</th>
-            <th>Capasity Consument</th>
-            <th>Price</th>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Email</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-                {this.state.schedules.length && this.state.schedules.map((v,i)=>(
-                  <tr key={this.state.schedules[i].id}>
+                {this.state.users_details.length && this.state.users_details.map((v,i)=>(
+                  <tr key={this.state.users_details[i].id}>
                     <td>{(this.state.startFrom + i)}</td>
-                    <td>{this.state.schedules[i].departure_at}</td>
-                    <td>{this.state.schedules[i].arrival_at}</td>
-                    <td>{this.state.schedules[i].name}</td>
-                    <td>{this.state.schedules[i].time}</td>
-                    <td>{this.state.schedules[i].class}</td>
-                    <td>{this.state.schedules[i].sheets}</td>
-                    <td>{this.state.schedules[i].price}</td>
+                    <td>{this.state.users_details[i].picture}</td>
+                    <td>{this.state.users_details[i].name}</td>
+                    <td>{this.state.users_details[i].gender}</td>
+                    <td>{this.state.users_details[i].address}</td>
+                    <td>{this.state.users_details[i].phone}</td>
+                    <td>{this.state.users_details[i].email}</td>
                     <td>
-                      <Button className='btn btn-warning' onClick={()=>this.setState({showModal: true, selectedId: this.state.schedules[i].id})} color='green'>
+                      <Button className='btn btn-warning' onClick={()=>this.setState({showModal: true, selectedId: this.state.users_details[i].id})} color='green'>
                         Edit
                       </Button>
-                      <Button className='ml-2' onClick={()=>this.setState({showModal: true, selectedId: this.state.schedules[i].id})} color='danger'>
+                      <Button className='ml-2' onClick={()=>this.setState({showModal: true, selectedId: this.state.users_details[i].id})} color='danger'>
                           Delete
                       </Button>
                     </td>
@@ -156,4 +141,4 @@ async componentDidMount(){
     )
   }
 }
-export default Schedules
+export default BiodataUsers
