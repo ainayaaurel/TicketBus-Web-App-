@@ -4,7 +4,7 @@ import { Spinner } from 'reactstrap';
 const Loading= (props) => {
   return (
     <div>
-      <Spinner color="dark"  />
+      <Spinner color="dark" />
     </div>
   );
 }

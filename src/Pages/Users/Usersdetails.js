@@ -5,6 +5,7 @@ import {
   Table, Row, Col, FormGroup, Form, Input, Button, 
   Modal, ModalHeader, ModalBody, ModalFooter, Container, Pagination } 
   from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 class BiodataUsers extends Component{
   constructor(props){
@@ -37,6 +38,12 @@ class BiodataUsers extends Component{
     const {pageInfo} = results.data
     this.setState({users_details:data, pageInfo, startFrom: this.state.startFrom - pageInfo.perPage})
   }
+  this.searchUser = async (e) => {
+    const results = await axios.get(config.APP_BACKEND.concat(`userdetails?search[users_details]=${e.target.value}`))
+    const {data} = results.data
+    const {pageInfo} = results.data
+    this.setState({users_details:data, pageInfo})
+  }
   this.deleteData = async()=> {
   const results = await axios.delete(config.APP_BACKEND.concat(`userdetails/${this.state.selectedId}`))
   if(results.data.success){
@@ -67,7 +74,7 @@ async componentDidMount(){
           <Col md={12}>
             <Form>
               <FormGroup>
-                <Input type='text' placeholder='Search User ...'/>
+                <Input type='text' placeholder='Search User ...' onChange={this.searchUser}/>
               </FormGroup>
             </Form>
           </Col>
@@ -89,16 +96,16 @@ async componentDidMount(){
                 {this.state.users_details.length && this.state.users_details.map((v,i)=>(
                   <tr key={this.state.users_details[i].id}>
                     <td>{(this.state.startFrom + i)}</td>
-                    <td>{this.state.users_details[i].picture}</td>
+                    <td width='15%'><img width='100%'src={config.APP_BACKEND.concat('files/').concat(this.state.users_details[i].picture)}/></td>
                     <td>{this.state.users_details[i].name}</td>
                     <td>{this.state.users_details[i].gender}</td>
                     <td>{this.state.users_details[i].address}</td>
                     <td>{this.state.users_details[i].phone}</td>
                     <td>{this.state.users_details[i].email}</td>
                     <td>
-                      <Button className='btn btn-warning' onClick={()=>this.setState({showModal: true, selectedId: this.state.users_details[i].id})} color='green'>
+                      <Link className='btn btn-warning' >
                         Edit
-                      </Button>
+                      </Link>
                       <Button className='ml-2' onClick={()=>this.setState({showModal: true, selectedId: this.state.users_details[i].id})} color='danger'>
                           Delete
                       </Button>
@@ -114,21 +121,13 @@ async componentDidMount(){
             </Row>
             <Row>
               <Col md={6} className='text-center'>
-                <Pagination  onClick={this.prevData} color='primary'>Prev</Pagination>
+                <Button onClick={this.prevData} color='primary'>Prev</Button>
               </Col>
               <Col md={6} className='text-center'>
-                <Pagination  onClick={this.nextData} color='primary'>Next</Pagination>
+                <Button  onClick={this.nextData} color='primary'>Next</Button>
               </Col>
         </Row>
       </Container>
-      <Modal isOpen={this.state.showModal}>
-      <ModalHeader>Edit User</ModalHeader>
-      <ModalBody>Want to Edit User?</ModalBody>
-      <ModalFooter>
-        <Button color='success' onClick={this.updateData}>OK</Button>
-        <Button color='danger' onClick={()=>this.setState({showModal: false, selectedId: 0})}>Cancel</Button>
-      </ModalFooter>
-    </Modal>
     <Modal isOpen={this.state.showModal}>
       <ModalHeader>Delete User</ModalHeader>
       <ModalBody>Really want to delete?</ModalBody>

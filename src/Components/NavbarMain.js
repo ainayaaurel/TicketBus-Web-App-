@@ -14,7 +14,6 @@ import {
 } from 'reactstrap'
 
 import Styles from 'styled-components'
-// import { FaSearch } from 'react-icons/io'
 
 import {
   IoIosNotifications,
@@ -58,50 +57,51 @@ display:flex;
 justify-content: center;
 align-text: center;
 `
-const NavBarTwo = Styles(NavItem)`
+const NavBarOne = Styles(NavItem)`
     display : flex;
     justify-content : center;
     align-items : center;
     margin : 0px 10px 0px 10px;
+`
+const NavContainer = Styles(Container)`
+widht: 100% !important;
+
 `
 
 export default class Navbar extends Component {
   render() {
     return (
       <div>
-        <NavTop color='yellow' dark expand='md'>
-          <Container>
+        <NavTop color='dark' dark expand='md'>
+          <NavContainer>
             <NavBrand>SHUTTLEBUS-ID</NavBrand>
             <NavbarToggler />
             <Collapse isOpen={true} navbar>
               <Nav className='ml-auto'>
-                <NavBarTwo>
-                  <Search type='text' placeholder='Search...' />
-                </NavBarTwo>
-                <NavBarTwo>
+                <NavBarOne>
                   <IoIosNotifications
                     color='#fff'
                     size='25px'
                     title='Notifications'
                   />
-                </NavBarTwo>
-                <NavBarTwo>
+                </NavBarOne>
+                <NavBarOne>
                   <IoIosMail color='#fff' size='30px' title='Message' />
-                </NavBarTwo>
-                <NavBarTwo>
+                </NavBarOne>
+                <NavBarOne>
                   <IoMdContact color='#fff' size='30px' title='My Profil' />
-                </NavBarTwo>
-                <NavBarTwo>
+                </NavBarOne>
+                <NavBarOne>
                   <IoMdLogOut
                     color='#fff'
                     size='30px'
                     title='LogOut'
                     color='black'
                   />
-                </NavBarTwo>
+                </NavBarOne>
               </Nav>
             </Collapse>
-          </Container>
+          </NavContainer>
         </NavTop>
       </div>
     )

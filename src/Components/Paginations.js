@@ -48,4 +48,5 @@ const Page = (props) => {
     <Pagination  onClick={this.nextData} color='primary'>Next</Pagination>
   </Col>
 </Row>
+
 export default Page;
