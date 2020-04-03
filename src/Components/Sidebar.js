@@ -2,11 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Styled from 'styled-components'
 import {
-  IoIosNotifications,
-  IoIosMail,
-  IoMdSearch,
-  IoMdContact,
-  IoMdHome,
   IoIosPeople,
   IoMdBus,
   IoIosHome,
@@ -16,15 +11,16 @@ import {
 import { FaRoute, FaWindowRestore } from 'react-icons/fa'
 const Side = Styled('ul')`
 flex-direction: column!important;
-    background-color: #36415B;
-    height: 182vh;
+    background-color: #4F8B4C;
+    height: 80vh;
+    border-radius: 0px 8px 8px 0px;
 
 `
 
 class Sidebar extends Component {
   render() {
     return (
-      <Side className='nav flex-column'>
+      <Side className='nav flex-column justify-content-around '>
         <Link
           style={{ marginTop: '20px', marginLeft: '20px', color: 'grey' }}
           to='/dashboard'
@@ -76,7 +72,7 @@ class Sidebar extends Component {
           </Link>
         </li>
         <li className='nav-item'>
-          <Link style={{ marginTop: '90px', marginLeft: '20px' }} to='/users'>
+          <Link style={{ marginTop: '90px', marginLeft: '20px' }} to='/biodatauser'>
             <IoIosPeople
               color='#fff'
               size='50px'

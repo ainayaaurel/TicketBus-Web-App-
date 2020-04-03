@@ -1,26 +1,12 @@
 import React, { Component } from 'react'
 import Navbar from '../Components/Navbar'
-import { Row, Col, Card, Nav, NavItem, NavLink } from 'reactstrap'
+import { Row, Col, NavItem, Container } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 import Styles from 'styled-components'
 import Sidebar from '../Components/Sidebar'
+import Card from '../Components/Card'
 
-const StatusCard = Styles(Card)`
-  background-color: #white;
-  color: grey;
-  padding: 20px;
-  height: 700px;
-  & .card-title {
-    font-size: 19px;
-    margin-top: 20px;
-    color: #2F3944;
-    margin-left: 20px;
-    margin-bottom: 20px; 
-    text-align: center;
-    
-  }
-`
 const Accent = Styles('div')`
   background
   background-color
@@ -39,17 +25,17 @@ const Accent = Styles('div')`
   }
 `
 const Coloumn = Styles(NavItem)`
-    border-radius : 80px;
-    background-color : #1459BB;
+    border-radius : 5px;
+    background-color : #fff;
     border : none;
+    box-shadow: 1px 1px 4px 1px  #888;
     color : #fff;
-    height: 50px;
+    height: 100px;
     margin: 5px 42px 8px -9px;
     & .Link {
       color: #fff;
     }
 `
-
 export default class Dashboard extends Component {
   render() {
     return (
@@ -60,15 +46,35 @@ export default class Dashboard extends Component {
           <Col md={1} color='dark'>
             <Sidebar />
           </Col>
-          <Col md={9}>
-            <StatusCard>
-              <div className='card-title'>Welcome to SHUTTLEBUS-ID!</div>
-              <span>Mau Kemana?</span>
-              <span>Yuk, pesan Bus agar Perjalanmu terasa lebih nyaman</span>
-            </StatusCard>
+          <Col md={11}>
+            <Row>
+              <Col md={3}>
+                <Card />
+              </Col>
+              <Col md={3}>
+                <Card />
+              </Col>
+              <Col md={3}>
+                <Card />
+              </Col>
+              <Col md={3}>
+                <Card />
+              </Col>
+            </Row>
+            <Container>
+              <Row>
+                <Col md={12}>
+                  <Coloumn></Coloumn>
+                </Col>
+              </Row>
+            </Container>
           </Col>
         </Row>
       </>
     )
   }
 }
+
+{/* <div className='card-title'>Welcome to SHUTTLEBUS-ID!</div>
+              <span>Mau Kemana?</span>
+              <span>Yuk, pesan Bus agar Perjalanmu terasa lebih nyaman</span> */}

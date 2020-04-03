@@ -33,21 +33,21 @@ const Profil = Styles('div')`
 `
 
 const Search = Styles(Input)`    
-    background-color : rgb(20,89,187);
+    background-color : #fff !important;
     margin-right: 25px;
     border : none;
-    color : #fff;
+    color : #fff !important;
     &&::placeholder {
-        color: #fff;
+        color: #202429;
     }
     &&:focus{
-        background-color : rgb(20,89,187);
+        background-color : #fff;
         outline : none !important;
         color: #fff;
     }
 `
 const NavTop = Styles(NavigationsBar)`
-background: #1369DB !important;
+background: #42A845 !important;
 height: 70px;
 color: rgb(22,114,232);
 box-shadow: 1px white;
@@ -63,6 +63,7 @@ const NavBarTwo = Styles(NavItem)`
     justify-content : center;
     align-items : center;
     margin : 0px 10px 0px 10px;
+    backgroun: #D4D4D4 !important
 `
 
 export default class Navbar extends Component {

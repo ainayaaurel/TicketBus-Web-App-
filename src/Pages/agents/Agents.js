@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import config from '../../utils/config'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { getAgents } from '../../Redux/Actions/Agents'
 import {
   Row,
   Col,
@@ -19,11 +21,12 @@ import {
 
 import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
-const BarAgents = styled('div')`
-  margin-top: -1440px;
-  margin-left: 50px;
+const Bar = Styled('div')`
+position: absolute;
+top: 100px;
+margin-left: 50px;
 `
 
 class Agents extends Component {
@@ -35,53 +38,39 @@ class Agents extends Component {
       selectedId: 0,
       startFrom: 1
     }
-    this.searchAgents = async e => {
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`agents?search[agents]=${e.target.value}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({ agents: data, pageInfo })
-    }
-    this.updateData = async () => {
-      const results = await axios.update(
-        config.APP_BACKEND.concat(`agents/${this.state.selectedId}`)
-      )
-      if (results.data.success) {
-        console.log('test')
-        const newData = await axios.get(config.APP_BACKEND.concat('agents'))
-        const { data } = newData.data
-        const { pageInfo } = newData.data
-        this.setState({ agents: data, selectedId: 0, pageInfo })
-      } else {
-        console.log(results.data)
-        console.log('yes')
-      }
-    }
-    this.deleteData = async () => {
-      const results = await axios.delete(
-        config.APP_BACKEND.concat(`agents/${this.state.selectedId}`)
-      )
-      if (results.data.success) {
-        console.log('test')
-        const newData = await axios.get(config.APP_BACKEND.concat('agents'))
-        const { data } = newData.data
-        this.setState({ agents: data, selectedId: 0 })
-      } else {
-        console.log(results.data)
-        console.log('yes')
-      }
-    }
+    // this.searchAgents = async e => {
+    //   const results = await axios.get(
+    //     config.APP_BACKEND.concat(`agents?search[agents]=${e.target.value}`)
+    //   )
+    //   const { data } = results.data
+    //   const { pageInfo } = results.data
+    //   this.setState({ agents: data, pageInfo })
+    // }
+    // this.deleteData = async () => {
+    //   const results = await axios.delete(
+    //     config.APP_BACKEND.concat(`agents/${this.state.selectedId}`)
+    //   )
+    //   if (results.data.success) {
+    //     console.log('test')
+    //     const newData = await axios.get(config.APP_BACKEND.concat('agents'))
+    //     const { data } = newData.data
+    //     this.setState({ agents: data, selectedId: 0 })
+    //   } else {
+    //     console.log(results.data)
+    //     console.log('yes')
+    //   }
+    // }
   }
-  async componentDidMount() {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_admin')}`
-    const results = await axios.get(config.APP_BACKEND.concat('agents'))
-    console.log('ini data', results)
-    const { data } = results.data
-    console.log(data)
-    this.setState({ agents: data })
+  componentDidMount() {
+    this.props.getAgents()
+    // axios.defaults.headers.common[
+    //   'Authorization'
+    // ] = `Bearer ${localStorage.getItem('token_admin')}`
+    // const results = await axios.get(config.APP_BACKEND.concat('agents'))
+    // console.log('ini data', results)
+    // const { data } = results.data
+    // console.log(data)
+    // this.setState({ agents: data })
   }
   render() {
     console.log('data', this.state.agents)
@@ -89,12 +78,12 @@ class Agents extends Component {
       <>
         <NavbarMain />
         <Row>
-          <Col md={2}>
+          <Col md={1}>
             <Sidebar />
           </Col>
         </Row>
         <Container>
-          <BarAgents>
+          <Bar>
             <Row>
               <Col md={4}>
                 <Form>
@@ -113,44 +102,48 @@ class Agents extends Component {
                 </Link>
               </Col>
             </Row>
-            <Table bordered>
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Name Agents</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.agents.length &&
-                  this.state.agents.map((v, i) => (
-                    <tr key={this.state.agents[i].id}>
-                      <td>{v.id}</td>
-                      <td>{v.name_agents}</td>
-                      <td>
-                        <Link
-                          className='btn btn-warning'
-                          to={`agents/edit/${v.id}`}
-                        >
-                          Edit
+            {this.props.agents && this.props.agents.length !== 0 ? (
+              <Table bordered>
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Name Agents</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.props.agents &&
+                    this.props.agents.map((v, i) => (
+                      <tr key={this.props.agents[i].id}>
+                        <td>{v.id}</td>
+                        <td>{v.name_agents}</td>
+                        <td>
+                          <Link
+                            className='btn btn-warning'
+                            to={`agents/edit/${v.id}`}
+                          >
+                            Edit
                         </Link>
-                        <Button
-                          className='ml-2'
-                          onClick={() =>
-                            this.setState({
-                              showModal: true,
-                              selectedId: this.state.agents[i].id
-                            })
-                          }
-                          color='danger'
-                        >
-                          Delete
+                          <Button
+                            className='ml-2'
+                            onClick={() =>
+                              this.setState({
+                                showModal: true,
+                                selectedId: this.state.agents[i].id
+                              })
+                            }
+                            color='danger'
+                          >
+                            Delete
                         </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </Table>
+            ) : (
+                <div>Data Tidak Tersedia</div>
+              )}
             <Modal isOpen={this.state.showModal}>
               <ModalHeader>Delete User</ModalHeader>
               <ModalBody>Really want to delete?</ModalBody>
@@ -168,10 +161,15 @@ class Agents extends Component {
                 </Button>
               </ModalFooter>
             </Modal>
-          </BarAgents>
+          </Bar>
         </Container>
       </>
     )
   }
 }
-export default Agents
+const mapStateToProps = (state) => {
+  return {
+    agents: state.agents.agents
+  }
+}
+export default connect(mapStateToProps, { getAgents })(Agents)

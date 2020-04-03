@@ -20,9 +20,12 @@ import { Link } from 'react-router-dom'
 import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
 import Styled from 'styled-components'
+import { getSchedules } from '../../Redux/Actions/Schedules'
+import { connect } from 'react-redux'
 
 const Bar = Styled('div')`
-margin-top: -1440px;
+position: absolute;
+top: 100px;
 margin-left: 50px;
 `
 
@@ -31,79 +34,33 @@ class Schedules extends Component {
     super(props)
     this.state = {
       schedules: [],
-      pageInfo: {
-        page: 0,
-        perPage: 0,
-        totalData: 0,
-        totalPage: 0,
-        nextLink: null,
-        prevLink: null
-      },
-      currentPage: 1,
-      showModal: false,
-      selectedId: 0,
-      startFrom: 1
-    }
-    this.nextData = async () => {
-      console.log('XSSSSSS')
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`schedules?page=${2}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({
-        schedules: data,
-        pageInfo,
-        startFrom: this.state.startFrom + pageInfo.perPage
-      })
-    }
-    this.prevData = async () => {
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`schedules?page=${1}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({
-        schedules: data,
-        pageInfo,
-        startFrom: this.state.startFrom - pageInfo.perPage
-      })
-    }
-    this.searchSchedules = async e => {
-      const results = await axios.get(
-        config.APP_BACKEND.concat(
-          `schedules?search[schedules]=${e.target.value}`
-        )
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({ schedules: data, pageInfo })
-    }
-    this.deleteData = async () => {
-      const results = await axios.delete(
-        config.APP_BACKEND.concat(`schedules/${this.state.selectedId}`)
-      )
-      if (results.data.success) {
-        console.log('test')
-        const newData = await axios.get(config.APP_BACKEND.concat('schedules'))
-        const { data } = newData.data
-        const { pageInfo } = newData.data
-        this.setState({ schedules: data, selectedId: 0, pageInfo })
-      } else {
-        console.log(results.data)
-        console.log('yes')
-      }
+      // pageInfo: {
+      //   page: 0,
+      //   perPage: 0,
+      //   totalData: 0,
+      //   totalPage: 0,
+      //   nextLink: null,
+      //   prevLink: null
+      // },
+      // currentPage: 1,
+      // showModal: false,
+      // selectedId: 0,
+      // startFrom: 1
     }
   }
-  async componentDidMount() {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_admin')}`
-    const results = await axios.get(config.APP_BACKEND.concat('schedules'))
-    console.log('ini schedules', results)
-    const { data } = results.data
-    const { pageInfo } = results.data
-    this.setState({ schedules: data, pageInfo })
+
+  componentDidMount() {
+    this.props.getSchedules()
+
+
+    // axios.defaults.headers.common[
+    //   'Authorization'
+    // ] = `Bearer ${localStorage.getItem('token_admin')}`
+    // const results = await axios.get(config.APP_BACKEND.concat('schedules'))
+    // console.log('ini schedules', results)
+    // const { data } = results.data
+    // const { pageInfo } = results.data
+    // this.setState({ schedules: data, pageInfo })
   }
   render() {
     console.log('data', this.state.schedules)
@@ -135,7 +92,7 @@ class Schedules extends Component {
                 </Link>
               </Col>
             </Row>
-            {this.state.schedules.length !== 0 ? (
+            {this.props.schedules && this.state.schedules.length !== 0 ? (
               <Table bordered>
                 <thead>
                   <tr>
@@ -151,8 +108,8 @@ class Schedules extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.schedules.length &&
-                    this.state.schedules.map((v, i) => (
+                  {this.props.schedules &&
+                    this.props.schedules.map((v, i) => (
                       <tr key={this.state.schedules[i].id}>
                         <td>{this.state.startFrom + i}</td>
                         <td>{v.departure_at}</td>
@@ -187,10 +144,10 @@ class Schedules extends Component {
                 </tbody>
               </Table>
             ) : (
-              <div>Data Tidak Tersedia</div>
-            )}
+                <div>Data Tidak Tersedia</div>
+              )}
 
-            <Row>
+            {/* <Row>
               <Col md={12} className='text-right'>
                 Page {this.state.pageInfo.page}/{this.state.pageInfo.totalPage}{' '}
                 Total Data {this.state.pageInfo.totalData} Limit{' '}
@@ -208,7 +165,7 @@ class Schedules extends Component {
                   Next
                 </Button>
               </Col>
-            </Row>
+            </Row> */}
           </Bar>
         </Container>
         <Modal isOpen={this.state.showModal}>
@@ -245,4 +202,10 @@ class Schedules extends Component {
     )
   }
 }
-export default Schedules
+
+const mapStateToProps = (state) => {
+  return {
+    schedules: state.schedules.schedules
+  }
+}
+export default connect(mapStateToProps, { getSchedules })(Schedules)

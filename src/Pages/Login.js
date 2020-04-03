@@ -91,7 +91,7 @@ class FormLogin extends Component {
     }
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
   render() {
     const { isLoading } = this.state;
     return (

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import config from '../../utils/config'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import { getBus } from '../../Redux/Actions/Busses'
 import {
   Table,
   Row,
@@ -21,10 +22,10 @@ import NavbarMain from '../../Components/NavbarMain'
 import Styled from 'styled-components'
 import Sidebar from '../../Components/Sidebar'
 // import { BrowserRouter, Route, Link } from
-import TableBus from '../Dashboard'
 
 const Bar = Styled('div')`
-margin-top: -1440px;
+position: absolute;
+top: 100px;
 margin-left: 50px;
 `
 
@@ -46,67 +47,61 @@ class Busses extends Component {
       selectedId: 0,
       startFrom: 1
     }
-    this.nextData = async () => {
-      console.log('XSSSSSS')
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`busses?page=${3}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({
-        busses: data,
-        pageInfo,
-        startFrom: this.state.startFrom + pageInfo.perPage
-      })
-    }
-    this.prevData = async () => {
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`busses?page=${1}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({
-        busses: data,
-        pageInfo,
-        startFrom: this.state.startFrom - pageInfo.perPage
-      })
-    }
-    this.searchBus = async e => {
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`busses?search[busses]=${e.target.value}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({ busses: data, pageInfo })
-    }
-    this.deleteData = async () => {
-      const results = await axios.delete(
-        config.APP_BACKEND.concat(`busses/${this.state.selectedId}`)
-      )
-      if (results.data.success) {
-        // console.log('test')
-        const newData = await axios.get(config.APP_BACKEND.concat('busses'))
-        const { data } = newData.data
-        const { pageInfo } = newData.data
-        this.setState({ busses: data, selectedId: 0, pageInfo })
-      } else {
-        console.log(results.data)
-        console.log('yes')
-      }
-    }
+    // this.nextData = async () => {
+    //   console.log('XSSSSSS')
+    //   const results = await axios.get(
+    //     config.APP_BACKEND.concat(`busses?page=${3}`)
+    //   )
+    //   const { data } = results.data
+    //   const { pageInfo } = results.data
+    //   this.setState({
+    //     busses: data,
+    //     pageInfo,
+    //     startFrom: this.state.startFrom + pageInfo.perPage
+    //   })
+    // }
+    // this.prevData = async () => {
+    //   const results = await axios.get(
+    //     config.APP_BACKEND.concat(`busses?page=${1}`)
+    //   )
+    //   const { data } = results.data
+    //   const { pageInfo } = results.data
+    //   this.setState({
+    //     busses: data,
+    //     pageInfo,
+    //     startFrom: this.state.startFrom - pageInfo.perPage
+    //   })
+    // }
+    // this.searchBus = async e => {
+    //   this.props.searchBus(e.target.value)
+    //   const { data } = results.data
+    //   const { pageInfo } = results.data
+    //   this.setState({ busses: data, pageInfo })
+    // }
+    // this.deleteData = async () => {
+    //   this.props.deleteData(this.state.selectedId)
+    //   if (this.props.deleteData) {
+    //     const newData = await axios.get(config.APP_BACKEND.concat('busses'))
+    //     const { data } = newData.data
+    //     const { pageInfo } = newData.data
+    //     this.setState({ busses: data, selectedId: 0, pageInfo })
+    //   } else {
+    //     console.log(results.data)
+    //     console.log('yes')
+    //   }
+    // }
   }
-  async componentDidMount() {
-    console.log('Bingo!')
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_admin')}`
-    const results = await axios.get(config.APP_BACKEND.concat('busses'))
-    console.log('ini bus', results)
-    const { data } = results.data
-    const { pageInfo } = results.data
-    this.setState({ busses: data, pageInfo })
+  componentDidMount() {
+    // console.log(this.props)
+    console.log('MOUNTED')
+
+    this.props.getBus()
+    // const { data } = results.data
+    // const { pageInfo } = results.data
+    // this.setState({ busses: data, pageInfo })
   }
   render() {
+    console.log('props', this.props)
     console.log('data', this.state.busses)
     return (
       <>
@@ -140,7 +135,7 @@ class Busses extends Component {
                 </Link>
               </Col>
             </Row>
-            {this.state.busses.length !== 0 ? (
+            {this.props.busses && this.props.busses.length !== 0 ? (
               <Table bordered>
                 <thead>
                   <tr>
@@ -154,9 +149,9 @@ class Busses extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.busses.length &&
-                    this.state.busses.map((v, i) => (
-                      <tr key={this.state.busses[i].id}>
+                  {this.props.busses.length &&
+                    this.props.busses.map((v, i) => (
+                      <tr key={this.props.busses[i].id}>
                         <td>{this.state.startFrom + i}</td>
                         <td>{v.name}</td>
                         <td>{v.class}</td>
@@ -188,8 +183,8 @@ class Busses extends Component {
                 </tbody>
               </Table>
             ) : (
-              <div>Data tidak tersedia</div>
-            )}
+                <div>Data tidak tersedia</div>
+              )}
 
             <Row>
               <Col md={12} className='text-right'>
@@ -223,4 +218,12 @@ class Busses extends Component {
     )
   }
 }
-export default Busses
+
+const mapStateToProps = (state) => {
+  return {
+    busses: state.busses.busses
+  }
+}
+
+
+export default connect(mapStateToProps, { getBus })(Busses)

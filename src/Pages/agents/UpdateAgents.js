@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import config from '../../utils/config'
+import { connect } from 'react-redux'
+import { getAgentsById, updateAgents } from '../../Redux/Actions/Agents'
 
 import {
   Container,
@@ -31,19 +33,29 @@ class UpdateAgents extends Component {
     }
   }
   async componentDidMount() {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_admin')}`
-    const results = await axios.get(
-      config.APP_BACKEND.concat(`agents/${this.props.match.params.id}`)
-    )
-    const { data } = results.data
-    this.setState({ id: this.props.match.params.id, data })
-    this.changeData = (e, form) => {
-      const { data } = this.state
-      data[form] = e.target.value
-      this.setState({ data })
-    }
+    this.props.getAgentsById(this.props.match.params.id)
+    setTimeout(() => {
+      this.setState({
+        name: this.props.routes.name,
+        class: this.props.routes && this.props.routes.class,
+        sheets: this.props.routes && this.props.routes.sheets,
+        price: this.props.routes && this.props.routes.price
+
+      })
+    }, 100);
+    // axios.defaults.headers.common[
+    //   'Authorization'
+    // ] = `Bearer ${localStorage.getItem('token_admin')}`
+    // const results = await axios.get(
+    //   config.APP_BACKEND.concat(`agents/${this.props.match.params.id}`)
+    // )
+    // const { data } = results.data
+    // this.setState({ id: this.props.match.params.id, data })
+    // this.changeData = (e, form) => {
+    //   const { data } = this.state
+    //   data[form] = e.target.value
+    //   this.setState({ data })
+    // }
     this.submitData = async e => {
       e.preventDefault()
       this.setState({ isLoading: true })
@@ -112,5 +124,9 @@ class UpdateAgents extends Component {
     )
   }
 }
-
-export default UpdateAgents
+const mapStateToProps = (state) => {
+  return {
+    agents: state.agents.agents
+  }
+}
+export default connect(mapStateToProps, { getAgentsById, updateAgents })(UpdateAgents)

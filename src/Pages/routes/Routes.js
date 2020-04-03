@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import config from '../../utils/config'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import { getRoutes } from '../../Redux/Actions/Routes'
 import {
   Table,
   Row,
@@ -22,7 +24,8 @@ import Sidebar from '../../Components/Sidebar'
 import Styled from 'styled-components'
 
 const Bar = Styled('div')`
-margin-top: -1440px;
+position: absolute;
+top: 100px;
 margin-left: 50px;
 `
 
@@ -44,63 +47,64 @@ class Routes extends Component {
       selectedId: 0,
       startFrom: 1
     }
-    this.nextData = async () => {
-      console.log('XSSSSSS')
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`routes?page=${2}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({
-        routes: data,
-        pageInfo,
-        startFrom: this.state.startFrom + pageInfo.perPage
-      })
-    }
-    this.prevData = async () => {
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`routes?page=${1}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({
-        routes: data,
-        pageInfo,
-        startFrom: this.state.startFrom - pageInfo.perPage
-      })
-    }
-    this.searchRoutes = async e => {
-      const results = await axios.get(
-        config.APP_BACKEND.concat(`routes?search[routes]=${e.target.value}`)
-      )
-      const { data } = results.data
-      const { pageInfo } = results.data
-      this.setState({ routes: data, pageInfo })
-    }
-    this.deleteData = async () => {
-      const results = await axios.delete(
-        config.APP_BACKEND.concat(`routes/${this.state.selectedId}`)
-      )
-      if (results.data.success) {
-        console.log('test')
-        const newData = await axios.get(config.APP_BACKEND.concat('routes'))
-        const { data } = newData.data
-        const { pageInfo } = newData.data
-        this.setState({ routes: data, selectedId: 0, pageInfo })
-      } else {
-        console.log(results.data)
-        console.log('yes')
-      }
-    }
+    // this.nextData = async () => {
+    //   console.log('XSSSSSS')
+    //   const results = await axios.get(
+    //     config.APP_BACKEND.concat(`routes?page=${2}`)
+    //   )
+    //   const { data } = results.data
+    //   const { pageInfo } = results.data
+    //   this.setState({
+    //     routes: data,
+    //     pageInfo,
+    //     startFrom: this.state.startFrom + pageInfo.perPage
+    //   })
+    // }
+    // this.prevData = async () => {
+    //   const results = await axios.get(
+    //     config.APP_BACKEND.concat(`routes?page=${1}`)
+    //   )
+    //   const { data } = results.data
+    //   const { pageInfo } = results.data
+    //   this.setState({
+    //     routes: data,
+    //     pageInfo,
+    //     startFrom: this.state.startFrom - pageInfo.perPage
+    //   })
+    // }
+    // this.searchRoutes = async e => {
+    //   const results = await axios.get(
+    //     config.APP_BACKEND.concat(`routes?search[routes]=${e.target.value}`)
+    //   )
+    //   const { data } = results.data
+    //   const { pageInfo } = results.data
+    //   this.setState({ routes: data, pageInfo })
+    // }
+    // this.deleteData = async () => {
+    //   const results = await axios.delete(
+    //     config.APP_BACKEND.concat(`routes/${this.state.selectedId}`)
+    //   )
+    //   if (results.data.success) {
+    //     console.log('test')
+    //     const newData = await axios.get(config.APP_BACKEND.concat('routes'))
+    //     const { data } = newData.data
+    //     const { pageInfo } = newData.data
+    //     this.setState({ routes: data, selectedId: 0, pageInfo })
+    //   } else {
+    //     console.log(results.data)
+    //     console.log('yes')
+    //   }
+    // }
   }
-  async componentDidMount() {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_admin')}`
-    const results = await axios.get(config.APP_BACKEND.concat('routes'))
-    console.log('ini rute', results)
-    const { data } = results.data
-    this.setState({ routes: data })
+  componentDidMount() {
+    this.props.getRoutes()
+    // axios.defaults.headers.common[
+    //   'Authorization'
+    // ] = `Bearer ${localStorage.getItem('token_admin')}`
+    // const results = await axios.get(config.APP_BACKEND.concat('routes'))
+    // console.log('ini rute', results)
+    // const { data } = results.data
+    // this.setState({ routes: data })
   }
   render() {
     console.log('data', this.state.routes)
@@ -132,7 +136,7 @@ class Routes extends Component {
                 </Link>
               </Col>
             </Row>
-            {this.state.routes.length !== 0 ? (
+            {this.props.routes && this.props.routes.length !== 0 ? (
               <Table bordered>
                 <thead>
                   <tr>
@@ -143,12 +147,12 @@ class Routes extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.routes.length &&
-                    this.state.routes.map((v, i) => (
-                      <tr key={this.state.routes[i].id}>
-                        <td>{this.state.routes[i].id}</td>
-                        <td>{this.state.routes[i].departure_at}</td>
-                        <td>{this.state.routes[i].arrival_at}</td>
+                  {this.props.routes &&
+                    this.props.routes.map((v, i) => (
+                      <tr key={this.props.routes[i].id}>
+                        <td>{v.id}</td>
+                        <td>{v.departure_at}</td>
+                        <td>{v.arrival_at}</td>
                         <td>
                           <Link
                             className='btn btn-warning'
@@ -174,8 +178,8 @@ class Routes extends Component {
                 </tbody>
               </Table>
             ) : (
-              <div>Data Tidak Tersedia</div>
-            )}
+                <div>Data Tidak Tersedia</div>
+              )}
 
             <Row>
               <Col md={12} className='text-right'>
@@ -213,4 +217,10 @@ class Routes extends Component {
     )
   }
 }
-export default Routes
+
+const mapStateToProps = (state) => {
+  return {
+    routes: state.routes.routes
+  }
+}
+export default connect(mapStateToProps, { getRoutes })(Routes)

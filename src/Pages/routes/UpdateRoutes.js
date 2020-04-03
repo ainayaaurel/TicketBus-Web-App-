@@ -3,6 +3,8 @@ import axios from 'axios'
 import config from '../../utils/config'
 import Sidebar from '../../Components/Sidebar'
 import NavbarMain from '../../Components/NavbarMain'
+import { connect } from 'react-redux'
+import { getRoutesById, updateRoutes } from '../../Redux/Actions/Routes'
 
 import {
   Container,
@@ -25,25 +27,31 @@ class UpdateRoutes extends Component {
     this.state = {
       id: 0,
       data: {},
+      departure: '',
+      arrival: '',
       isLoading: false,
       showModal: false,
       modalMessage: ''
     }
   }
-  async componentDidMount() {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_admin')}`
-    const results = await axios.get(
-      config.APP_BACKEND.concat(`routes/${this.props.match.params.id}`)
-    )
-    const { data } = results.data
-    this.setState({ id: this.props.match.params.id, data })
-    this.changeData = (e, form) => {
-      const { data } = this.state
-      data[form] = e.target.value
-      this.setState({ data })
-    }
+  componentDidMount() {
+    this.props.getRoutesById(this.props.match.params.id)
+    setTimeout(() => {
+      this.setState({
+        departure: this.props.routes && this.props.routes.departure_at,
+        arrival: this.props.routes && this.props.routes.arrival,
+
+      })
+    }, 100);
+
+    // const { data } = results.data
+    // this.setState({ id: this.props.match.params.id, data })
+    // this.changeData = (e, form) => {
+    //   const { data } = this.state
+    //   data[form] = e.target.value
+    //   this.setState({ data })
+    // }
+
     this.submitData = async e => {
       e.preventDefault()
       this.setState({ isLoading: true })
@@ -52,26 +60,43 @@ class UpdateRoutes extends Component {
         departure: this.state.data.departure_at,
         arrival: this.state.data.arrival_at
       }
-      console.log('ini data baru', data)
-      const submit = await axios.patch(
-        config.APP_BACKEND.concat(`routes/${this.props.match.params.id}`),
-        data
-      )
-      console.log('datasadsadasa', this.state.data)
-      if (submit.data.success) {
-        this.setState({
-          isLoading: false,
-          showModal: true,
-          modalMessage: submit.data.msg
-        })
-      } else {
-        this.setState({ modalMessage: submit.data.msg })
-      }
+      this.props.updateRoutes(this.props.match.params.id, data)
+
+      this.props.history.push('/routes')
+
+      // console.log('ini data baru', data)
+      // const submit = await axios.patch(
+      //   config.APP_BACKEND.concat(`routes/${this.props.match.params.id}`),
+      //   data
+      // )
+      // console.log('datasadsadasa', this.state.data)
+      // if (submit.data.success) {
+      //   this.setState({
+      //     isLoading: false,
+      //     showModal: true,
+      //     modalMessage: submit.data.msg
+      //   })
+      // } else {
+      //   this.setState({ modalMessage: submit.data.msg })
+      // }
+
+    }
+    this.ketikDeparture = e => {
+      this.setState({
+        departure_at: e.currentTarget.value
+      })
+    }
+    this.ketikArrival = e => {
+      this.setState({
+        arrival_at: e.currentTarget.value
+      })
     }
     this.dismissModal = () => {
       this.setState({ showModal: false })
       this.props.history.push('/routes')
     }
+
+
   }
   render() {
     const { id, isLoading } = this.state
@@ -80,7 +105,7 @@ class UpdateRoutes extends Component {
       <>
         <NavbarMain />
         <Container>
-          {isLoading && <>Loading...</>}
+          {/* {isLoading && <>Loading...</>} */}
           {
             <>
               <Modal isOpen={this.state.showModal}>
@@ -92,7 +117,7 @@ class UpdateRoutes extends Component {
               </Modal>
             </>
           }
-          {id && !isLoading && (
+          {this.props.match.params.id && (
             <>
               <Row>
                 <Col style={{ marginTop: '20px' }} md={12} mt={2}>
@@ -101,16 +126,16 @@ class UpdateRoutes extends Component {
                       <Label>Departure</Label>
                       <Input
                         type='text'
-                        value={this.state.data.departure_at}
-                        onChange={e => this.changeData(e, 'departure_at')}
+                        value={this.state.departure_at}
+                        onChange={e => this.ketikDeparture(e, 'departure_at')}
                       />
                     </FormGroup>
                     <FormGroup>
                       <Label>Arrival</Label>
                       <Input
                         type='text'
-                        value={this.state.data.arrival_at}
-                        onChange={e => this.changeData(e, 'arrival_at')}
+                        value={this.state.arrival_at}
+                        onChange={e => this.ketikArrival(e, 'arrival_at')}
                       />
                     </FormGroup>
                     <Button onClick={e => this.submitData(e)} color='success'>
@@ -126,5 +151,9 @@ class UpdateRoutes extends Component {
     )
   }
 }
-
-export default UpdateRoutes
+const mapStateToProps = (state) => {
+  return {
+    routes: state.routes.routes
+  }
+}
+export default connect(mapStateToProps, { getRoutesById, updateRoutes })(UpdateRoutes)

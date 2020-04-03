@@ -14,9 +14,12 @@ import config from '../../utils/config'
 import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
 import Styled from 'styled-components'
+import { connect } from 'react-redux'
+import { postRoutes } from '../../Redux/Actions/Routes'
 
 const Bar = Styled('div')`
-margin-top: -1440px;
+position: absolute;
+top: 100px;
 margin-left: 50px;
 `
 
@@ -35,17 +38,18 @@ class CreateRoutes extends Component {
       departure: this.state.departure_at,
       arrival: this.state.arrival_at
     }
-    const results = await axios.post(
-      config.APP_BACKEND.concat(`routes`),
-      create
-    )
-    console.log('data departurer', results)
-    if (results.data.success) {
-      alert('Data Succesfully Create!')
-      this.props.history.push('/routes')
-    } else {
-      alert('Not Succes')
-    }
+    this.props.postRoutes(create)
+    // const results = await axios.post(
+    //   config.APP_BACKEND.concat(`routes`),
+    //   create
+    // )
+    // console.log('data departurer', results)
+    // if (results.data.success) {
+    //   alert('Data Succesfully Create!')
+    this.props.history.push('/routes')
+    // } else {
+    //   alert('Not Succes')
+    // }
   }
   ketikDeparture = e => {
     this.setState({
@@ -97,5 +101,10 @@ class CreateRoutes extends Component {
     )
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    routes: state.routes.routes
+  }
+}
 
-export default CreateRoutes
+export default connect(mapStateToProps, { postRoutes })(CreateRoutes)
