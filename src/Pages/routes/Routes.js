@@ -26,7 +26,10 @@ import Styled from 'styled-components'
 const Bar = Styled('div')`
 position: absolute;
 top: 100px;
-margin-left: 50px;
+/* margin-left: 50px; */
+border: 1px solid black;
+width: 70%;
+height: 65vh;
 `
 
 class Routes extends Component {
@@ -97,7 +100,9 @@ class Routes extends Component {
     // }
   }
   componentDidMount() {
-    this.props.getRoutes()
+    setTimeout(() => {
+      this.props.getRoutes()
+    }, 1000);
     // axios.defaults.headers.common[
     //   'Authorization'
     // ] = `Bearer ${localStorage.getItem('token_admin')}`
@@ -147,7 +152,7 @@ class Routes extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.routes &&
+                  {this.props.routes && this.props.routes.length !== 0 &&
                     this.props.routes.map((v, i) => (
                       <tr key={this.props.routes[i].id}>
                         <td>{v.id}</td>

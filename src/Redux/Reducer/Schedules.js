@@ -1,6 +1,8 @@
 const initialState = {
   schedules: [],
-  isLoading: true
+  isLoading: true,
+  singleData: {}
+
 }
 
 const schedulesReducer = (state = initialState, action) => {
@@ -17,6 +19,19 @@ const schedulesReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         schedules: action.payload
+      }
+    } case 'UPDATE_SCHEDULES': {
+      return {
+        ...state,
+        isLoading: false,
+        schedules: action.payload
+
+      }
+    } case 'GET_SCHEDULES_BY_ID': {
+      return {
+        ...state,
+        isLoading: false,
+        singleData: action.payload
       }
     }
     default:

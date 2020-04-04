@@ -29,11 +29,11 @@ class App extends Component {
                 exact
                 render={props => <FormLogin {...props} />}
               />
-              <Route
+              {/* <Route
                 path='/logout'
                 exact
                 render={props => <FormLogin {...props} />}
-              />
+              /> */}
               <Route
                 path='/dashboard'
                 exact

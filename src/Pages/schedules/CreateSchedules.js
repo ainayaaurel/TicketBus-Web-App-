@@ -32,10 +32,10 @@ class CreateSchedules extends Component {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('token_admin')}`
     const create = {
-      time: this.state.time,
-      routesId: this.state.routesId,
-      bussesId: this.state.bussesId,
-      agentsId: this.state.agentsId
+      time: this.state.data.time,
+      routesId: this.state.data.routesId,
+      bussesId: this.state.data.bussesId,
+      agentsId: this.state.data.agentsId
     }
     this.props.postSchedules(create)
     console.log('data sche', create)

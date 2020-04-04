@@ -28,6 +28,7 @@ class CreateRoutes extends Component {
     super(props)
     this.state = {
       data: {},
+
       departure_at: '',
       arrival_at: ''
     }

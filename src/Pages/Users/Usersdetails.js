@@ -87,7 +87,7 @@ class BiodataUsers extends Component {
         <Container>
           <Bar>
             <Row>
-              <Col md={12}>
+              <Col md={11}>
                 <Form>
                   <FormGroup>
                     <Input type='text' placeholder='Search User ...' onChange={this.searchUser} />

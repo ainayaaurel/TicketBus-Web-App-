@@ -50,7 +50,9 @@ class Schedules extends Component {
   }
 
   componentDidMount() {
-    this.props.getSchedules()
+    setTimeout(() => {
+      this.props.getSchedules()
+    }, 1000);
 
 
     // axios.defaults.headers.common[
@@ -92,7 +94,7 @@ class Schedules extends Component {
                 </Link>
               </Col>
             </Row>
-            {this.props.schedules && this.state.schedules.length !== 0 ? (
+            {this.props.schedules && this.props.schedules.length !== 0 ? (
               <Table bordered>
                 <thead>
                   <tr>
@@ -108,9 +110,9 @@ class Schedules extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.schedules &&
+                  {this.props.schedules && this.props.schedules.length &&
                     this.props.schedules.map((v, i) => (
-                      <tr key={this.state.schedules[i].id}>
+                      <tr key={this.props.schedules[i].id}>
                         <td>{this.state.startFrom + i}</td>
                         <td>{v.departure_at}</td>
                         <td>{v.arrival_at}</td>

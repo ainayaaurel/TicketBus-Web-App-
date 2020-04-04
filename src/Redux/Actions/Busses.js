@@ -25,10 +25,16 @@ export const getBus = () => async dispatch => {
 export const postBus = (create) => async dispatch => {
   try {
     const res = await axios.post(config.APP_BACKEND.concat('busses'), create);
+    if (res) {
+      alert('SUCCES CREATE')
+    } else {
+      alert('FAILED TO CREATE')
+    }
     dispatch({
       type: 'POST_BUS',
-      payload: res.data.data
+      payload: res.data
     })
+    console.log('postbus', res)
   } catch (error) {
     console.log(error)
   }
@@ -40,7 +46,7 @@ export const updateBus = (id, data) => async dispatch => {
     if (res) {
       alert('SUCCES EDIT')
     } else {
-      alert('NOT SUCCESS EDIT ')
+      alert('FAILED TO UPDATE')
     }
     dispatch({
       type: 'UPDATE_BUS',

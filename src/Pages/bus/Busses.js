@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import config from '../../utils/config'
 import { connect } from 'react-redux'
 import { getBus, searchData, movePage } from '../../Redux/Actions/Busses'
 import {
@@ -20,13 +19,28 @@ import { Link } from 'react-router-dom'
 import NavbarMain from '../../Components/NavbarMain'
 import Styled from 'styled-components'
 import Sidebar from '../../Components/Sidebar'
-// import { BrowserRouter, Route, Link } from
 import Pagination from '../../Components/Paginations'
+import {
+  FaSearch, FaTrashAlt
+} from 'react-icons/fa'
+import {
+  FiEdit
+} from 'react-icons/fi'
+import {
+  MdPlaylistAdd
+} from 'react-icons/md'
 
 const Bar = Styled('div')`
 position: absolute;
 top: 100px;
 margin-left: 50px;
+`
+const BtnSearch = Styled(Button)`
+  width: 40px;
+  height: 38px;
+  border-radius: 5px;
+  background: #F96E16;
+  margin-left: -70px;
 `
 
 class Busses extends Component {
@@ -52,7 +66,6 @@ class Busses extends Component {
       this.setState({
         name: e.currentTarget.value
       })
-
     }
     this.ktikaDiKlik = (e) => {
       this.props.searchData(this.state.name)
@@ -62,58 +75,10 @@ class Busses extends Component {
       this.props.movePage(currentPage)
       console.log(data)
     }
-    // this.nextData = async () => {
-    //   console.log('XSSSSSS')
-    //   const results = await axios.get(
-    //     config.APP_BACKEND.concat(`busses?page=${3}`)
-    //   )
-    //   const { data } = results.data
-    //   const { pageInfo } = results.data
-    //   this.setState({
-    //     busses: data,
-    //     pageInfo,
-    //     startFrom: this.state.startFrom + pageInfo.perPage
-    //   })
-    // }
-    // this.prevData = async () => {
-    //   const results = await axios.get(
-    //     config.APP_BACKEND.concat(`busses?page=${1}`)
-    //   )
-    //   const { data } = results.data
-    //   const { pageInfo } = results.data
-    //   this.setState({
-    //     busses: data,
-    //     pageInfo,
-    //     startFrom: this.state.startFrom - pageInfo.perPage
-    //   })
-    // }
-    // this.searchBus = async e => {
-    //   this.props.searchBus(e.target.value)
-    //   const { data } = results.data
-    //   const { pageInfo } = results.data
-    //   this.setState({ busses: data, pageInfo })
-    // }
-    // this.deleteData = async () => {
-    //   this.props.deleteData(this.state.selectedId)
-    //   if (this.props.deleteData) {
-    //     const newData = await axios.get(config.APP_BACKEND.concat('busses'))
-    //     const { data } = newData.data
-    //     const { pageInfo } = newData.data
-    //     this.setState({ busses: data, selectedId: 0, pageInfo })
-    //   } else {
-    //     console.log(results.data)
-    //     console.log('yes')
-    //   }
-    // }
   }
   componentDidMount() {
-    // console.log(this.props)
     console.log('MOUNTED')
-
     this.props.getBus()
-    // const { data } = results.data
-    // const { pageInfo } = results.data
-    // this.setState({ busses: data, pageInfo })
   }
   render() {
     console.log('props', this.props)
@@ -141,21 +106,24 @@ class Busses extends Component {
                 </Form>
               </Col>
               <Col md={3}>
-                <Button
+                <BtnSearch
                   className='blue'
                   onClick={this.ktikaDiKlik}
-                  style={{ marginLeft: '100px' }}
                 >
-                  SEARCH
-                </Button>
+                  <FaSearch />
+                </BtnSearch>
               </Col>
               <Col md={3}>
                 <Link
-                  className='btn btn-warning'
+                  className='btn'
                   to={`busses/create`}
-                  style={{ marginLeft: '100px' }}
+                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}
                 >
-                  ADD BUS
+                  <MdPlaylistAdd
+                    color='black'
+                    size='30px'
+                    title='CREATE BUS'
+                    position='center' />
                 </Link>
               </Col>
             </Row>
@@ -164,12 +132,12 @@ class Busses extends Component {
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Name Bus</th>
+                    <th width='25%'>Name Bus</th>
                     <th>Class Bus</th>
                     <th>Sheets</th>
                     <th>Price</th>
-                    <th>Agents</th>
-                    <th>Actions</th>
+                    <th width='30%'>Agents</th>
+                    <th width='15%'>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -182,25 +150,21 @@ class Busses extends Component {
                         <td>{v.sheets}</td>
                         <td>{v.price}</td>
                         <td>{v.name_agents}</td>
-                        <td>
-                          <Link
-                            className='btn btn-warning'
-                            to={`busses/edit/${v.id}`}
-                          >
-                            Edit
+                        <td class='text-center'>
+                          <Link to={`busses/edit/${v.id}`}>
+                            <FiEdit
+
+                              color='black'
+                              size='25px'
+                              title='EDIT'
+                              position='center' />
                           </Link>
-                          <Button
-                            className='ml-2'
-                            onClick={() =>
-                              this.setState({
-                                showModal: true,
-                                selectedId: this.state.busses[i].id
-                              })
-                            }
-                            color='danger'
-                          >
-                            Delete
-                          </Button>
+                          <FaTrashAlt
+
+                            color='black'
+                            size='25px'
+                            title='DELETE'
+                            position='center' />
                         </td>
                       </tr>
                     ))}
@@ -212,18 +176,16 @@ class Busses extends Component {
 
             <Row>
               <Col md={12} className='text-right'>
-                Page {this.state.pageInfo.page}/{this.state.pageInfo.totalPage}{' '}
-                Total Data {this.state.pageInfo.totalData} Limit{' '}
-                {this.state.pageInfo.perPage}
+                Page {this.props.pageInfo && this.props.pageInfo.page}/{this.props.pageInfo && this.props.pageInfo.totalPage}{' '}
+                Total Data {this.props.pageInfo && this.props.pageInfo.totalData} Limit{' '}
+                {this.props.pageInfo && this.props.pageInfo.perPage}
               </Col>
             </Row>
             <Row>
-              <Col md={6} className='text-center'>
-                <Button onClick={this.prevData} color='primary'>
-                  Prev
-                </Button>
-              </Col>
-              <Col md={6} className='text-center'>
+              <Col md={12} style={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
                 <Pagination
                   totalRecords={this.props.pageInfo && this.props.pageInfo.totalData}
                   pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
@@ -255,3 +217,16 @@ const mapStateToProps = (state) => {
 
 
 export default connect(mapStateToProps, { getBus, searchData, movePage })(Busses)
+
+{/* <Button
+                            className='ml-2'
+                            onClick={() =>
+                              this.setState({
+                                showModal: true,
+                                selectedId: this.state.busses[i].id
+                              })
+                            }
+                            color='danger'
+                          >
+                            Delete
+                          </Button> */}

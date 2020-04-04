@@ -39,9 +39,10 @@ class UpdateRoutes extends Component {
     setTimeout(() => {
       this.setState({
         departure: this.props.routes && this.props.routes.departure_at,
-        arrival: this.props.routes && this.props.routes.arrival,
+        arrival: this.props.routes && this.props.routes.arrival_at,
 
       })
+      console.log(this.props.routes)
     }, 100);
 
     // const { data } = results.data
@@ -153,7 +154,7 @@ class UpdateRoutes extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    routes: state.routes.routes
+    routes: state.routes.singleData
   }
 }
 export default connect(mapStateToProps, { getRoutesById, updateRoutes })(UpdateRoutes)

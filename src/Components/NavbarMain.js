@@ -92,14 +92,14 @@ export default class Navbar extends Component {
                   <IoMdContact color='#fff' size='30px' title='My Profil' />
                 </NavBarOne>
                 <NavBarOne>
-                  <Link to={'/logout'}>
+                  {/* <Link to={'/logout'}>
                     <IoMdLogOut
                       color='#fff'
                       size='30px'
                       title='LogOut'
                       color='black'
                     ></IoMdLogOut>
-                  </Link>
+                  </Link> */}
                 </NavBarOne>
               </Nav>
             </Collapse>

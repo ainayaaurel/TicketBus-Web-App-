@@ -1,6 +1,7 @@
 const initialState = {
   routes: [],
-  isLoading: true
+  isLoading: true,
+  singleData: {}
   //showModal: false
 }
 
@@ -18,20 +19,20 @@ const routesReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        routes: action.payload
+
       }
     } case 'UPDATE_ROUTES': {
       return {
         ...state,
         isLoading: false,
-        busses: action.payload
+        routes: action.payload
 
       }
     } case 'GET_ROUTES_BY_ID': {
       return {
         ...state,
         isLoading: false,
-        busses: action.payload
+        singleData: action.payload
       }
     }
     default:

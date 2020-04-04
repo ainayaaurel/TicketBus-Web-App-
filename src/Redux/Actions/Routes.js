@@ -20,7 +20,7 @@ export const postRoutes = (create) => async dispatch => {
     const res = await axios.post(config.APP_BACKEND.concat('routes'), create);
     dispatch({
       type: 'POST_ROUTES',
-      payload: res.data.data
+      payload: res.data
     })
   } catch (error) {
     console.log(error)

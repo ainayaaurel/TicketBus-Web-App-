@@ -36,6 +36,7 @@ class UpdateBus extends Component {
       modalMessage: ''
     }
   }
+  // guard untuk kalo data yang sudah terisi 
   componentDidMount() {
     console.log('asjdsajdbadsadsadbvshsvd')
     this.props.getBusById(this.props.match.params.id)
@@ -73,6 +74,8 @@ class UpdateBus extends Component {
       }
       this.props.updateBus(this.props.match.params.id, data)
       console.log('update', updateBus)
+      this.props.history.push('/busses')
+
       // if (this.props.updateBusses) {
       //   console.log('props update', this.props.updateBusses)
       //   this.setState({
@@ -121,7 +124,7 @@ class UpdateBus extends Component {
       <>
         <NavbarMain />
         <Container>
-          {isLoading && <>Loading...</>}
+          {/* {isLoading && <>Loading...</>} */}
           {
             <>
               <Modal isOpen={this.state.showModal}>

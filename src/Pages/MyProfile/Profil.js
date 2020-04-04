@@ -11,3 +11,7 @@ export default class Profil extends Component {
     )
   }
 }
+
+
+getuserdetailbyid
+select di table user detain
