@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import config from '../../utils/config'
 import { connect } from 'react-redux'
-import { getBus } from '../../Redux/Actions/Busses'
+import { getBus, searchData, movePage } from '../../Redux/Actions/Busses'
 import {
   Table,
   Row,
@@ -15,13 +15,13 @@ import {
   ModalBody,
   ModalFooter,
   Container,
-  Pagination
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import NavbarMain from '../../Components/NavbarMain'
 import Styled from 'styled-components'
 import Sidebar from '../../Components/Sidebar'
 // import { BrowserRouter, Route, Link } from
+import Pagination from '../../Components/Paginations'
 
 const Bar = Styled('div')`
 position: absolute;
@@ -45,7 +45,22 @@ class Busses extends Component {
       currentPage: 1,
       showModal: false,
       selectedId: 0,
-      startFrom: 1
+      startFrom: 1,
+      name: '',
+    }
+    this.searchBus = (e) => {
+      this.setState({
+        name: e.currentTarget.value
+      })
+
+    }
+    this.ktikaDiKlik = (e) => {
+      this.props.searchData(this.state.name)
+    }
+    this.onPageChanged = data => {
+      const { currentPage, totalPages, pageLimit } = data
+      this.props.movePage(currentPage)
+      console.log(data)
     }
     // this.nextData = async () => {
     //   console.log('XSSSSSS')
@@ -126,6 +141,15 @@ class Busses extends Component {
                 </Form>
               </Col>
               <Col md={3}>
+                <Button
+                  className='blue'
+                  onClick={this.ktikaDiKlik}
+                  style={{ marginLeft: '100px' }}
+                >
+                  SEARCH
+                </Button>
+              </Col>
+              <Col md={3}>
                 <Link
                   className='btn btn-warning'
                   to={`busses/create`}
@@ -200,9 +224,12 @@ class Busses extends Component {
                 </Button>
               </Col>
               <Col md={6} className='text-center'>
-                <Button onClick={this.nextData} color='primary'>
-                  Next
-                </Button>
+                <Pagination
+                  totalRecords={this.props.pageInfo && this.props.pageInfo.totalData}
+                  pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
+                  pageNeighbours={0}
+                  onPageChanged={this.onPageChanged}
+                />
               </Col>
             </Row>
           </Bar>
@@ -221,9 +248,10 @@ class Busses extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    busses: state.busses.busses
+    busses: state.busses.busses,
+    pageInfo: state.busses.pageInfo
   }
 }
 
 
-export default connect(mapStateToProps, { getBus })(Busses)
+export default connect(mapStateToProps, { getBus, searchData, movePage })(Busses)

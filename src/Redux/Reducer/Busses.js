@@ -1,5 +1,6 @@
 const initialState = {
   busses: [],
+  pageInfo: {},
   isLoading: true
   //showModal: false
 }
@@ -14,7 +15,8 @@ const busReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        busses: action.payload
+        busses: action.payload.data,
+        pageInfo: action.payload.pageInfo
       }
     } case 'POST_BUS': {
       return {
@@ -34,6 +36,17 @@ const busReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         busses: action.payload
+      }
+    } case 'SEARCH_DATA': {
+      return {
+        ...state,
+        busses: action.payload
+      }
+    } case 'MOVE_PAGE': {
+      return {
+        ...state,
+        busses: action.payload.data,
+        pageInfo: action.payload.pageInfo
       }
     }
     default:

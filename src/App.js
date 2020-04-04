@@ -30,6 +30,11 @@ class App extends Component {
                 render={props => <FormLogin {...props} />}
               />
               <Route
+                path='/logout'
+                exact
+                render={props => <FormLogin {...props} />}
+              />
+              <Route
                 path='/dashboard'
                 exact
                 render={props => <Dashboard {...props} />}

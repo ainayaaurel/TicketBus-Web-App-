@@ -11,7 +11,11 @@ export const getBus = () => async dispatch => {
     console.log('asdasdsad', res)
     dispatch({
       type: 'GET_BUS',
-      payload: res.data.data
+      payload: {
+        pageInfo: res.data.pageInfo,
+        data: res.data.data
+      }
+
     })
   } catch (error) {
     console.log(error)
@@ -57,6 +61,38 @@ export const getBusById = (id) => async dispatch => {
   } catch (error) {
     console.log(error)
   }
+}
+
+export const searchData = (name) => async dispatch => {
+  try {
+    const query = `busses?search[value]=${name}`
+    console.log(query)
+    const res = await axios.get(config.APP_BACKEND.concat(query));
+    dispatch({
+      type: 'SEARCH_DATA',
+      payload: res.data.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const movePage = (page) => async dispatch => {
+  try {
+    const query = `busses?page=${page}`
+    console.log(query)
+    const res = await axios.get(config.APP_BACKEND.concat(query));
+    dispatch({
+      type: 'MOVE_PAGE',
+      payload: {
+        pageInfo: res.data.pageInfo,
+        data: res.data.data
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+
 }
 
 
