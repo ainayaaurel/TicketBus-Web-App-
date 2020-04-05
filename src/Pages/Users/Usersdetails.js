@@ -6,7 +6,6 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter, Container, Pagination
 }
   from 'reactstrap'
-import { Link } from 'react-router-dom'
 import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
 import Styled from 'styled-components'
@@ -14,7 +13,8 @@ import Styled from 'styled-components'
 const Bar = Styled('div')`
 position: absolute;
 top: 100px;
-margin-left: 50px;
+margin-left: 10px;
+width: 100px;
 `
 
 class BiodataUsers extends Component {
@@ -98,14 +98,14 @@ class BiodataUsers extends Component {
             <Table bordered>
               <thead>
                 <tr>
-                  <th>No</th>
-                  <th>Picture</th>
-                  <th>Name</th>
-                  <th>Gender</th>
-                  <th>Address</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Actions</th>
+                  <th width='2%'>No</th>
+                  <th width='10%'>Picture</th>
+                  <th width='8%'>Name</th>
+                  <th width='10%'>Gender</th>
+                  <th width='10%'>Address</th>
+                  <th width='10%'>Phone</th>
+                  <th width='10%'>Email</th>
+                  <th width='2%'>Actions</th>
                 </tr>
               </thead>
               <tbody>

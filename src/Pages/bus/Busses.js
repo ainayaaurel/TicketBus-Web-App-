@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+
 import { connect } from 'react-redux'
-import { getBus, searchData, movePage } from '../../Redux/Actions/Busses'
+import { getBus, searchDataBusses, movePageBusses } from '../../Redux/Actions/Busses'
 import {
   Table,
   Row,
@@ -68,11 +69,11 @@ class Busses extends Component {
       })
     }
     this.ktikaDiKlik = (e) => {
-      this.props.searchData(this.state.name)
+      this.props.searchDataBusses(this.state.name)
     }
     this.onPageChanged = data => {
       const { currentPage, totalPages, pageLimit } = data
-      this.props.movePage(currentPage)
+      this.props.movePageBusses(currentPage)
       console.log(data)
     }
   }
@@ -216,17 +217,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, { getBus, searchData, movePage })(Busses)
-
-{/* <Button
-                            className='ml-2'
-                            onClick={() =>
-                              this.setState({
-                                showModal: true,
-                                selectedId: this.state.busses[i].id
-                              })
-                            }
-                            color='danger'
-                          >
-                            Delete
-                          </Button> */}
+export default connect(mapStateToProps, { getBus, searchDataBusses, movePageBusses })(Busses)

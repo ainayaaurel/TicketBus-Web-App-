@@ -37,12 +37,12 @@ const busReducer = (state = initialState, action) => {
         isLoading: false,
         busses: action.payload
       }
-    } case 'SEARCH_DATA': {
+    } case 'SEARCH_DATA_BUSSES': {
       return {
         ...state,
         busses: action.payload
       }
-    } case 'MOVE_PAGE': {
+    } case 'MOVE_PAGE_BUSSES': {
       return {
         ...state,
         busses: action.payload.data,

@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import config from '../../utils/config'
-import axios from 'axios'
 import {
   Table,
   Row,
@@ -14,38 +12,68 @@ import {
   ModalBody,
   ModalFooter,
   Container,
-  Pagination
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import Styled from 'styled-components'
 import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
-import Styled from 'styled-components'
-import { getSchedules } from '../../Redux/Actions/Schedules'
+import Pagination from '../../Components/Paginations'
+import { getSchedules, searchDataSchedules, movePageSchedules } from '../../Redux/Actions/Schedules'
 import { connect } from 'react-redux'
+import {
+  FaSearch, FaTrashAlt
+} from 'react-icons/fa'
+import {
+  FiEdit
+} from 'react-icons/fi'
+import {
+  MdPlaylistAdd
+} from 'react-icons/md'
+
 
 const Bar = Styled('div')`
 position: absolute;
 top: 100px;
 margin-left: 50px;
 `
-
+const BtnSearch = Styled(Button)`
+  width: 40px;
+  height: 38px;
+  border-radius: 5px;
+  background: #F96E16;
+  margin-left: -70px;
+`
 class Schedules extends Component {
   constructor(props) {
     super(props)
     this.state = {
       schedules: [],
-      // pageInfo: {
-      //   page: 0,
-      //   perPage: 0,
-      //   totalData: 0,
-      //   totalPage: 0,
-      //   nextLink: null,
-      //   prevLink: null
-      // },
-      // currentPage: 1,
-      // showModal: false,
-      // selectedId: 0,
-      // startFrom: 1
+      pageInfo: {
+        page: 0,
+        perPage: 0,
+        totalData: 0,
+        totalPage: 0,
+        nextLink: null,
+        prevLink: null
+      },
+      currentPage: 1,
+      showModal: false,
+      selectedId: 0,
+      startFrom: 1,
+      departure: '',
+    }
+    this.searchSchedules = (e) => {
+      this.setState({
+        departure: e.currentTarget.value
+      })
+    }
+    this.ktikaDiKlik = (e) => {
+      this.props.searchDataSchedules(this.state.departure)
+    }
+    this.onPageChanged = data => {
+      const { currentPage, totalPages, pageLimit } = data
+      this.props.movePageSchedules(currentPage)
+      console.log(data)
     }
   }
 
@@ -53,16 +81,6 @@ class Schedules extends Component {
     setTimeout(() => {
       this.props.getSchedules()
     }, 1000);
-
-
-    // axios.defaults.headers.common[
-    //   'Authorization'
-    // ] = `Bearer ${localStorage.getItem('token_admin')}`
-    // const results = await axios.get(config.APP_BACKEND.concat('schedules'))
-    // console.log('ini schedules', results)
-    // const { data } = results.data
-    // const { pageInfo } = results.data
-    // this.setState({ schedules: data, pageInfo })
   }
   render() {
     console.log('data', this.state.schedules)
@@ -89,8 +107,22 @@ class Schedules extends Component {
                 </Form>
               </Col>
               <Col md={3}>
-                <Link className='btn btn-warning' to={`schedules/create`}>
-                  ADD SCHEDULES
+                <BtnSearch
+                  className='blue'
+                  onClick={this.ktikaDiKlik}
+                >
+                  <FaSearch />
+                </BtnSearch>
+              </Col>
+              <Col md={3}>
+                <Link className='btn'
+                  to={`schedules/create`}
+                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}>
+                  <MdPlaylistAdd
+                    color='black'
+                    size='30px'
+                    title='CREATE SCHEDULES'
+                    position='center' />
                 </Link>
               </Col>
             </Row>
@@ -123,23 +155,19 @@ class Schedules extends Component {
                         <td>{v.price}</td>
                         <td>
                           <Link
-                            className='btn btn-warning'
                             to={`schedules/edit/${v.id}`}
                           >
-                            Edit
+                            <FiEdit
+                              color='black'
+                              size='25px'
+                              title='EDIT'
+                              position='center' />
                           </Link>
-                          <Button
-                            className='ml-2'
-                            onClick={() =>
-                              this.setState({
-                                showModal: true,
-                                selectedId: this.state.schedules[i].id
-                              })
-                            }
-                            color='danger'
-                          >
-                            Delete
-                          </Button>
+                          <FaTrashAlt
+                            color='black'
+                            size='25px'
+                            title='DELETE'
+                            position='center' />
                         </td>
                       </tr>
                     ))}
@@ -149,25 +177,26 @@ class Schedules extends Component {
                 <div>Data Tidak Tersedia</div>
               )}
 
-            {/* <Row>
+            <Row>
               <Col md={12} className='text-right'>
-                Page {this.state.pageInfo.page}/{this.state.pageInfo.totalPage}{' '}
-                Total Data {this.state.pageInfo.totalData} Limit{' '}
-                {this.state.pageInfo.perPage}
+                Page {this.props.pageInfo && this.props.pageInfo.page}/{this.props.pageInfo && this.props.pageInfo.totalPage}{' '}
+                Total Data {this.props.pageInfo && this.props.pageInfo.totalData} Limit{' '}
+                {this.props.pageInfo && this.props.pageInfo.perPage}
               </Col>
             </Row>
             <Row>
-              <Col md={6} className='text-center'>
-                <Button onClick={this.prevData} color='primary'>
-                  Prev
-                </Button>
+              <Col md={12} style={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+                <Pagination
+                  totalRecords={this.props.pageInfo && this.props.pageInfo.totalData}
+                  pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
+                  pageNeighbours={0}
+                  onPageChanged={this.onPageChanged}
+                />
               </Col>
-              <Col md={6} className='text-center'>
-                <Button onClick={this.nextData} color='primary'>
-                  Next
-                </Button>
-              </Col>
-            </Row> */}
+            </Row>
           </Bar>
         </Container>
         <Modal isOpen={this.state.showModal}>
@@ -207,7 +236,8 @@ class Schedules extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    schedules: state.schedules.schedules
+    schedules: state.schedules.schedules,
+    pageInfo: state.schedules.pageInfo
   }
 }
-export default connect(mapStateToProps, { getSchedules })(Schedules)
+export default connect(mapStateToProps, { getSchedules, searchDataSchedules, movePageSchedules })(Schedules)

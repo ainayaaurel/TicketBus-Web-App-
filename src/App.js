@@ -15,7 +15,7 @@ import TableCreateRoutes from './Pages/routes/CreateRoutes'
 import TableCreateSchedules from './Pages/schedules/CreateSchedules'
 import TableUpdateSchedules from './Pages/schedules/UpdateSchedules'
 import TableUpdateRoutes from './Pages/routes/UpdateRoutes'
-import Navbar from './Components/Navbar'
+import MyProfil from './Pages/MyProfile/Profil'
 
 class App extends Component {
   render() {
@@ -34,6 +34,11 @@ class App extends Component {
                 exact
                 render={props => <FormLogin {...props} />}
               /> */}
+              <Route
+                path='/myprofile'
+                exact
+                render={props => <MyProfil {...props} />}
+              />
               <Route
                 path='/dashboard'
                 exact

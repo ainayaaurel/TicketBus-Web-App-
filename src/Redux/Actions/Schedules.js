@@ -10,7 +10,10 @@ export const getSchedules = () => async dispatch => {
     console.log('getschedul', res)
     dispatch({
       type: 'GET_SCHEDULES',
-      payload: res.data.data
+      payload: {
+        pageInfo: res.data.pageInfo,
+        data: res.data.data
+      }
     })
   } catch (error) {
     console.log(error)
@@ -53,6 +56,36 @@ export const getSchedulesById = (id) => async dispatch => {
     dispatch({
       type: 'GET_SCHEDULES_BY_ID',
       payload: res.data.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+export const searchDataSchedules = (departure) => async dispatch => {
+  try {
+    const query = `schedules?search[value]=${departure}`
+    console.log(query)
+    const res = await axios.get(config.APP_BACKEND.concat(query));
+    dispatch({
+      type: 'SEARCH_DATA_SCHEDULES',
+      payload: res.data.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const movePageSchedules = (page) => async dispatch => {
+  try {
+    const query = `schedules?page=${page}`
+    console.log(query)
+    const res = await axios.get(config.APP_BACKEND.concat(query));
+    dispatch({
+      type: 'MOVE_PAGE_SCHEDULES',
+      payload: {
+        pageInfo: res.data.pageInfo,
+        data: res.data.data
+      }
     })
   } catch (error) {
     console.log(error)

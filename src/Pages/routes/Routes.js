@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import config from '../../utils/config'
-import axios from 'axios'
 import { connect } from 'react-redux'
-import { getRoutes } from '../../Redux/Actions/Routes'
+import { getRoutes, searchDataRoutes, movePageRoutes } from '../../Redux/Actions/Routes'
 import {
   Table,
   Row,
@@ -16,20 +14,35 @@ import {
   ModalBody,
   ModalFooter,
   Container,
-  Pagination
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
+import Pagination from '../../Components/Paginations'
 import Styled from 'styled-components'
+import {
+  FaSearch, FaTrashAlt
+} from 'react-icons/fa'
+import {
+  FiEdit
+} from 'react-icons/fi'
+import {
+  MdPlaylistAdd
+} from 'react-icons/md'
 
 const Bar = Styled('div')`
 position: absolute;
 top: 100px;
-/* margin-left: 50px; */
-border: 1px solid black;
+margin-left: 50px;
 width: 70%;
 height: 65vh;
+`
+const BtnSearch = Styled(Button)`
+  width: 40px;
+  height: 38px;
+  border-radius: 5px;
+  background: #F96E16;
+  margin-left: -70px;
 `
 
 class Routes extends Component {
@@ -48,68 +61,27 @@ class Routes extends Component {
       currentPage: 1,
       showModal: false,
       selectedId: 0,
-      startFrom: 1
+      startFrom: 1,
+      departure_at: ''
     }
-    // this.nextData = async () => {
-    //   console.log('XSSSSSS')
-    //   const results = await axios.get(
-    //     config.APP_BACKEND.concat(`routes?page=${2}`)
-    //   )
-    //   const { data } = results.data
-    //   const { pageInfo } = results.data
-    //   this.setState({
-    //     routes: data,
-    //     pageInfo,
-    //     startFrom: this.state.startFrom + pageInfo.perPage
-    //   })
-    // }
-    // this.prevData = async () => {
-    //   const results = await axios.get(
-    //     config.APP_BACKEND.concat(`routes?page=${1}`)
-    //   )
-    //   const { data } = results.data
-    //   const { pageInfo } = results.data
-    //   this.setState({
-    //     routes: data,
-    //     pageInfo,
-    //     startFrom: this.state.startFrom - pageInfo.perPage
-    //   })
-    // }
-    // this.searchRoutes = async e => {
-    //   const results = await axios.get(
-    //     config.APP_BACKEND.concat(`routes?search[routes]=${e.target.value}`)
-    //   )
-    //   const { data } = results.data
-    //   const { pageInfo } = results.data
-    //   this.setState({ routes: data, pageInfo })
-    // }
-    // this.deleteData = async () => {
-    //   const results = await axios.delete(
-    //     config.APP_BACKEND.concat(`routes/${this.state.selectedId}`)
-    //   )
-    //   if (results.data.success) {
-    //     console.log('test')
-    //     const newData = await axios.get(config.APP_BACKEND.concat('routes'))
-    //     const { data } = newData.data
-    //     const { pageInfo } = newData.data
-    //     this.setState({ routes: data, selectedId: 0, pageInfo })
-    //   } else {
-    //     console.log(results.data)
-    //     console.log('yes')
-    //   }
-    // }
+    this.searchRoutes = (e) => {
+      this.setState({
+        departure_at: e.currentTarget.value
+      })
+    }
+    this.ktikaDiKlik = (e) => {
+      this.props.searchDataRoutes(this.state.departure_at)
+    }
+    this.onPageChanged = data => {
+      const { currentPage, totalPages, pageLimit } = data
+      this.props.movePageRoutes(currentPage)
+      console.log(data)
+    }
   }
   componentDidMount() {
     setTimeout(() => {
       this.props.getRoutes()
     }, 1000);
-    // axios.defaults.headers.common[
-    //   'Authorization'
-    // ] = `Bearer ${localStorage.getItem('token_admin')}`
-    // const results = await axios.get(config.APP_BACKEND.concat('routes'))
-    // console.log('ini rute', results)
-    // const { data } = results.data
-    // this.setState({ routes: data })
   }
   render() {
     console.log('data', this.state.routes)
@@ -136,8 +108,20 @@ class Routes extends Component {
                 </Form>
               </Col>
               <Col md={3}>
-                <Link className='btn btn-warning' to={`routes/create`}>
-                  ADD ROUTES
+                <BtnSearch className='blue'
+                  onClick={this.ktikaDiKlik}
+                >
+                  <FaSearch />
+                </BtnSearch>
+              </Col>
+              <Col md={3}>
+                <Link className='btn' to={`routes/create`}
+                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}>
+                  <MdPlaylistAdd
+                    color='black'
+                    size='30px'
+                    title='CREATE ROUTES'
+                    position='center' />
                 </Link>
               </Col>
             </Row>
@@ -160,23 +144,19 @@ class Routes extends Component {
                         <td>{v.arrival_at}</td>
                         <td>
                           <Link
-                            className='btn btn-warning'
                             to={`routes/edit/${v.id}`}
                           >
-                            Edit
+                            <FiEdit
+                              color='black'
+                              size='25px'
+                              title='EDIT'
+                              position='center' />
                           </Link>
-                          <Button
-                            className='ml-2'
-                            onClick={() =>
-                              this.setState({
-                                showModal: true,
-                                selectedId: this.state.routes[i].id
-                              })
-                            }
-                            color='danger'
-                          >
-                            Delete
-                          </Button>
+                          <FaTrashAlt
+                            color='black'
+                            size='25px'
+                            title='DELETE'
+                            position='center' />
                         </td>
                       </tr>
                     ))}
@@ -188,17 +168,22 @@ class Routes extends Component {
 
             <Row>
               <Col md={12} className='text-right'>
-                Page {this.state.pageInfo.page}/{this.state.pageInfo.totalPage}{' '}
-                Total Data {this.state.pageInfo.totalData} Limit{' '}
-                {this.state.pageInfo.perPage}
+                Page {this.props.pageInfo && this.props.pageInfo.page}/{this.props.pageInfo && this.props.pageInfo.totalPage}{' '}
+                Total Data {this.props.pageInfo && this.props.pageInfo.totalData} Limit{' '}
+                {this.props.pageInfo && this.props.pageInfo.perPage}
               </Col>
             </Row>
             <Row>
-              <Col md={6} className='text-center'>
-                <Pagination onClick={this.prevData}>Prev</Pagination>
-              </Col>
-              <Col md={6} className='text-center'>
-                <Pagination onClick={this.nextData}>Next</Pagination>
+              <Col md={12} style={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+                <Pagination
+                  totalRecords={this.props.pageInfo && this.props.pageInfo.totalData}
+                  pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
+                  pageNeighbours={0}
+                  onPageChanged={this.onPageChanged}
+                />
               </Col>
             </Row>
           </Bar>
@@ -225,7 +210,8 @@ class Routes extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    routes: state.routes.routes
+    routes: state.routes.routes,
+    pageInfo: state.routes.pageInfo
   }
 }
-export default connect(mapStateToProps, { getRoutes })(Routes)
+export default connect(mapStateToProps, { getRoutes, searchDataRoutes, movePageRoutes })(Routes)

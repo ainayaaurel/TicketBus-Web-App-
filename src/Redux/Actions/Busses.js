@@ -69,13 +69,13 @@ export const getBusById = (id) => async dispatch => {
   }
 }
 
-export const searchData = (name) => async dispatch => {
+export const searchDataBusses = (name) => async dispatch => {
   try {
     const query = `busses?search[value]=${name}`
     console.log(query)
     const res = await axios.get(config.APP_BACKEND.concat(query));
     dispatch({
-      type: 'SEARCH_DATA',
+      type: 'SEARCH_DATA_BUSSES',
       payload: res.data.data
     })
   } catch (error) {
@@ -83,13 +83,13 @@ export const searchData = (name) => async dispatch => {
   }
 }
 
-export const movePage = (page) => async dispatch => {
+export const movePageBusses = (page) => async dispatch => {
   try {
     const query = `busses?page=${page}`
     console.log(query)
     const res = await axios.get(config.APP_BACKEND.concat(query));
     dispatch({
-      type: 'MOVE_PAGE',
+      type: 'MOVE_PAGE_BUSSES',
       payload: {
         pageInfo: res.data.pageInfo,
         data: res.data.data
@@ -98,56 +98,4 @@ export const movePage = (page) => async dispatch => {
   } catch (error) {
     console.log(error)
   }
-
 }
-
-
-
-
-// export function getAllDataBusses() {
-//   return async function (dispatch) {
-//     return axios.get(config.APP_BACKEND.concat('busses'))
-//       .then(({ data }) => {
-//         dispatch(getAllDataBusses(data));
-//       })
-
-//     // export async function getAllDataBusses() {
-//     //   const results = await axios.get(config.APP_BACKEND.concat('busses'))
-//     //   return {
-//     //     type: 'GET_ALL_DATA_BUSSES',
-//     //     payload: results
-//     //   }
-//     // }
-
-//     export async function postBusses() {
-//       const results = await axios.get(config.APP_BACKEND.concat('busses'))
-//       return {
-//         type: 'POST_DATA_BUSSES',
-//         payload: results
-//       }
-//     }
-
-//     export async function updateBusses(id, data) {
-//       const results = await axios.patch(config.APP_BACKEND.concat(`busses/${id}`), data)
-//       return {
-//         type: 'UPDATE_BUSSES',
-//         payload: results
-//       }
-//     }
-
-//     export async function deleteBusses(id) {
-//       const results = await axios.delete(config.APP_BACKEND.concat(`busses/${id}`)
-//       )
-//       return {
-//         type: 'DELETE_BUSSES',
-//         payload: results
-//       }
-//     }
-
-//     export async function searchBusses(name) {
-//       const results = await axios.get(config.APP_BACKEND.concat(`busses?search[busses]=${name}`))
-//       return {
-//         type: 'SEARCH_BUSSES',
-//         payload: results
-//       }
-//     }

@@ -1,7 +1,8 @@
 const initialState = {
   schedules: [],
   isLoading: true,
-  singleData: {}
+  singleData: {},
+  pageInfo: {}
 
 }
 
@@ -12,7 +13,8 @@ const schedulesReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        schedules: action.payload
+        schedules: action.payload.data,
+        pageInfo: action.payload.pageInfo
       }
     } case 'POST_SCHEDULES': {
       return {
@@ -32,6 +34,17 @@ const schedulesReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         singleData: action.payload
+      }
+    } case 'SEARCH_DATA_SCHEDULES': {
+      return {
+        ...state,
+        schedules: action.payload
+      }
+    } case 'MOVE_PAGE_SCHEDULES': {
+      return {
+        ...state,
+        schedules: action.payload.data,
+        pageInfo: action.payload.pageInfo
       }
     }
     default:

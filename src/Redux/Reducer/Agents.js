@@ -1,6 +1,7 @@
 const initialState = {
   agents: [],
-  isLoading: true
+  isLoading: true,
+  pageInfo: {}
   //showModal: false
 }
 
@@ -12,7 +13,8 @@ const agentsReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        agents: action.payload
+        agents: action.payload.data,
+        pageInfo: action.payload.pageInfo
       }
     } case 'POST_AGENTS': {
       return {
@@ -32,6 +34,17 @@ const agentsReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         agents: action.payload
+      }
+    } case 'SEARCH_DATA_AGENTS': {
+      return {
+        ...state,
+        agents: action.payload
+      }
+    } case 'MOVE_PAGE_AGENTS': {
+      return {
+        ...state,
+        agents: action.payload.data,
+        pageInfo: action.payload.pageInfo
       }
     }
     default:

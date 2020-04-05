@@ -26,7 +26,7 @@ class CreateBus extends Component {
     }
   }
 
-  ketikaDiSubmit = async e => {
+  OnSubmit = async e => {
     e.preventDefault()
     const create = {
       name: this.state.name,
@@ -37,35 +37,29 @@ class CreateBus extends Component {
     }
     this.props.postBus(create)
     console.log('ini create', create)
-    // if (results.data.success) {
-    //   alert('Data Succesfully Create!')
     this.props.history.push('/busses')
-    //   console.log('data terbaru', this.state.data)
-    // } else {
-    //   alert('Not Succes')
-    // }
   }
-  ketikBus = e => {
+  changeBus = (e) => {
     this.setState({
       name: e.currentTarget.value
     })
   }
-  ketikClassBus = e => {
+  changeClassBus = (e) => {
     this.setState({
       class: e.currentTarget.value
     })
   }
-  ketikSheats = e => {
+  changeSheats = e => {
     this.setState({
       sheets: e.currentTarget.value
     })
   }
-  ketikPrice = e => {
+  changePrice = e => {
     this.setState({
       price: e.currentTarget.value
     })
   }
-  ketikAgentsId = e => {
+  changeAgentsId = e => {
     this.setState({
       agentsId: e.currentTarget.value
     })
@@ -78,11 +72,11 @@ class CreateBus extends Component {
           <Bar>
             <Row>
               <Col md={8}>
-                <Form onSubmit={this.ketikaDiSubmit}>
+                <Form onSubmit={this.OnSubmit}>
                   <FormGroup>
                     <Label>Name Bus</Label>
                     <Input
-                      onChange={this.ketikBus}
+                      onChange={this.changeBus}
                       type='text'
                       value={this.state.name}
                     />
@@ -90,7 +84,7 @@ class CreateBus extends Component {
                   <FormGroup>
                     <Label>Class Bus</Label>
                     <Input
-                      onChange={this.ketikClassBus}
+                      onChange={this.changeClassBus}
                       type='text'
                       value={this.state.class}
                     />
@@ -98,7 +92,7 @@ class CreateBus extends Component {
                   <FormGroup>
                     <Label>Sheats Bus</Label>
                     <Input
-                      onChange={this.ketikSheats}
+                      onChange={this.changeSheats}
                       type='text'
                       value={this.state.sheets}
                     />
@@ -106,7 +100,7 @@ class CreateBus extends Component {
                   <FormGroup>
                     <Label>Price</Label>
                     <Input
-                      onChange={this.ketikPrice}
+                      onChange={this.changePrice}
                       type='text'
                       value={this.state.price}
                     />
@@ -114,7 +108,7 @@ class CreateBus extends Component {
                   <FormGroup>
                     <Label>Agents</Label>
                     <Input
-                      onChange={this.ketikAgentsId}
+                      onChange={this.changeAgentsId}
                       type='text'
                       value={this.state.agentsId}
                     />

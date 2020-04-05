@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import config from '../../utils/config'
-import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getAgents } from '../../Redux/Actions/Agents'
+import { getAgents, searchDataAgents, movePageAgents } from '../../Redux/Actions/Agents'
 import {
   Row,
   Col,
@@ -18,17 +16,33 @@ import {
   ModalFooter,
   Container
 } from 'reactstrap'
-
+import {
+  FaSearch, FaTrashAlt
+} from 'react-icons/fa'
+import {
+  FiEdit
+} from 'react-icons/fi'
+import {
+  MdPlaylistAdd
+} from 'react-icons/md'
 import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
+import Pagination from '../../Components/Paginations'
 import Styled from 'styled-components'
+
 
 const Bar = Styled('div')`
 position: absolute;
 top: 100px;
 margin-left: 50px;
 `
-
+const BtnSearch = Styled(Button)`
+  width: 40px;
+  height: 38px;
+  border-radius: 5px;
+  background: #F96E16;
+  margin-left: -40px;
+`
 class Agents extends Component {
   constructor(props) {
     super(props)
@@ -36,41 +50,25 @@ class Agents extends Component {
       agents: [],
       showModal: false,
       selectedId: 0,
-      startFrom: 1
+      startFrom: 1,
+      name_agents: ''
     }
-    // this.searchAgents = async e => {
-    //   const results = await axios.get(
-    //     config.APP_BACKEND.concat(`agents?search[agents]=${e.target.value}`)
-    //   )
-    //   const { data } = results.data
-    //   const { pageInfo } = results.data
-    //   this.setState({ agents: data, pageInfo })
-    // }
-    // this.deleteData = async () => {
-    //   const results = await axios.delete(
-    //     config.APP_BACKEND.concat(`agents/${this.state.selectedId}`)
-    //   )
-    //   if (results.data.success) {
-    //     console.log('test')
-    //     const newData = await axios.get(config.APP_BACKEND.concat('agents'))
-    //     const { data } = newData.data
-    //     this.setState({ agents: data, selectedId: 0 })
-    //   } else {
-    //     console.log(results.data)
-    //     console.log('yes')
-    //   }
-    // }
+    this.searchAgents = (e) => {
+      this.setState({
+        name_agents: e.currentTarget.value
+      })
+    }
+    this.ktikaDiKlik = (e) => {
+      this.props.searchDataAgents(this.state.name_agents)
+    }
+    this.onPageChanged = data => {
+      const { currentPage, totalPages, pageLimit } = data
+      this.props.movePageAgents(currentPage)
+      console.log(data)
+    }
   }
   componentDidMount() {
     this.props.getAgents()
-    // axios.defaults.headers.common[
-    //   'Authorization'
-    // ] = `Bearer ${localStorage.getItem('token_admin')}`
-    // const results = await axios.get(config.APP_BACKEND.concat('agents'))
-    // console.log('ini data', results)
-    // const { data } = results.data
-    // console.log(data)
-    // this.setState({ agents: data })
   }
   render() {
     console.log('data', this.state.agents)
@@ -85,7 +83,7 @@ class Agents extends Component {
         <Container>
           <Bar>
             <Row>
-              <Col md={4}>
+              <Col md={6}>
                 <Form>
                   <FormGroup>
                     <Input
@@ -97,8 +95,22 @@ class Agents extends Component {
                 </Form>
               </Col>
               <Col md={3}>
-                <Link className='btn btn-warning' to={`agents/create`}>
-                  ADD AGENTS
+                <BtnSearch
+                  className='blue'
+                  onClick={this.ktikaDiKlik}
+                >
+                  <FaSearch />
+                </BtnSearch>
+              </Col>
+              <Col md={3}>
+                <Link className='btn'
+                  to={`routes/create`}
+                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}>
+                  <MdPlaylistAdd
+                    color='black'
+                    size='30px'
+                    title='CREATE ROUTES'
+                    position='center' />
                 </Link>
               </Col>
             </Row>
@@ -119,23 +131,19 @@ class Agents extends Component {
                         <td>{v.name_agents}</td>
                         <td>
                           <Link
-                            className='btn btn-warning'
-                            to={`agents/edit/${v.id}`}
+                            to={`schedules/edit/${v.id}`}
                           >
-                            Edit
-                        </Link>
-                          <Button
-                            className='ml-2'
-                            onClick={() =>
-                              this.setState({
-                                showModal: true,
-                                selectedId: this.state.agents[i].id
-                              })
-                            }
-                            color='danger'
-                          >
-                            Delete
-                        </Button>
+                            <FiEdit
+                              color='black'
+                              size='25px'
+                              title='EDIT'
+                              position='center' />
+                          </Link>
+                          <FaTrashAlt
+                            color='black'
+                            size='25px'
+                            title='DELETE'
+                            position='center' />
                         </td>
                       </tr>
                     ))}
@@ -144,32 +152,53 @@ class Agents extends Component {
             ) : (
                 <div>Data Tidak Tersedia</div>
               )}
-            <Modal isOpen={this.state.showModal}>
-              <ModalHeader>Delete User</ModalHeader>
-              <ModalBody>Really want to delete?</ModalBody>
-              <ModalFooter>
-                <Button color='success' onClick={this.deleteData}>
-                  OK
-                </Button>
-                <Button
-                  color='danger'
-                  onClick={() =>
-                    this.setState({ showModal: false, selectedId: 0 })
-                  }
-                >
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </Modal>
+            <Row>
+              <Col md={12} className='text-right'>
+                Page {this.props.pageInfo && this.props.pageInfo.page}/{this.props.pageInfo && this.props.pageInfo.totalPage}{' '}
+                Total Data {this.props.pageInfo && this.props.pageInfo.totalData} Limit{' '}
+                {this.props.pageInfo && this.props.pageInfo.perPage}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={12} style={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+                <Pagination
+                  totalRecords={this.props.pageInfo && this.props.pageInfo.totalData}
+                  pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
+                  pageNeighbours={0}
+                  onPageChanged={this.onPageChanged}
+                />
+              </Col>
+            </Row>
           </Bar>
         </Container>
+        <Modal isOpen={this.state.showModal}>
+          <ModalHeader>Delete User</ModalHeader>
+          <ModalBody>Really want to delete?</ModalBody>
+          <ModalFooter>
+            <Button color='success' onClick={this.deleteData}>
+              OK
+                </Button>
+            <Button
+              color='danger'
+              onClick={() =>
+                this.setState({ showModal: false, selectedId: 0 })
+              }
+            >
+              Cancel
+                </Button>
+          </ModalFooter>
+        </Modal>
       </>
     )
   }
 }
 const mapStateToProps = (state) => {
   return {
-    agents: state.agents.agents
+    agents: state.agents.agents,
+    pageInfo: state.agents.pageInfo
   }
 }
-export default connect(mapStateToProps, { getAgents })(Agents)
+export default connect(mapStateToProps, { getAgents, searchDataAgents, movePageAgents })(Agents)

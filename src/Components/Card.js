@@ -7,23 +7,19 @@ const divCard = Styles('div')`
 `
 
 const OriCard = Styles('div')`
-  background: #fff ;
-  box-shadow: 1px 1px 3px 1px  #888;
-  border-radius: 20px;
+  background-color: #42A845;
   display: flex;
   justifyContent: flex-between;
-  color: grey;
+  color: #fff;
   padding: 20px;
   height: 150px;
   margin-top: 60px;
   & .card-title {
-    font-size: 19px;
-    margin-top: 20px;
-    color: #2F3944;
-    margin-left: 20px;
-    margin-bottom: 20px; 
-    text-align: center; 
-  }
+    font-size: 27px;
+    margin-top: -10px;
+    text-transform: uppercase;
+    color: rgba(255, 190, 190, 0.3);
+  } 
 `
 export default class Card extends Component {
   render() {
@@ -31,7 +27,7 @@ export default class Card extends Component {
       <Container>
         <divCard>
           <OriCard>
-            <CardBody> Total Bus </CardBody>
+            <span> Total Bus </span>
           </OriCard>
         </divCard>
       </Container>
@@ -40,3 +36,20 @@ export default class Card extends Component {
   }
 }
 
+
+  // background: #fff ;
+  // box-shadow: 1px 1px 3px 1px  #888;
+  // border-radius: 20px;
+  // 
+  // color: grey;
+  // padding: 20px;
+  // height: 150px;
+  // margin-top: 60px;
+  // & .card-title {
+  //   font-size: 19px;
+  //   margin-top: 20px;
+  //   color: #2F3944;
+  //   margin-left: 20px;
+  //   margin-bottom: 20px; 
+  //   text-align: center; 
+  // }

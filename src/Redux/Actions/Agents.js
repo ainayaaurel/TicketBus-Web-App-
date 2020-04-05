@@ -9,7 +9,10 @@ export const getAgents = () => async dispatch => {
     const res = await axios.get(config.APP_BACKEND.concat('agents'));
     dispatch({
       type: 'GET_AGENTS',
-      payload: res.data.data
+      payload: {
+        pageInfo: res.data.pageInfo,
+        data: res.data.data
+      }
     })
   } catch (error) {
     console.log(error)
@@ -49,6 +52,37 @@ export const getAgentsById = (id) => async dispatch => {
     dispatch({
       type: 'GET_AGENTS_BY_ID',
       payload: res.data.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const searchDataAgents = (name) => async dispatch => {
+  try {
+    const query = `agents?search[value]=${name}`
+    console.log(query)
+    const res = await axios.get(config.APP_BACKEND.concat(query));
+    dispatch({
+      type: 'SEARCH_DATA',
+      payload: res.data.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const movePageAgents = (page) => async dispatch => {
+  try {
+    const query = `agents?page=${page}`
+    console.log(query)
+    const res = await axios.get(config.APP_BACKEND.concat(query));
+    dispatch({
+      type: 'MOVE_PAGE',
+      payload: {
+        pageInfo: res.data.pageInfo,
+        data: res.data.data
+      }
     })
   } catch (error) {
     console.log(error)

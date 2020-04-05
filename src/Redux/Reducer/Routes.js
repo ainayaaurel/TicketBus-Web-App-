@@ -1,7 +1,8 @@
 const initialState = {
   routes: [],
   isLoading: true,
-  singleData: {}
+  singleData: {},
+  pageInfo: {},
   //showModal: false
 }
 
@@ -13,7 +14,8 @@ const routesReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        routes: action.payload
+        routes: action.payload.data,
+        pageInfo: action.payload.pageInfo
       }
     } case 'POST_ROUTES': {
       return {
@@ -33,6 +35,17 @@ const routesReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         singleData: action.payload
+      }
+    } case 'SEARCH_DATA_ROUTES': {
+      return {
+        ...state,
+        routes: action.payload
+      }
+    } case 'MOVE_PAGE_ROUTES': {
+      return {
+        ...state,
+        routes: action.payload.data,
+        pageInfo: action.payload.pageInfo
       }
     }
     default:

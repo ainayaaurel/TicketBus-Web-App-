@@ -13,6 +13,8 @@ import {
   HeaderSecondsItem
 } from 'reactstrap'
 
+import { Link } from 'react-router-dom'
+
 import Styles from 'styled-components'
 // import { FaSearch } from 'react-icons/io'
 
@@ -90,15 +92,21 @@ export default class Navbar extends Component {
                   <IoIosMail color='#fff' size='30px' title='Message' />
                 </NavBarTwo>
                 <NavBarTwo>
-                  <IoMdContact color='#fff' size='30px' title='My Profil' />
+                  <Link to='/myprofile'
+                  >
+                    <IoMdContact color='#fff' size='30px' title='My Profil' />
+                  </Link>
+
                 </NavBarTwo>
                 <NavBarTwo>
-                  <IoMdLogOut
-                    color='#fff'
-                    size='30px'
-                    title='LogOut'
-                    color='black'
-                  />
+                  <Link to='/login'>
+                    <IoMdLogOut
+                      color='#fff'
+                      size='30px'
+                      title='LogOut'
+                      color='black'
+                    />
+                  </Link>
                 </NavBarTwo>
               </Nav>
             </Collapse>

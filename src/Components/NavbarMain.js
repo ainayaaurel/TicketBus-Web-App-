@@ -7,11 +7,9 @@ import {
   NavItem,
   Container,
   Collapse,
-  Row,
-  Col,
   Input,
-  HeaderSecondsItem
 } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 import Styles from 'styled-components'
 
@@ -92,14 +90,14 @@ export default class Navbar extends Component {
                   <IoMdContact color='#fff' size='30px' title='My Profil' />
                 </NavBarOne>
                 <NavBarOne>
-                  {/* <Link to={'/logout'}>
+                  <Link to={'/busses'}>
                     <IoMdLogOut
                       color='#fff'
                       size='30px'
                       title='LogOut'
                       color='black'
                     ></IoMdLogOut>
-                  </Link> */}
+                  </Link>
                 </NavBarOne>
               </Nav>
             </Collapse>

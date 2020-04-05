@@ -11,7 +11,7 @@ import {
 import { FaRoute, FaWindowRestore } from 'react-icons/fa'
 const Side = Styled('ul')`
 flex-direction: column!important;
-    background-color: #4F8B4C;
+    background-color: #42A845 !important;
     height: 80vh;
     border-radius: 0px 8px 8px 0px;
 
