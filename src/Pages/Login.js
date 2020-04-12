@@ -16,6 +16,8 @@ import Button from "../Components/Button";
 import axios from "axios";
 import config from "../utils/config";
 import Loading from "../Components/Loading";
+import { connect } from 'react-redux';
+import { loginAdmin } from '../Redux/Actions/Auth'
 
 class FormLogin extends Component {
   constructor(props) {
@@ -90,8 +92,9 @@ class FormLogin extends Component {
       this.setState({ showModal: false });
     }
   };
-
-  componentDidMount() { }
+  componentDidMount() {
+    this.props.loginAdmin()
+  }
   render() {
     const { isLoading } = this.state;
     return (
@@ -143,5 +146,10 @@ class FormLogin extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  }
+}
 
-export default FormLogin;
+export default connect(mapStateToProps, { loginAdmin })(FormLogin)

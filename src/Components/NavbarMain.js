@@ -90,7 +90,7 @@ export default class Navbar extends Component {
                   <IoMdContact color='#fff' size='30px' title='My Profil' />
                 </NavBarOne>
                 <NavBarOne>
-                  <Link to={'/busses'}>
+                  <Link to={'/dashboard'}>
                     <IoMdLogOut
                       color='#fff'
                       size='30px'

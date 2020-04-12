@@ -15,6 +15,7 @@ import TableCreateRoutes from './Pages/routes/CreateRoutes'
 import TableCreateSchedules from './Pages/schedules/CreateSchedules'
 import TableUpdateSchedules from './Pages/schedules/UpdateSchedules'
 import TableUpdateRoutes from './Pages/routes/UpdateRoutes'
+import NotFound from './Components/NotFound'
 import MyProfil from './Pages/MyProfile/Profil'
 
 class App extends Component {
@@ -109,6 +110,9 @@ class App extends Component {
                 path='/biodatauser'
                 exact
                 render={props => <TableBiodataUser {...props} />}
+              />
+              <Route
+                render={props => <NotFound />}
               />
             </Switch>
           </div>

@@ -99,3 +99,22 @@ export const movePageBusses = (page) => async dispatch => {
     console.log(error)
   }
 }
+
+// export const movePageBusses = async (page) => {
+//   return async dispatch => {
+//     try {
+//       const query = `busses?page=${page}`
+//       console.log(query)
+//       const res = await axios.get(config.APP_BACKEND.concat(query));
+//       dispatch({
+//         type: 'MOVE_PAGE_BUSSES',
+//         payload: {
+//           pageInfo: res.data.pageInfo,
+//           data: res.data.data
+//         }
+//       })
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   }
+// }

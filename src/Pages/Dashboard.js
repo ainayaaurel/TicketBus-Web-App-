@@ -115,7 +115,7 @@ class Dashboard extends Component {
             </Row>
           </Container>
           <Container>
-            <Row>
+            {/* <Row>
               <Col md={12}>
                 <div>
                   <li className='nav-item'>
@@ -128,7 +128,7 @@ class Dashboard extends Component {
                   </li>
                 </div>
               </Col>
-            </Row>
+            </Row> */}
           </Container>
         </Row>
       </>
