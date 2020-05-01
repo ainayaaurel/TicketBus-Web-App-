@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
-import { getBus, searchDataBusses, movePageBusses } from '../../Redux/Actions/Busses'
+import {
+  getBus,
+  searchDataBusses,
+  movePageBusses,
+} from '../../Redux/Actions/Busses'
 import {
   Table,
   Row,
@@ -21,15 +25,9 @@ import NavbarMain from '../../Components/NavbarMain'
 import Styled from 'styled-components'
 import Sidebar from '../../Components/Sidebar'
 import Pagination from '../../Components/Paginations'
-import {
-  FaSearch, FaTrashAlt
-} from 'react-icons/fa'
-import {
-  FiEdit
-} from 'react-icons/fi'
-import {
-  MdPlaylistAdd
-} from 'react-icons/md'
+import { FaSearch, FaTrashAlt } from 'react-icons/fa'
+import { FiEdit } from 'react-icons/fi'
+import { MdPlaylistAdd } from 'react-icons/md'
 
 const Bar = Styled('div')`
 position: absolute;
@@ -55,7 +53,7 @@ class Busses extends Component {
         totalData: 0,
         totalPage: 0,
         nextLink: null,
-        prevLink: null
+        prevLink: null,
       },
       currentPage: 1,
       showModal: false,
@@ -65,15 +63,15 @@ class Busses extends Component {
     }
     this.searchBus = (e) => {
       this.setState({
-        name: e.currentTarget.value
+        name: e.currentTarget.value,
       })
     }
     this.ktikaDiKlik = (e) => {
       this.props.searchDataBusses(this.state.name)
     }
-    this.onPageChanged = data => {
+    this.onPageChanged = (data) => {
       const { currentPage, totalPages, pageLimit } = data
-      this.props.movePageBusses(currentPage)
+      // this.props.movePageBusses(currentPage)
       console.log(data)
     }
   }
@@ -107,10 +105,7 @@ class Busses extends Component {
                 </Form>
               </Col>
               <Col md={3}>
-                <BtnSearch
-                  className='blue'
-                  onClick={this.ktikaDiKlik}
-                >
+                <BtnSearch className='blue' onClick={this.ktikaDiKlik}>
                   <FaSearch />
                 </BtnSearch>
               </Col>
@@ -124,7 +119,8 @@ class Busses extends Component {
                     color='black'
                     size='30px'
                     title='CREATE BUS'
-                    position='center' />
+                    position='center'
+                  />
                 </Link>
               </Col>
             </Row>
@@ -154,41 +150,47 @@ class Busses extends Component {
                         <td class='text-center'>
                           <Link to={`busses/edit/${v.id}`}>
                             <FiEdit
-
                               color='black'
                               size='25px'
                               title='EDIT'
-                              position='center' />
+                              position='center'
+                            />
                           </Link>
                           <FaTrashAlt
-
                             color='black'
                             size='25px'
                             title='DELETE'
-                            position='center' />
+                            position='center'
+                          />
                         </td>
                       </tr>
                     ))}
                 </tbody>
               </Table>
             ) : (
-                <div>Data tidak tersedia</div>
-              )}
+              <div>Data tidak tersedia</div>
+            )}
 
             <Row>
               <Col md={12} className='text-right'>
-                Page {this.props.pageInfo && this.props.pageInfo.page}/{this.props.pageInfo && this.props.pageInfo.totalPage}{' '}
-                Total Data {this.props.pageInfo && this.props.pageInfo.totalData} Limit{' '}
-                {this.props.pageInfo && this.props.pageInfo.perPage}
+                Page {this.props.pageInfo && this.props.pageInfo.page}/
+                {this.props.pageInfo && this.props.pageInfo.totalPage} Total
+                Data {this.props.pageInfo && this.props.pageInfo.totalData}{' '}
+                Limit {this.props.pageInfo && this.props.pageInfo.perPage}
               </Col>
             </Row>
             <Row>
-              <Col md={12} style={{
-                display: 'flex',
-                justifyContent: 'center'
-              }}>
+              <Col
+                md={12}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
                 <Pagination
-                  totalRecords={this.props.pageInfo && this.props.pageInfo.totalData}
+                  totalRecords={
+                    this.props.pageInfo && this.props.pageInfo.totalData
+                  }
                   pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
                   pageNeighbours={0}
                   onPageChanged={this.onPageChanged}
@@ -212,9 +214,12 @@ class Busses extends Component {
 const mapStateToProps = (state) => {
   return {
     busses: state.busses.busses,
-    pageInfo: state.busses.pageInfo
+    pageInfo: state.busses.pageInfo,
   }
 }
 
-
-export default connect(mapStateToProps, { getBus, searchDataBusses, movePageBusses })(Busses)
+export default connect(mapStateToProps, {
+  getBus,
+  searchDataBusses,
+  movePageBusses,
+})(Busses)

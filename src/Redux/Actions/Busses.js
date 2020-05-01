@@ -1,30 +1,28 @@
-
 import axios from 'axios'
 import config from '../../utils/config'
-axios.defaults.headers.common[
-  'Authorization'
-] = `Bearer ${localStorage.getItem('token_admin')}`
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
+  'token_admin'
+)}`
 
-export const getBus = () => async dispatch => {
+export const getBus = () => async (dispatch) => {
   try {
-    const res = await axios.get(config.APP_BACKEND.concat('busses'));
+    const res = await axios.get(config.APP_BACKEND.concat('busses?limit=10'))
     console.log('asdasdsad', res)
     dispatch({
       type: 'GET_BUS',
       payload: {
         pageInfo: res.data.pageInfo,
-        data: res.data.data
-      }
-
+        data: res.data.data,
+      },
     })
   } catch (error) {
     console.log(error)
   }
 }
 
-export const postBus = (create) => async dispatch => {
+export const postBus = (create) => async (dispatch) => {
   try {
-    const res = await axios.post(config.APP_BACKEND.concat('busses'), create);
+    const res = await axios.post(config.APP_BACKEND.concat('busses'), create)
     if (res) {
       alert('SUCCES CREATE')
     } else {
@@ -32,7 +30,7 @@ export const postBus = (create) => async dispatch => {
     }
     dispatch({
       type: 'POST_BUS',
-      payload: res.data
+      payload: res.data,
     })
     console.log('postbus', res)
   } catch (error) {
@@ -40,9 +38,12 @@ export const postBus = (create) => async dispatch => {
   }
 }
 
-export const updateBus = (id, data) => async dispatch => {
+export const updateBus = (id, data) => async (dispatch) => {
   try {
-    const res = await axios.patch(config.APP_BACKEND.concat(`busses/${id}`), data);
+    const res = await axios.patch(
+      config.APP_BACKEND.concat(`busses/${id}`),
+      data
+    )
     if (res) {
       alert('SUCCES EDIT')
     } else {
@@ -50,50 +51,50 @@ export const updateBus = (id, data) => async dispatch => {
     }
     dispatch({
       type: 'UPDATE_BUS',
-      payload: res.data.data
+      payload: res.data.data,
     })
   } catch (error) {
     console.log(error)
   }
 }
 
-export const getBusById = (id) => async dispatch => {
+export const getBusById = (id) => async (dispatch) => {
   try {
-    const res = await axios.get(config.APP_BACKEND.concat(`busses/${id}`));
+    const res = await axios.get(config.APP_BACKEND.concat(`busses/${id}`))
     dispatch({
       type: 'GET_BUS_BY_ID',
-      payload: res.data.data
+      payload: res.data.data,
     })
   } catch (error) {
     console.log(error)
   }
 }
 
-export const searchDataBusses = (name) => async dispatch => {
+export const searchDataBusses = (name) => async (dispatch) => {
   try {
     const query = `busses?search[value]=${name}`
     console.log(query)
-    const res = await axios.get(config.APP_BACKEND.concat(query));
+    const res = await axios.get(config.APP_BACKEND.concat(query))
     dispatch({
       type: 'SEARCH_DATA_BUSSES',
-      payload: res.data.data
+      payload: res.data.data,
     })
   } catch (error) {
     console.log(error)
   }
 }
 
-export const movePageBusses = (page) => async dispatch => {
+export const movePageBusses = (page) => async (dispatch) => {
   try {
     const query = `busses?page=${page}`
     console.log(query)
-    const res = await axios.get(config.APP_BACKEND.concat(query));
+    const res = await axios.get(config.APP_BACKEND.concat(query))
     dispatch({
       type: 'MOVE_PAGE_BUSSES',
       payload: {
         pageInfo: res.data.pageInfo,
-        data: res.data.data
-      }
+        data: res.data.data,
+      },
     })
   } catch (error) {
     console.log(error)

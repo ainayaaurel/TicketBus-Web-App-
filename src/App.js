@@ -17,6 +17,7 @@ import TableUpdateSchedules from './Pages/schedules/UpdateSchedules'
 import TableUpdateRoutes from './Pages/routes/UpdateRoutes'
 import NotFound from './Components/NotFound'
 import MyProfil from './Pages/MyProfile/Profil'
+import ProtectedRoute from './Components/ProtectedRoute'
 
 class App extends Component {
   render() {
@@ -26,9 +27,9 @@ class App extends Component {
           <div className='content'>
             <Switch>
               <Route
-                path='/login'
+                path='/'
                 exact
-                render={props => <FormLogin {...props} />}
+                render={(props) => <FormLogin {...props} />}
               />
               {/* <Route
                 path='/logout'
@@ -38,82 +39,84 @@ class App extends Component {
               <Route
                 path='/myprofile'
                 exact
-                render={props => <MyProfil {...props} />}
+                render={(props) => <MyProfil {...props} />}
               />
-              <Route
-                path='/dashboard'
+              <ProtectedRoute path='/dashboard' exact component={Dashboard} />
+
+              <ProtectedRoute path='/busses' exact component={TableBus} />
+              <ProtectedRoute
+                path='/busses/edit/:id'
                 exact
-                render={props => <Dashboard {...props} />}
+                component={TabelUpdateBus}
+              />
+              <ProtectedRoute
+                path='/busses/create/'
+                exact
+                component={TabelCreateBus}
+              />
+              <ProtectedRoute path='/agents' exact component={TableAgents} />
+              <ProtectedRoute
+                path='/agents/create/'
+                exact
+                component={TabelCreateAgents}
+              />
+              <ProtectedRoute
+                path='/busses/edit/:id'
+                exact
+                component={TabelUpdateBus}
+              />
+              <ProtectedRoute
+                path='/busses/edit/:id'
+                exact
+                component={TabelUpdateBus}
+              />
+              <ProtectedRoute
+                path='/busses/edit/:id'
+                exact
+                component={TabelUpdateBus}
               />
 
               <Route
-                path='/busses'
-                exact
-                render={props => <TableBus {...props} />}
-              />
-              <Route
-                path='/busses/edit/:id'
-                exact
-                render={props => <TabelUpdateBus {...props} />}
-              />
-              <Route
-                path='/busses/create/'
-                exact
-                render={props => <TabelCreateBus {...props} />}
-              />
-              <Route
-                path='/agents'
-                exact
-                render={props => <TableAgents {...props} />}
-              />
-              <Route
-                path='/agents/create/'
-                exact
-                render={props => <TabelCreateAgents {...props} />}
-              />
-              <Route
                 path='/agents/edit/:id'
                 exact
-                render={props => <TableUpdateAgents {...props} />}
+                render={(props) => <TableUpdateAgents {...props} />}
               />
               <Route
                 path='/routes'
                 exact
-                render={props => <TableRoutes {...props} />}
+                render={(props) => <TableRoutes {...props} />}
               />
               <Route
                 path='/routes/create/'
                 exact
-                render={props => <TableCreateRoutes {...props} />}
+                render={(props) => <TableCreateRoutes {...props} />}
               />
               <Route
                 path='/routes/edit/:id/'
                 exact
-                render={props => <TableUpdateRoutes {...props} />}
+                render={(props) => <TableUpdateRoutes {...props} />}
               />
               <Route
                 path='/schedules'
                 exact
-                render={props => <TableSchedules {...props} />}
+                render={(props) => <TableSchedules {...props} />}
               />
               <Route
                 path='/schedules/create/'
                 exact
-                render={props => <TableCreateSchedules {...props} />}
+                render={(props) => <TableCreateSchedules {...props} />}
               />
               <Route
                 path='/schedules/edit/:id/'
                 exact
-                render={props => <TableUpdateSchedules {...props} />}
+                render={(props) => <TableUpdateSchedules {...props} />}
               />
               <Route
                 path='/biodatauser'
                 exact
-                render={props => <TableBiodataUser {...props} />}
+                render={(props) => <TableBiodataUser {...props} />}
               />
-              <Route
-                render={props => <NotFound />}
-              />
+              <Route render={(props) => <NotFound />} />
             </Switch>
           </div>
         </Router>
