@@ -24,7 +24,7 @@ export const postBus = (create) => async (dispatch) => {
   try {
     const res = await axios.post(config.APP_BACKEND.concat('busses'), create)
     if (res) {
-      alert('SUCCES CREATE')
+      alert('SUCCESS CREATE')
     } else {
       alert('FAILED TO CREATE')
     }

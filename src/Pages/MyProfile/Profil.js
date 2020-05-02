@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
   Table,
@@ -91,7 +92,9 @@ class MyProfil extends Component {
                           new line.
                         </FormText>
                       </FormGroup>
-                      <Button>Edit</Button>
+                      <Link to={`/myprofile/edit/${this.props.myprofile.id}`}>
+                        <Button>Edit</Button>
+                      </Link>
                     </Form>
                   </CardBody>
                 </Card>

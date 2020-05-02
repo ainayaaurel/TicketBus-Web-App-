@@ -16,7 +16,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from 'reactstrap'
 
 import NavbarMain from '../../Components/NavbarMain'
@@ -27,66 +27,44 @@ class UpdateAgents extends Component {
     this.state = {
       id: 0,
       data: {},
+      name_agents: '',
       isLoading: false,
       showModal: false,
-      modalMessage: ''
+      modalMessage: '',
     }
-  }
-  async componentDidMount() {
-    this.props.getAgentsById(this.props.match.params.id)
-    setTimeout(() => {
-      this.setState({
-        name: this.props.routes.name,
-        class: this.props.routes && this.props.routes.class,
-        sheets: this.props.routes && this.props.routes.sheets,
-        price: this.props.routes && this.props.routes.price
-
-      })
-    }, 100);
-    // axios.defaults.headers.common[
-    //   'Authorization'
-    // ] = `Bearer ${localStorage.getItem('token_admin')}`
-    // const results = await axios.get(
-    //   config.APP_BACKEND.concat(`agents/${this.props.match.params.id}`)
-    // )
-    // const { data } = results.data
-    // this.setState({ id: this.props.match.params.id, data })
-    // this.changeData = (e, form) => {
-    //   const { data } = this.state
-    //   data[form] = e.target.value
-    //   this.setState({ data })
-    // }
-    this.submitData = async e => {
+    this.submitData = async (e) => {
       e.preventDefault()
       this.setState({ isLoading: true })
       console.log(this.state.data)
-      const submit = await axios.patch(
-        config.APP_BACKEND.concat(`agents/${this.props.match.params.id}`)
-      )
-      console.log('data', submit)
-      if (submit.data.success) {
-        this.setState({
-          isLoading: false,
-          showModal: true,
-          modalMessage: submit.data.msg
-        })
-      } else {
-        this.setState({ modalMessage: submit.data.msg })
+      const data = {
+        name: this.state.name_agents,
       }
-    }
-    this.dismissModal = () => {
-      this.setState({ showModal: false })
+      // name ini diambil dri nama postman
+      this.props.updateAgents(this.props.match.params.id, data)
       this.props.history.push('/agents')
     }
+    this.onChange = (e) => {
+      this.setState({
+        name_agents: e.currentTarget.value,
+      })
+    }
   }
+  componentDidMount() {
+    this.props.getAgentsById(this.props.match.params.id)
+    setTimeout(() => {
+      this.setState({
+        name_agents: this.props.data && this.props.data.name_agents,
+      })
+    }, 1000)
+  }
+
   render() {
-    const { id, isLoading } = this.state
-    const { name } = this.state.data
+    // const { id, isLoading } = this.state
     return (
       <>
         <NavbarMain />
         <Container>
-          {isLoading && <>Loading...</>}
+          {/* {isLoading && <>Loading...</>}
           {
             <>
               <Modal isOpen={this.state.showModal}>
@@ -98,27 +76,27 @@ class UpdateAgents extends Component {
               </Modal>
             </>
           }
-          {id && !isLoading && (
-            <>
-              <Row>
-                <Col md={12}>
-                  <Form>
-                    <FormGroup>
-                      <Label>Name Agents</Label>
-                      <Input
-                        type='text'
-                        value={name}
-                        onChange={e => this.changeData(e, 'name_agents')}
-                      />
-                    </FormGroup>
-                    <Button onClick={e => this.submitData(e)} color='success'>
-                      Save
-                    </Button>
-                  </Form>
-                </Col>
-              </Row>
-            </>
-          )}
+          {id && ( */}
+          <>
+            <Row>
+              <Col md={12}>
+                <Form>
+                  <FormGroup>
+                    <Label>Name Agents</Label>
+                    <Input
+                      type='text'
+                      value={this.state.name_agents}
+                      onChange={(e) => this.onChange(e, 'name_agents')}
+                    />
+                  </FormGroup>
+                  <Button onClick={(e) => this.submitData(e)} color='success'>
+                    Save
+                  </Button>
+                </Form>
+              </Col>
+            </Row>
+          </>
+          {/* )} */}
         </Container>
       </>
     )
@@ -126,7 +104,9 @@ class UpdateAgents extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    agents: state.agents.agents
+    data: state.agents.singleData,
   }
 }
-export default connect(mapStateToProps, { getAgentsById, updateAgents })(UpdateAgents)
+export default connect(mapStateToProps, { getAgentsById, updateAgents })(
+  UpdateAgents
+)

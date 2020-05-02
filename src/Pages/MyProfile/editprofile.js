@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-class MyProfil extends Component {
+class EditProfile extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,22 +15,22 @@ class MyProfil extends Component {
     }
   }
 
-  componentWillReceiveProps({ products }) {
-    this.onSetValue(products)
+  // componentWillReceiveProps({ products }) {
+  //   this.onSetValue(products)
     //    console.log(products)
   }
 
-  onSetValue = (profil) => {
-    this.setState({
-      name: products.name,
-      desc: products.description,
-      image: products.image,
-      price: products.price,
-      category: products.category,
-      stock: products.stock
-    }
-    )
-  }
+  // onSetValue = (profil) => {
+  //   this.setState({
+  //     name: products.name,
+  //     desc: products.description,
+  //     image: products.image,
+  //     price: products.price,
+  //     category: products.category,
+  //     stock: products.stock
+  //   }
+  //   )
+  // }
   onChangeValue = (event) => {
     this.setState({
       [event.target.name]: event.target.value
@@ -60,7 +60,7 @@ class MyProfil extends Component {
 
   render() {
     // console.log(this.state.image)
-    const { show, onHide, products } = this.props
+    const { show, onHide} = this.props
     return (
       <Modal show={show} onHide={onHide}>
         <Modal.Header closeButton>
@@ -107,4 +107,4 @@ class MyProfil extends Component {
   }
 }
 
-export default MyProfil 
+export default EditProfile

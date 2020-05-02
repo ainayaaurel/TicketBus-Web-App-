@@ -10,7 +10,6 @@ import Styles from 'styled-components'
 import Sidebar from '../Components/Sidebar'
 import { FaWindowRestore } from 'react-icons/fa'
 
-
 // const Accent = Styles('div')`
 //   background
 //   background-color
@@ -66,6 +65,12 @@ const Total = Styles('div')`
  font-size: 50px;
 `
 class Dashboard extends Component {
+  componentDidMount() {
+    this.props.getBus()
+    this.props.getAgents()
+    this.props.getRoutes()
+    this.props.getSchedules()
+  }
 
   render() {
     return (
@@ -91,25 +96,36 @@ class Dashboard extends Component {
               <Col md={3}>
                 <OriCard>
                   <span> Total Bus </span>
-                  <Total>{this.props.pageInfo && this.props.pageInfo.totalData}</Total>
+                  <Total>
+                    {this.props.pageInfo && this.props.pageInfo.totalData}
+                  </Total>
                 </OriCard>
               </Col>
               <Col md={3}>
                 <OriCard>
                   <span> Total Agents </span>
-                  <Total>{this.props.pageInfoAgents && this.props.pageInfoAgents.totalData} </Total>
+                  <Total>
+                    {this.props.pageInfoAgents &&
+                      this.props.pageInfoAgents.totalData}{' '}
+                  </Total>
                 </OriCard>
               </Col>
               <Col md={3}>
                 <OriCard>
                   <span> Total Routes </span>
-                  <Total>{this.props.pageInfoRoutes && this.props.pageInfoRoutes.totalData}</Total>
+                  <Total>
+                    {this.props.pageInfoRoutes &&
+                      this.props.pageInfoRoutes.totalData}
+                  </Total>
                 </OriCard>
               </Col>
               <Col md={3}>
                 <OriCard>
                   <span> Total Schedules </span>
-                  <Total>{this.props.pageInfoSchedules && this.props.pageInfoSchedules.totalData}</Total>
+                  <Total>
+                    {this.props.pageInfoSchedules &&
+                      this.props.pageInfoSchedules.totalData}
+                  </Total>
                 </OriCard>
               </Col>
             </Row>
@@ -144,14 +160,19 @@ const mapStateToProps = (state) => {
     routes: state.routes.routes,
     pageInfoRoutes: state.routes.pageInfo,
     schedules: state.schedules.schedules,
-    pageInfoSchedules: state.schedules.pageInfo
+    pageInfoSchedules: state.schedules.pageInfo,
   }
 }
 
-export default connect(mapStateToProps, { getBus, getAgents, getRoutes, getSchedules })(Dashboard)
+export default connect(mapStateToProps, {
+  getBus,
+  getAgents,
+  getRoutes,
+  getSchedules,
+})(Dashboard)
 
-
-
-{/* <div className='card-title'>Welcome to SHUTTLEBUS-ID!</div>
+{
+  /* <div className='card-title'>Welcome to SHUTTLEBUS-ID!</div>
               <span>Mau Kemana?</span>
-              <span>Yuk, pesan Bus agar Perjalanmu terasa lebih nyaman</span> */}
+              <span>Yuk, pesan Bus agar Perjalanmu terasa lebih nyaman</span> */
+}

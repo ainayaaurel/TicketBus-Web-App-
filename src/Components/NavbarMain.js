@@ -19,7 +19,7 @@ import {
   IoMdSearch,
   IoMdContact,
   IoMdHome,
-  IoMdLogOut
+  IoMdLogOut,
 } from 'react-icons/io'
 
 const Profil = Styles('div')`
@@ -87,7 +87,9 @@ export default class Navbar extends Component {
                   <IoIosMail color='#fff' size='30px' title='Message' />
                 </NavBarOne>
                 <NavBarOne>
-                  <IoMdContact color='#fff' size='30px' title='My Profil' />
+                  <Link to={'/myprofile'}>
+                    <IoMdContact color='#fff' size='30px' title='My Profile' />
+                  </Link>
                 </NavBarOne>
                 <NavBarOne>
                   <Link to={'/dashboard'}>

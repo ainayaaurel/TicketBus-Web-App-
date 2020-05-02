@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getRoutes, searchDataRoutes, movePageRoutes } from '../../Redux/Actions/Routes'
+import {
+  getRoutes,
+  searchDataRoutes,
+  movePageRoutes,
+} from '../../Redux/Actions/Routes'
 import {
   Table,
   Row,
@@ -20,15 +24,9 @@ import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
 import Pagination from '../../Components/Paginations'
 import Styled from 'styled-components'
-import {
-  FaSearch, FaTrashAlt
-} from 'react-icons/fa'
-import {
-  FiEdit
-} from 'react-icons/fi'
-import {
-  MdPlaylistAdd
-} from 'react-icons/md'
+import { FaSearch, FaTrashAlt } from 'react-icons/fa'
+import { FiEdit } from 'react-icons/fi'
+import { MdPlaylistAdd } from 'react-icons/md'
 
 const Bar = Styled('div')`
 position: absolute;
@@ -56,23 +54,23 @@ class Routes extends Component {
         totalData: 0,
         totalPage: 0,
         nextLink: null,
-        prevLink: null
+        prevLink: null,
       },
       currentPage: 1,
       showModal: false,
       selectedId: 0,
       startFrom: 1,
-      departure_at: ''
+      departure_at: '',
     }
     this.searchRoutes = (e) => {
       this.setState({
-        departure_at: e.currentTarget.value
+        departure: e.currentTarget.value,
       })
     }
     this.ktikaDiKlik = (e) => {
-      this.props.searchDataRoutes(this.state.departure_at)
+      this.props.searchDataRoutes(this.state.departure)
     }
-    this.onPageChanged = data => {
+    this.onPageChanged = (data) => {
       const { currentPage, totalPages, pageLimit } = data
       this.props.movePageRoutes(currentPage)
       console.log(data)
@@ -81,7 +79,7 @@ class Routes extends Component {
   componentDidMount() {
     setTimeout(() => {
       this.props.getRoutes()
-    }, 1000);
+    }, 1000)
   }
   render() {
     console.log('data', this.state.routes)
@@ -108,20 +106,22 @@ class Routes extends Component {
                 </Form>
               </Col>
               <Col md={3}>
-                <BtnSearch className='blue'
-                  onClick={this.ktikaDiKlik}
-                >
+                <BtnSearch className='blue' onClick={this.ktikaDiKlik}>
                   <FaSearch />
                 </BtnSearch>
               </Col>
               <Col md={3}>
-                <Link className='btn' to={`routes/create`}
-                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}>
+                <Link
+                  className='btn'
+                  to={`routes/create`}
+                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}
+                >
                   <MdPlaylistAdd
                     color='black'
                     size='30px'
                     title='CREATE ROUTES'
-                    position='center' />
+                    position='center'
+                  />
                 </Link>
               </Col>
             </Row>
@@ -136,50 +136,57 @@ class Routes extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.routes && this.props.routes.length !== 0 &&
+                  {this.props.routes &&
+                    this.props.routes.length !== 0 &&
                     this.props.routes.map((v, i) => (
                       <tr key={this.props.routes[i].id}>
                         <td>{v.id}</td>
                         <td>{v.departure_at}</td>
                         <td>{v.arrival_at}</td>
                         <td>
-                          <Link
-                            to={`routes/edit/${v.id}`}
-                          >
+                          <Link to={`routes/edit/${v.id}`}>
                             <FiEdit
                               color='black'
                               size='25px'
                               title='EDIT'
-                              position='center' />
+                              position='center'
+                            />
                           </Link>
                           <FaTrashAlt
                             color='black'
                             size='25px'
                             title='DELETE'
-                            position='center' />
+                            position='center'
+                          />
                         </td>
                       </tr>
                     ))}
                 </tbody>
               </Table>
             ) : (
-                <div>Data Tidak Tersedia</div>
-              )}
+              <div>Data Tidak Tersedia</div>
+            )}
 
             <Row>
               <Col md={12} className='text-right'>
-                Page {this.props.pageInfo && this.props.pageInfo.page}/{this.props.pageInfo && this.props.pageInfo.totalPage}{' '}
-                Total Data {this.props.pageInfo && this.props.pageInfo.totalData} Limit{' '}
-                {this.props.pageInfo && this.props.pageInfo.perPage}
+                Page {this.props.pageInfo && this.props.pageInfo.page}/
+                {this.props.pageInfo && this.props.pageInfo.totalPage} Total
+                Data {this.props.pageInfo && this.props.pageInfo.totalData}{' '}
+                Limit {this.props.pageInfo && this.props.pageInfo.perPage}
               </Col>
             </Row>
             <Row>
-              <Col md={12} style={{
-                display: 'flex',
-                justifyContent: 'center'
-              }}>
+              <Col
+                md={12}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
                 <Pagination
-                  totalRecords={this.props.pageInfo && this.props.pageInfo.totalData}
+                  totalRecords={
+                    this.props.pageInfo && this.props.pageInfo.totalData
+                  }
                   pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
                   pageNeighbours={0}
                   onPageChanged={this.onPageChanged}
@@ -211,7 +218,11 @@ class Routes extends Component {
 const mapStateToProps = (state) => {
   return {
     routes: state.routes.routes,
-    pageInfo: state.routes.pageInfo
+    pageInfo: state.routes.pageInfo,
   }
 }
-export default connect(mapStateToProps, { getRoutes, searchDataRoutes, movePageRoutes })(Routes)
+export default connect(mapStateToProps, {
+  getRoutes,
+  searchDataRoutes,
+  movePageRoutes,
+})(Routes)

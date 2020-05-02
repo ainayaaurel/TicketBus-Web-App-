@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import {Link} from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import {
   Form,
   FormGroup,
@@ -93,9 +93,9 @@ class FormLogin extends Component {
       password: e.currentTarget.value,
     })
   }
-  modalOkKlik = (LoginGak) => {
+  modalOkKlik = (isLogin) => {
     console.log('sssss')
-    if (LoginGak) {
+    if (isLogin) {
       this.props.history.push('/dashboard') //untuk pindah halaman ke dashboard
     } else {
       this.setState({ showModal: false })
@@ -159,7 +159,7 @@ class FormLogin extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth,
+    auth: state.auth.isLogin,
   }
 }
 

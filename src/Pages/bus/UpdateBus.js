@@ -18,7 +18,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from 'reactstrap'
 
 class UpdateBus extends Component {
@@ -33,10 +33,10 @@ class UpdateBus extends Component {
       agents: '',
       isLoading: false,
       showModal: false,
-      modalMessage: ''
+      modalMessage: '',
     }
   }
-  // guard untuk kalo data yang sudah terisi 
+  // guard untuk kalo data yang sudah terisi
   componentDidMount() {
     console.log('asjdsajdbadsadsadbvshsvd')
     this.props.getBusById(this.props.match.params.id)
@@ -45,10 +45,9 @@ class UpdateBus extends Component {
         name: this.props.busses && this.props.busses.name,
         class: this.props.busses && this.props.busses.class,
         sheets: this.props.busses && this.props.busses.sheets,
-        price: this.props.busses && this.props.busses.price
-
+        price: this.props.busses && this.props.busses.price,
       })
-    }, 100);
+    }, 100)
     // axios.defaults.headers.common[
     //   'Authorization'
     // ] = `Bearer ${localStorage.getItem('token_admin')}`
@@ -62,7 +61,7 @@ class UpdateBus extends Component {
     //   data[form] = e.target.value
     //   this.setState({ data })
     // }
-    this.submitData = async e => {
+    this.submitData = async (e) => {
       e.preventDefault()
       this.setState({ isLoading: true })
       console.log(this.state.data)
@@ -70,12 +69,11 @@ class UpdateBus extends Component {
         name: this.state.name,
         classbus: this.state.class,
         sheets: this.state.sheets,
-        price: this.state.price
+        price: this.state.price,
       }
       this.props.updateBus(this.props.match.params.id, data)
       console.log('update', updateBus)
       this.props.history.push('/busses')
-
       // if (this.props.updateBusses) {
       //   console.log('props update', this.props.updateBusses)
       //   this.setState({
@@ -87,29 +85,29 @@ class UpdateBus extends Component {
       //   // this.setState({ modalMessage: submit.data.msg })
       // }
     }
-    this.ketikBus = e => {
+    this.ketikBus = (e) => {
       this.setState({
-        name: e.currentTarget.value
+        name: e.currentTarget.value,
       })
     }
-    this.ketikClassBus = e => {
+    this.ketikClassBus = (e) => {
       this.setState({
-        class: e.currentTarget.value
+        class: e.currentTarget.value,
       })
     }
-    this.ketikSheats = e => {
+    this.ketikSheats = (e) => {
       this.setState({
-        sheets: e.currentTarget.value
+        sheets: e.currentTarget.value,
       })
     }
-    this.ketikPrice = e => {
+    this.ketikPrice = (e) => {
       this.setState({
-        price: e.currentTarget.value
+        price: e.currentTarget.value,
       })
     }
-    this.ketikAgentsId = e => {
+    this.ketikAgentsId = (e) => {
       this.setState({
-        agentsId: e.currentTarget.value
+        agentsId: e.currentTarget.value,
       })
     }
     this.dismissModal = () => {
@@ -146,7 +144,7 @@ class UpdateBus extends Component {
                       <Input
                         type='text'
                         value={this.state.name}
-                        onChange={e => this.ketikBus(e, 'name')}
+                        onChange={(e) => this.ketikBus(e, 'name')}
                       />
                     </FormGroup>
                     <FormGroup>
@@ -154,7 +152,7 @@ class UpdateBus extends Component {
                       <Input
                         type='text'
                         value={this.state.class}
-                        onChange={e => this.ketikClassBus(e, 'class')}
+                        onChange={(e) => this.ketikClassBus(e, 'class')}
                       />
                     </FormGroup>
                     <FormGroup>
@@ -162,7 +160,7 @@ class UpdateBus extends Component {
                       <Input
                         type='text'
                         value={this.state.sheets}
-                        onChange={e => this.ketikSheats(e, 'sheets')}
+                        onChange={(e) => this.ketikSheats(e, 'sheets')}
                       />
                     </FormGroup>
                     <FormGroup>
@@ -170,14 +168,14 @@ class UpdateBus extends Component {
                       <Input
                         type='text'
                         value={this.state.price}
-                        onChange={e => this.ketikPrice(e, 'price')}
+                        onChange={(e) => this.ketikPrice(e, 'price')}
                       />
                     </FormGroup>
                     {/* <FormGroup>
                     <Label>Agents</Label>
                     <Input type='text' value={name_agents} onChange={(e) => this.changeData(e, 'name_agents')} />
                   </FormGroup> */}
-                    <Button onClick={e => this.submitData(e)} color='success'>
+                    <Button onClick={(e) => this.submitData(e)} color='success'>
                       Save
                     </Button>
                   </Form>
@@ -193,7 +191,7 @@ class UpdateBus extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    busses: state.busses.busses
+    busses: state.busses.busses,
   }
 }
 
