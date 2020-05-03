@@ -19,7 +19,7 @@ import {
 import Navbar from '../../Components/Navbar'
 import Styled from 'styled-components'
 import { connect } from 'react-redux'
-import { getMyProfile, updateMyProfile } from '../../Redux/Actions/MyProfil'
+import { getMyProfile, updatePicture } from '../../Redux/Actions/MyProfil'
 import config from '../../utils/config'
 
 const Tabs = Styled('div')`
@@ -41,19 +41,27 @@ class MyProfil extends Component {
       phone: '',
       email: '',
       balance: '',
+      previewImage: '',
     }
   }
   onChange = (e) => {
+    console.log(e.target.files[0], 'potototptotptott')
     this.setState({
+      previewImage: URL.createObjectURL(e.target.files[0]),
       picture: e.target.files[0], //khusus files
     })
   }
   onSubmit = (e) => {
     e.preventDefault()
-    this.props.updateMyProfile(this.state.picture)
+    this.props.updatePicture(this.state.picture)
   }
   componentDidMount() {
     this.props.getMyProfile()
+    this.setState({
+      previewImage: config.APP_BACKEND.concat(
+        `files/${this.props.myprofile && this.props.myprofile.picture}`
+      ),
+    })
   }
 
   render() {
@@ -68,11 +76,7 @@ class MyProfil extends Component {
                   <CardImg
                     top
                     width='100%'
-                    src={config.APP_BACKEND.concat(
-                      `files/${
-                        this.props.myprofile && this.props.myprofile.picture
-                      }`
-                    )}
+                    src={this.state.previewImage}
                     alt='Card image cap'
                   />
                   <CardBody>
@@ -92,9 +96,7 @@ class MyProfil extends Component {
                           new line.
                         </FormText>
                       </FormGroup>
-                      <Link to={`/myprofile/edit/${this.props.myprofile.id}`}>
-                        <Button>Edit</Button>
-                      </Link>
+                      <Button>Edit</Button>
                     </Form>
                   </CardBody>
                 </Card>
@@ -112,7 +114,6 @@ class MyProfil extends Component {
                       <th>Name</th>
                       <th>Gender</th>
                       <th>Address</th>
-                      <th>Picture</th>
                       <th>Phone</th>
                       <th>Email</th>
                       <th>Balance</th>
@@ -128,9 +129,6 @@ class MyProfil extends Component {
                       </td>
                       <td>
                         {this.props.myprofile && this.props.myprofile.address}
-                      </td>
-                      <td>
-                        {this.props.myprofile && this.props.myprofile.picture}
                       </td>
                       <td>
                         {this.props.myprofile && this.props.myprofile.phone}
@@ -157,7 +155,7 @@ const mapStateToProps = (state) => {
     myprofile: state.myprofil.usersdetails,
   }
 }
-export default connect(mapStateToProps, { getMyProfile, updateMyProfile })(
+export default connect(mapStateToProps, { getMyProfile, updatePicture })(
   MyProfil
 )
 

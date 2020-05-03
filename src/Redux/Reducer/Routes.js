@@ -15,37 +15,40 @@ const routesReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         routes: action.payload.data,
-        pageInfo: action.payload.pageInfo
+        pageInfo: action.payload.pageInfo,
       }
-    } case 'POST_ROUTES': {
+    }
+    case 'POST_ROUTES': {
       return {
         ...state,
         isLoading: false,
-
       }
-    } case 'UPDATE_ROUTES': {
+    }
+    case 'UPDATE_ROUTES': {
       return {
         ...state,
         isLoading: false,
-        routes: action.payload
-
+        singleData: action.payload,
       }
-    } case 'GET_ROUTES_BY_ID': {
+    }
+    case 'GET_ROUTES_BY_ID': {
       return {
         ...state,
         isLoading: false,
-        singleData: action.payload
+        singleData: action.payload,
       }
-    } case 'SEARCH_DATA_ROUTES': {
+    }
+    case 'SEARCH_DATA_ROUTES': {
       return {
         ...state,
-        routes: action.payload
+        routes: action.payload,
       }
-    } case 'MOVE_PAGE_ROUTES': {
+    }
+    case 'MOVE_PAGE_ROUTES': {
       return {
         ...state,
         routes: action.payload.data,
-        pageInfo: action.payload.pageInfo
+        pageInfo: action.payload.pageInfo,
       }
     }
     default:

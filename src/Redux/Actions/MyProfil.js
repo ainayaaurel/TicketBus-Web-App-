@@ -1,35 +1,40 @@
 import axios from 'axios'
 import config from '../../utils/config'
-axios.defaults.headers.common[
-  'Authorization'
-] = `Bearer ${localStorage.getItem('token_admin')}`
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
+  'token_admin'
+)}`
 
-export const getMyProfile = () => async dispatch => {
+// buat update khusu data
+// update profile
+
+export const getMyProfile = () => async (dispatch) => {
   try {
-    const res = await axios.get(config.APP_BACKEND.concat(`userdetails/myprofile`));
+    const res = await axios.get(
+      config.APP_BACKEND.concat(`userdetails/myprofile`)
+    )
     dispatch({
       type: 'GET_MY_PROFILE',
-      payload: res.data.data
+      payload: res.data.data,
     })
-
   } catch (error) {
     console.log(error)
   }
 }
 
-export const updateMyProfile = (picture) => async dispatch => {
+export const updatePicture = (picture) => async (dispatch) => {
   try {
     const data = new FormData()
     data.append('picture', picture)
-    const res = await axios.patch(config.APP_BACKEND.concat(`userdetails/updatepicture/2`), data);
+    console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh', picture)
+    const res = await axios.put(
+      config.APP_BACKEND.concat(`userdetails/updatepicture`),
+      data
+    )
     dispatch({
-      type: 'UPDATE_MY_PROFILE',
-      payload: res.data.data
+      type: 'UPDATE_PICTURE',
+      payload: res.data,
     })
-
   } catch (error) {
     console.log(error)
   }
 }
-
-
