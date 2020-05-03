@@ -1,19 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Styled from 'styled-components'
-import {
-  IoIosPeople,
-  IoMdBus,
-  IoIosHome,
-  IoMdCalendar
-} from 'react-icons/io'
+import { IoIosPeople, IoMdBus, IoIosHome, IoMdCalendar } from 'react-icons/io'
 
 import { FaRoute, FaWindowRestore } from 'react-icons/fa'
 const Side = Styled('ul')`
 flex-direction: column!important;
     background-color: #42A845 !important;
-    height: 80vh;
-    border-radius: 0px 8px 8px 0px;
+    height: 90vh;
+    weight: 80vh;
+    border-radius: 0px 0px 0px 0px;
 
 `
 
@@ -72,7 +68,10 @@ class Sidebar extends Component {
           </Link>
         </li>
         <li className='nav-item'>
-          <Link style={{ marginTop: '90px', marginLeft: '20px' }} to='/biodatauser'>
+          <Link
+            style={{ marginTop: '90px', marginLeft: '20px' }}
+            to='/biodatauser'
+          >
             <IoIosPeople
               color='#fff'
               size='50px'

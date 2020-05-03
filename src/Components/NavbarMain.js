@@ -44,7 +44,7 @@ const Search = Styles(Input)`
     }
 `
 const NavTop = Styles(NavigationsBar)`
-background: #42A845 !important;
+background: #1F613A !important;
 height: 70px;
 color: rgb(22,114,232);
 box-shadow: 1px white;

@@ -19,6 +19,7 @@ import NotFound from './Components/NotFound'
 import MyProfil from './Pages/MyProfile/Profil'
 import EditProfile from './Pages/MyProfile/editprofile'
 import ProtectedRoute from './Components/ProtectedRoute'
+import HomeAuth from './Pages/HomeAuth'
 
 class App extends Component {
   render() {
@@ -28,16 +29,16 @@ class App extends Component {
           <div className='content'>
             <Switch>
               <Route
-                path='/login'
+                path='/sign-in'
                 exact
-                render={(props) => <FormLogin {...props} />}
+                render={(props) => <HomeAuth {...props} />}
               />
               {/* <Route
                 path='/logout'
                 exact
                 render={props => <FormLogin {...props} />}
               /> */}
-
+              <ProtectedRoute path='/sign-in' exact component={HomeAuth} />
               <ProtectedRoute path='/dashboard' exact component={Dashboard} />
               <ProtectedRoute path='/myprofile' exact component={MyProfil} />
               <ProtectedRoute
