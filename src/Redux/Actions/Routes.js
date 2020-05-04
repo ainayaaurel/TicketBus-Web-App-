@@ -21,6 +21,11 @@ export const getRoutes = () => async (dispatch) => {
 export const postRoutes = (create) => async (dispatch) => {
   try {
     const res = await axios.post(config.APP_BACKEND.concat('routes'), create)
+    if (res) {
+      alert('SUCCESS CREATE')
+    } else {
+      alert('FAILED TO CREATE')
+    }
     dispatch({
       type: 'POST_ROUTES',
       payload: res.data,
@@ -77,7 +82,7 @@ export const searchDataRoutes = (departure_at) => async (dispatch) => {
 
 export const movePageRoutes = (page) => async (dispatch) => {
   try {
-    const query = `routes?page=${page}`
+    const query = `routes?page=${page}&limit=10`
     console.log(query)
     const res = await axios.get(config.APP_BACKEND.concat(query))
     dispatch({

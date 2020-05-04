@@ -32,13 +32,14 @@ const Bar = Styled('div')`
 position: absolute;
 top: 100px;
 margin-left: 50px;
+margin-top: 30px;
 `
 const BtnSearch = Styled(Button)`
   width: 40px;
   height: 38px;
   border-radius: 5px;
   background: #F96E16;
-  margin-left: -40px;
+  margin-left: -70px;
 `
 class Agents extends Component {
   constructor(props) {
@@ -99,7 +100,7 @@ class Agents extends Component {
               <Col md={3}>
                 <Link
                   className='btn'
-                  to={`routes/create`}
+                  to={`agents/create`}
                   style={{ marginLeft: '100px', backgroundColor: '#42A845' }}
                 >
                   <MdPlaylistAdd

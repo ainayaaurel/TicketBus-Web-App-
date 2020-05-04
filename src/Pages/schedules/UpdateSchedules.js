@@ -4,7 +4,16 @@ import config from '../../utils/config'
 import Sidebar from '../../Components/Sidebar'
 import NavbarMain from '../../Components/NavbarMain'
 import { connect } from 'react-redux'
-import { getSchedulesById, updateSchedules } from '../../Redux/Actions/Schedules'
+import { getRoutes } from '../../Redux/Actions/Routes'
+import { getBus } from '../../Redux/Actions/Busses'
+import { getAgents } from '../../Redux/Actions/Agents'
+import {
+  getSchedulesById,
+  updateSchedules,
+} from '../../Redux/Actions/Schedules'
+import DatePicker from 'reactstrap-date-picker'
+import TimePicker from 'react-time-picker'
+import { FormText } from 'reactstrap'
 
 import {
   Container,
@@ -18,7 +27,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from 'reactstrap'
 
 class UpdateSchedules extends Component {
@@ -27,89 +36,94 @@ class UpdateSchedules extends Component {
     this.state = {
       id: 0,
       data: {},
+      routesId: '',
+      agentsId: '',
+      bussesId: '',
+      value: new Date().toISOString(),
+      formattedValue: '',
       isLoading: false,
       showModal: false,
-      modalMessage: ''
+      modalMessage: '',
     }
   }
   componentDidMount() {
-    console.log('getschedulesbyid')
     this.props.getSchedulesById(this.props.match.params.id)
     setTimeout(() => {
       this.setState({
         time: this.props.schedules && this.props.schedules.time,
         routesId: this.props.schedules && this.props.schedules.routes_id,
         agentsId: this.props.schedules && this.props.schedules.agents_id,
-        bussesId: this.props.schedules && this.props.schedules.busses_id
-
+        bussesId: this.props.schedules && this.props.schedules.busses_id,
       })
-    }, 100);
-    // axios.defaults.headers.common[
-    //   'Authorization'
-    // ] = `Bearer ${localStorage.getItem('token_admin')}`
-    // const results = await axios.get(
-    //   config.APP_BACKEND.concat(`schedules/${this.props.match.params.id}`)
-    // )
-    // const { data } = results.data
-    // this.setState({ id: this.props.match.params.id, data })
-    // this.changeData = (e, form) => {
-    //   const { data } = this.state
-    //   data[form] = e.target.value
-    //   this.setState({ data })
-    // }
-    this.submitData = async e => {
-      e.preventDefault()
-      this.setState({ isLoading: true })
-      console.log(this.state.data)
-      const data = {
-        time: this.state.data.time,
-        routesId: this.state.data.routes_id,
-        agentsId: this.state.data.agents_id,
-        bussesId: this.state.data.busses_id
-      }
-      this.props.updateSchedules(this.props.match.params.id, data)
-      this.props.history.push('/schedules')
-
-      // const submit = await axios.patch(
-      //   config.APP_BACKEND.concat(`schedules/${this.props.match.params.id}`),
-      //   data
-      // )
-      // console.log('datasadsadasa', this.state.data)
-      // if (submit.data.success) {
-      //   this.setState({
-      //     isLoading: false,
-      //     showModal: true,
-      //     modalMessage: submit.data.msg
-      //   })
-      // } else {
-      //   this.setState({ modalMessage: submit.data.msg })
-      // }
-    }
-    this.ketikTime = e => {
-      this.setState({
-        time: e.currentTarget.value
-      })
-    }
-    this.ketikRoutes = e => {
-      this.setState({
-        routesId: e.currentTarget.value
-      })
-    }
-    this.ketikAgents = (e) => {
-      this.setState({
-        agentsId: e.currentTarget.value
-      })
-    }
-    this.ketikBusses = (e) => {
-      this.setState({
-        bussesId: e.currentTarget.value
-      })
-    }
-    this.dismissModal = () => {
-      this.setState({ showModal: false })
-      this.props.history.push('/schedules')
-    }
+    }, 100)
+    this.props.getRoutes()
+    this.props.getBus()
+    this.props.getAgents()
   }
+
+  dismissModal = () => {
+    this.setState({ showModal: false })
+    this.props.history.push('/schedules')
+  }
+  onsubmitData = async (e) => {
+    e.preventDefault()
+    this.setState({ isLoading: true })
+    console.log(this.state.data)
+    const data = {
+      date: this.state.formattedValue,
+      time: this.state.time,
+      routesId: this.state.routesId,
+      bussesId: this.state.bussesId,
+      agentsId: this.state.agentsId,
+    }
+    this.props.updateSchedules(this.props.match.params.id, data)
+    this.props.history.push('/schedules')
+
+    // const submit = await axios.patch(
+    //   config.APP_BACKEND.concat(`schedules/${this.props.match.params.id}`),
+    //   data
+    // )
+    // console.log('datasadsadasa', this.state.data)
+    // if (submit.data.success) {
+    //   this.setState({
+    //     isLoading: false,
+    //     showModal: true,
+    //     modalMessage: submit.data.msg
+    //   })
+    // } else {
+    //   this.setState({ modalMessage: submit.data.msg })
+    // }
+  }
+  onChangeTime = (time) => this.setState({ time })
+
+  onChangeRoutesId = (e) => {
+    this.setState({
+      routesId: e.currentTarget.value,
+    })
+  }
+  onChangeBussesId = (e) => {
+    this.setState({
+      bussesId: e.currentTarget.value,
+    })
+  }
+  onChangeAgentsId = (e) => {
+    this.setState({
+      agentsId: e.currentTarget.value,
+    })
+  }
+  handleChange(value, formattedValue) {
+    this.setState({
+      value: value, // ISO String, ex: "2016-11-19T12:00:00.000Z"
+      formattedValue: formattedValue, // Formatted String, ex: "11/19/2016"
+    })
+  }
+  componentDidUpdate() {
+    // Access ISO String and formatted values from the DOM.
+    var hiddenInputElement = document.getElementById('example-datepicker')
+    console.log(hiddenInputElement.value) // ISO String, ex: "2016-11-19T12:00:00.000Z"
+    console.log(hiddenInputElement.getAttribute('data-formattedvalue')) // Formatted String, ex: "11/19/2016"
+  }
+
   render() {
     const { id, isLoading } = this.state
     console.log('data', this.state)
@@ -133,42 +147,74 @@ class UpdateSchedules extends Component {
             <>
               <Row>
                 <Col style={{ marginTop: '20px' }} md={12} mt={2}>
-                  <Form>
+                  <Form onSubmit={this.onsubmitData}>
                     <FormGroup>
-                      <Label>Time</Label>
-                      <Input
+                      <Label>Date</Label>
+                      <DatePicker
+                        id='example-datepicker'
+                        value={this.state.value}
+                        onChange={(v, f) => this.handleChange(v, f)}
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>Time </Label>
+                      <TimePicker
+                        onChange={this.onChangeTime}
                         type='text'
                         value={this.state.time}
-                        onChange={e => this.ketikTime(e, 'time')}
                       />
                     </FormGroup>
                     <FormGroup>
-                      <Label>Routes_Id</Label>
+                      <Label>RoutesId</Label>
+
                       <Input
-                        type='text'
-                        value={this.state.routesId}
-                        onChange={e => this.ketikRoutes(e, 'routes_id')}
-                      />
+                        type='select'
+                        onChange={this.onChangeRoutesId}
+                        name='Routes'
+                        id='exampleSelect'
+                      >
+                        {this.props.routes &&
+                          this.props.routes.length !== 0 &&
+                          this.props.routes.map((v, i) => (
+                            <option value={v.id}>
+                              {v.departure_at} - {v.arrival_at}
+                            </option>
+                          ))}
+                      </Input>
                     </FormGroup>
                     <FormGroup>
-                      <Label>Agents_Id</Label>
+                      <Label>BussesId</Label>
                       <Input
-                        type='text'
-                        value={this.state.agentsId}
-                        onChange={e => this.ketikAgents(e, 'agents_id')}
-                      />
+                        type='select'
+                        onChange={this.onChangeBussesId}
+                        name='Busses'
+                        id='exampleSelect'
+                      >
+                        {this.props.busses &&
+                          this.props.busses.length !== 0 &&
+                          this.props.busses.map((v, i) => (
+                            <option value={v.id}>
+                              {v.name} - {v.class}
+                            </option>
+                          ))}
+                      </Input>
                     </FormGroup>
                     <FormGroup>
-                      <Label>Busses_Id</Label>
+                      <Label>AgentsId</Label>
                       <Input
-                        type='text'
-                        value={this.state.bussesId}
-                        onChange={e => this.ketikBusses(e, 'busses_id')}
-                      />
+                        type='select'
+                        onChange={this.onChangeAgentsId}
+                        name='Agents'
+                        id='exampleSelect'
+                      >
+                        {this.props.agents &&
+                          this.props.agents.length !== 0 &&
+                          this.props.agents.map((v, i) => (
+                            <option value={v.id}>{v.name_agents}</option>
+                          ))}
+                      </Input>
                     </FormGroup>
-                    <Button onClick={e => this.submitData(e)} color='success'>
-                      Save
-                    </Button>
+                    <Button color='success'>Save</Button>
                   </Form>
                 </Col>
               </Row>
@@ -181,7 +227,16 @@ class UpdateSchedules extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    schedules: state.schedules.singleData
+    schedules: state.schedules.singleData,
+    routes: state.routes.routes,
+    busses: state.busses.busses,
+    agents: state.agents.agents,
   }
 }
-export default connect(mapStateToProps, { getSchedulesById, updateSchedules })(UpdateSchedules)
+export default connect(mapStateToProps, {
+  getSchedulesById,
+  updateSchedules,
+  getRoutes,
+  getBus,
+  getAgents,
+})(UpdateSchedules)

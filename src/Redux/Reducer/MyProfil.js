@@ -18,7 +18,7 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        usersdetails: action.payload,
+        // usersdetails: action.payload,
       }
     }
 

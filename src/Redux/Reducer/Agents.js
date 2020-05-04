@@ -22,7 +22,7 @@ const agentsReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        agents: action.payload,
+        // agents: action.payload,
       }
     }
     case 'UPDATE_AGENTS': {

@@ -32,8 +32,9 @@ const Bar = Styled('div')`
 position: absolute;
 top: 100px;
 margin-left: 50px;
-width: 70%;
-height: 65vh;
+margin-top: 30px;
+/* width: 70%;
+height: 65vh; */
 `
 const BtnSearch = Styled(Button)`
   width: 40px;

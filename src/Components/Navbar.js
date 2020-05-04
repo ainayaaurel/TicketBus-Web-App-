@@ -10,11 +10,11 @@ import {
   Row,
   Col,
   Input,
-  HeaderSecondsItem
+  HeaderSecondsItem,
 } from 'reactstrap'
-
 import { Link } from 'react-router-dom'
-
+import { logout } from '../Redux/Actions/Auth'
+import { connect } from 'react-redux'
 import Styles from 'styled-components'
 // import { FaSearch } from 'react-icons/io'
 
@@ -24,7 +24,7 @@ import {
   IoMdSearch,
   IoMdContact,
   IoMdHome,
-  IoMdLogOut
+  IoMdLogOut,
 } from 'react-icons/io'
 
 const Profil = Styles('div')`
@@ -35,12 +35,12 @@ const Profil = Styles('div')`
 `
 
 const Search = Styles(Input)`    
-    background-color : #fff !important;
+    background-color : #39933C !important;
     margin-right: 25px;
     border : none;
     color : #fff !important;
     &&::placeholder {
-        color: #202429;
+        color: #fff;
     }
     &&:focus{
         background-color : #fff;
@@ -49,8 +49,8 @@ const Search = Styles(Input)`
     }
 `
 const NavTop = Styles(NavigationsBar)`
-background: #42A845 !important;
-height: 70px;
+background: #EAFAE9 !important;
+height: 100px;
 color: rgb(22,114,232);
 box-shadow: 1px white;
 
@@ -59,16 +59,18 @@ const NavBrand = Styles(NavbarBrand)`
 display:flex;
 justify-content: center;
 align-text: center;
-`
+color:  #37903B !important;
+font-size: 25px;`
+
 const NavBarTwo = Styles(NavItem)`
     display : flex;
     justify-content : center;
     align-items : center;
     margin : 0px 10px 0px 10px;
-    backgroun: #D4D4D4 !important
+    // background: #D4D4D4 !important
 `
 
-export default class Navbar extends Component {
+class Navbar extends Component {
   render() {
     return (
       <div>
@@ -83,28 +85,30 @@ export default class Navbar extends Component {
                 </NavBarTwo>
                 <NavBarTwo>
                   <IoIosNotifications
-                    color='#fff'
-                    size='25px'
+                    color='#39933C'
+                    size='37px'
                     title='Notifications'
                   />
                 </NavBarTwo>
                 <NavBarTwo>
-                  <IoIosMail color='#fff' size='30px' title='Message' />
+                  <IoIosMail color='#39933C' size='37px' title='Message' />
                 </NavBarTwo>
                 <NavBarTwo>
-                  <Link to='/myprofile'
-                  >
-                    <IoMdContact color='#fff' size='30px' title='My Profil' />
+                  <Link to='/myprofile'>
+                    <IoMdContact
+                      color='#39933C'
+                      size='37px'
+                      title='My Profil'
+                    />
                   </Link>
-
                 </NavBarTwo>
                 <NavBarTwo>
                   <Link to='/login'>
                     <IoMdLogOut
-                      color='#fff'
-                      size='30px'
+                      color='#39933C'
+                      size='37px'
                       title='LogOut'
-                      color='black'
+                      onClick={this.props.logout}
                     />
                   </Link>
                 </NavBarTwo>
@@ -116,3 +120,8 @@ export default class Navbar extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  logout: state.auth.isLogin,
+})
+export default connect(mapStateToProps, { logout })(Navbar)

@@ -18,23 +18,27 @@ import Styled from 'styled-components'
 import NavbarMain from '../../Components/NavbarMain'
 import Sidebar from '../../Components/Sidebar'
 import Pagination from '../../Components/Paginations'
-import { getSchedules, searchDataSchedules, movePageSchedules } from '../../Redux/Actions/Schedules'
+import {
+  getSchedules,
+  searchDataSchedules,
+  movePageSchedules,
+  sortByTime,
+} from '../../Redux/Actions/Schedules'
 import { connect } from 'react-redux'
 import {
-  FaSearch, FaTrashAlt
+  FaSearch,
+  FaTrashAlt,
+  FaSortAmountUp,
+  FaSortAmountDown,
 } from 'react-icons/fa'
-import {
-  FiEdit
-} from 'react-icons/fi'
-import {
-  MdPlaylistAdd
-} from 'react-icons/md'
-
-
+import { FiEdit } from 'react-icons/fi'
+import { MdPlaylistAdd } from 'react-icons/md'
+import { TiArrowUnsorted } from 'react-icons/ti'
 const Bar = Styled('div')`
 position: absolute;
 top: 100px;
 margin-left: 50px;
+margin-top: 30px;
 `
 const BtnSearch = Styled(Button)`
   width: 40px;
@@ -54,8 +58,9 @@ class Schedules extends Component {
         totalData: 0,
         totalPage: 0,
         nextLink: null,
-        prevLink: null
+        prevLink: null,
       },
+      sortValue: 0,
       currentPage: 1,
       showModal: false,
       selectedId: 0,
@@ -64,23 +69,34 @@ class Schedules extends Component {
     }
     this.searchSchedules = (e) => {
       this.setState({
-        departure: e.currentTarget.value
+        departure: e.currentTarget.value,
       })
     }
     this.ktikaDiKlik = (e) => {
       this.props.searchDataSchedules(this.state.departure)
     }
-    this.onPageChanged = data => {
+    this.onPageChanged = (data) => {
       const { currentPage, totalPages, pageLimit } = data
       this.props.movePageSchedules(currentPage)
       console.log(data)
     }
   }
+  sortBy = (column) => {
+    const sortValue =
+      this.state.sortValue === 0
+        ? this.state.sortValue + 1
+        : this.state.sortValue - 1
+    this.setState({
+      sortValue: sortValue,
+    })
+    const query = `schedules/?date=2020-05-01&sort[value]=${this.state.sortValue}&sortBy=${column}`
+    this.props.sortByTime(null, query)
+  }
 
   componentDidMount() {
     setTimeout(() => {
       this.props.getSchedules()
-    }, 1000);
+    }, 1000)
   }
   render() {
     console.log('data', this.state.schedules)
@@ -106,23 +122,23 @@ class Schedules extends Component {
                   </FormGroup>
                 </Form>
               </Col>
-              <Col md={3}>
-                <BtnSearch
-                  className='blue'
-                  onClick={this.ktikaDiKlik}
-                >
+              <Col md={2}>
+                <BtnSearch className='blue' onClick={this.ktikaDiKlik}>
                   <FaSearch />
                 </BtnSearch>
               </Col>
-              <Col md={3}>
-                <Link className='btn'
+              <Col md={2}>
+                <Link
+                  className='btn'
                   to={`schedules/create`}
-                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}>
+                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}
+                >
                   <MdPlaylistAdd
                     color='black'
                     size='30px'
                     title='CREATE SCHEDULES'
-                    position='center' />
+                    position='center'
+                  />
                 </Link>
               </Col>
             </Row>
@@ -134,15 +150,20 @@ class Schedules extends Component {
                     <th>Departure</th>
                     <th>Arrival</th>
                     <th>Name Bus</th>
-                    <th>Time</th>
+                    <th onClick={() => this.sortBy('schedules.time')}>
+                      Time <TiArrowUnsorted color='black' size='23px' />{' '}
+                    </th>
                     <th>Class Bus</th>
                     <th>Capasity Consument</th>
-                    <th>Price</th>
+                    <th onClick={() => this.sortBy('busses.price')}>
+                      Price <TiArrowUnsorted color='black' size='23px' />
+                    </th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.schedules && this.props.schedules.length &&
+                  {this.props.schedules &&
+                    this.props.schedules.length &&
                     this.props.schedules.map((v, i) => (
                       <tr key={this.props.schedules[i].id}>
                         <td>{this.state.startFrom + i}</td>
@@ -154,43 +175,49 @@ class Schedules extends Component {
                         <td>{v.sheets}</td>
                         <td>{v.price}</td>
                         <td>
-                          <Link
-                            to={`schedules/edit/${v.id}`}
-                          >
+                          <Link to={`schedules/edit/${v.id}`}>
                             <FiEdit
                               color='black'
                               size='25px'
                               title='EDIT'
-                              position='center' />
+                              position='center'
+                            />
                           </Link>
                           <FaTrashAlt
                             color='black'
                             size='25px'
                             title='DELETE'
-                            position='center' />
+                            position='center'
+                          />
                         </td>
                       </tr>
                     ))}
                 </tbody>
               </Table>
             ) : (
-                <div>Data Tidak Tersedia</div>
-              )}
+              <div>Data Tidak Tersedia</div>
+            )}
 
             <Row>
               <Col md={12} className='text-right'>
-                Page {this.props.pageInfo && this.props.pageInfo.page}/{this.props.pageInfo && this.props.pageInfo.totalPage}{' '}
-                Total Data {this.props.pageInfo && this.props.pageInfo.totalData} Limit{' '}
-                {this.props.pageInfo && this.props.pageInfo.perPage}
+                Page {this.props.pageInfo && this.props.pageInfo.page}/
+                {this.props.pageInfo && this.props.pageInfo.totalPage} Total
+                Data {this.props.pageInfo && this.props.pageInfo.totalData}{' '}
+                Limit {this.props.pageInfo && this.props.pageInfo.perPage}
               </Col>
             </Row>
             <Row>
-              <Col md={12} style={{
-                display: 'flex',
-                justifyContent: 'center'
-              }}>
+              <Col
+                md={12}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
                 <Pagination
-                  totalRecords={this.props.pageInfo && this.props.pageInfo.totalData}
+                  totalRecords={
+                    this.props.pageInfo && this.props.pageInfo.totalData
+                  }
                   pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
                   pageNeighbours={0}
                   onPageChanged={this.onPageChanged}
@@ -237,7 +264,12 @@ class Schedules extends Component {
 const mapStateToProps = (state) => {
   return {
     schedules: state.schedules.schedules,
-    pageInfo: state.schedules.pageInfo
+    pageInfo: state.schedules.pageInfo,
   }
 }
-export default connect(mapStateToProps, { getSchedules, searchDataSchedules, movePageSchedules })(Schedules)
+export default connect(mapStateToProps, {
+  getSchedules,
+  searchDataSchedules,
+  movePageSchedules,
+  sortByTime,
+})(Schedules)

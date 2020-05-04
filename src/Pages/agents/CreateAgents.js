@@ -1,5 +1,14 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, FormGroup, Label, Input, Button, Container } from 'reactstrap'
+import {
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Container,
+} from 'reactstrap'
 import axios from 'axios'
 import config from '../../utils/config'
 import NavbarMain from '../../Components/NavbarMain'
@@ -17,17 +26,17 @@ class CreateAgents extends Component {
     super(props)
     this.state = {
       data: {},
-      name: ''
+      name_agents: '',
     }
   }
 
-  componentDidMount() {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_admin')}`
-  }
+  // componentDidMount() {
+  //   axios.defaults.headers.common[
+  //     'Authorization'
+  //   ] = `Bearer ${localStorage.getItem('token_admin')}`
+  // }
 
-  ketikaDiSubmit = async e => {
+  ketikaDiSubmit = async (e) => {
     e.preventDefault()
     const create = { name: this.state.name_agents }
     this.props.postAgents(create)
@@ -45,9 +54,9 @@ class CreateAgents extends Component {
     //   alert('Not Succes')
     // }
   }
-  ketikAgents = e => {
+  ketikAgents = (e) => {
     this.setState({
-      name: e.currentTarget.value
+      name_agents: e.currentTarget.value,
     })
   }
   render() {
@@ -77,10 +86,8 @@ class CreateAgents extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    agents: state.agents.agents
+    agents: state.agents.agents,
   }
 }
 
 export default connect(mapStateToProps, { postAgents })(CreateAgents)
-
-

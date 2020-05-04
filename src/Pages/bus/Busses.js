@@ -33,6 +33,7 @@ const Bar = Styled('div')`
 position: absolute;
 top: 100px;
 margin-left: 50px;
+margin-top: 30px;
 `
 const BtnSearch = Styled(Button)`
   width: 40px;
@@ -71,7 +72,7 @@ class Busses extends Component {
     }
     this.onPageChanged = (data) => {
       const { currentPage, totalPages, pageLimit } = data
-      // this.props.movePageBusses(currentPage)
+      this.props.movePageBusses(currentPage)
       console.log(data)
     }
   }

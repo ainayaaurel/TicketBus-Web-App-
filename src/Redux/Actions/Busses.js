@@ -86,7 +86,7 @@ export const searchDataBusses = (name) => async (dispatch) => {
 
 export const movePageBusses = (page) => async (dispatch) => {
   try {
-    const query = `busses?page=${page}`
+    const query = `busses?limit=10&page=${page}`
     console.log(query)
     const res = await axios.get(config.APP_BACKEND.concat(query))
     dispatch({

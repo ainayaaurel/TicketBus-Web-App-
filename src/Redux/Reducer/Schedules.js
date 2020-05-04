@@ -2,8 +2,7 @@ const initialState = {
   schedules: [],
   isLoading: true,
   singleData: {},
-  pageInfo: {}
-
+  pageInfo: {},
 }
 
 const schedulesReducer = (state = initialState, action) => {
@@ -14,37 +13,47 @@ const schedulesReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         schedules: action.payload.data,
-        pageInfo: action.payload.pageInfo
+        pageInfo: action.payload.pageInfo,
       }
-    } case 'POST_SCHEDULES': {
+    }
+    case 'POST_SCHEDULES': {
       return {
         ...state,
         isLoading: false,
-        schedules: action.payload
+        schedules: action.payload,
       }
-    } case 'UPDATE_SCHEDULES': {
+    }
+    case 'UPDATE_SCHEDULES': {
       return {
         ...state,
         isLoading: false,
-        schedules: action.payload
-
+        singleData: action.payload,
       }
-    } case 'GET_SCHEDULES_BY_ID': {
+    }
+    case 'GET_SCHEDULES_BY_ID': {
       return {
         ...state,
         isLoading: false,
-        singleData: action.payload
+        singleData: action.payload,
       }
-    } case 'SEARCH_DATA_SCHEDULES': {
+    }
+    case 'SEARCH_DATA_SCHEDULES': {
       return {
         ...state,
-        schedules: action.payload
+        schedules: action.payload,
       }
-    } case 'MOVE_PAGE_SCHEDULES': {
+    }
+    case 'MOVE_PAGE_SCHEDULES': {
       return {
         ...state,
         schedules: action.payload.data,
-        pageInfo: action.payload.pageInfo
+        pageInfo: action.payload.pageInfo,
+      }
+    }
+    case 'SORT_BY_TIME_SCHEDULES': {
+      return {
+        ...state,
+        schedules: action.payload,
       }
     }
     default:
@@ -53,4 +62,3 @@ const schedulesReducer = (state = initialState, action) => {
 }
 
 export default schedulesReducer
-

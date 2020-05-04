@@ -44,8 +44,8 @@ const Search = Styles(Input)`
     }
 `
 const NavTop = Styles(NavigationsBar)`
-background: #1F613A !important;
-height: 70px;
+background: #EAFAE9  !important;
+height: 100px;
 color: rgb(22,114,232);
 box-shadow: 1px white;
 
@@ -54,7 +54,9 @@ const NavBrand = Styles(NavbarBrand)`
 display:flex;
 justify-content: center;
 align-text: center;
-`
+color:  #37903B !important;
+font-size: 25px;`
+
 const NavBarOne = Styles(NavItem)`
     display : flex;
     justify-content : center;
@@ -63,7 +65,14 @@ const NavBarOne = Styles(NavItem)`
 `
 const NavContainer = Styles(Container)`
 widht: 100% !important;
-
+`
+const Text = Styles('span')`
+color: #399339 !important;
+    font-size: 20px;
+`
+const Wr = Styles('div')`
+display: flex;
+flex: 1;
 `
 
 export default class Navbar extends Component {
@@ -78,27 +87,33 @@ export default class Navbar extends Component {
               <Nav className='ml-auto'>
                 <NavBarOne>
                   <IoIosNotifications
-                    color='#fff'
-                    size='25px'
+                    color='#39933C'
+                    size='37px'
                     title='Notifications'
                   />
                 </NavBarOne>
                 <NavBarOne>
-                  <IoIosMail color='#fff' size='30px' title='Message' />
+                  <IoIosMail color='#39933C' size='37px' title='Message' />
                 </NavBarOne>
                 <NavBarOne>
                   <Link to={'/myprofile'}>
-                    <IoMdContact color='#fff' size='30px' title='My Profile' />
+                    <IoMdContact
+                      color='#39933C'
+                      size='37px'
+                      title='My Profile'
+                    />
                   </Link>
                 </NavBarOne>
                 <NavBarOne>
                   <Link to={'/dashboard'}>
-                    <IoMdLogOut
-                      color='#fff'
-                      size='30px'
-                      title='LogOut'
-                      color='black'
-                    ></IoMdLogOut>
+                    <Wr>
+                      <IoMdLogOut
+                        color='#39933C'
+                        size='37px'
+                        title='LogOut'
+                      ></IoMdLogOut>
+                      <Text>LogOut</Text>
+                    </Wr>
                   </Link>
                 </NavBarOne>
               </Nav>

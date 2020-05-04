@@ -18,3 +18,10 @@ export const loginAdmin = (data) => async (dispatch) => {
     console.log(error)
   }
 }
+
+export const logout = () => {
+  localStorage.removeItem('token_admin')
+  return {
+    type: 'LOGOUT',
+  }
+}
