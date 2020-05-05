@@ -10,6 +10,7 @@ flex-direction: column!important;
     background-color: #1C5D3B !important;
     height: 90vh;
     width: 30vh;
+    overflowX: 'visible' !important,
     border-radius: 0px 0px 0px 0px;
 
 `

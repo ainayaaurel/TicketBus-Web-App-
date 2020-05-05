@@ -87,7 +87,6 @@ export const sortByTime = (time, query2) => async (dispatch) => {
   const res = await axios.get(
     config.APP_BACKEND.concat(query2 ? query2 : query)
   )
-
   dispatch({
     type: 'SORT_BY_TIME_SCHEDULES',
     payload: res.data.data,
@@ -105,6 +104,19 @@ export const movePageSchedules = (page) => async (dispatch) => {
         pageInfo: res.data.pageInfo,
         data: res.data.data,
       },
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteBus = (id) => async (dispatch) => {
+  try {
+    const query = `schedules/${id}`
+    const res = await axios.delete(config.APP_BACKEND.concat(query))
+    dispatch({
+      type: 'DELETE_BUS',
+      payload: res.data,
     })
   } catch (error) {
     console.log(error)

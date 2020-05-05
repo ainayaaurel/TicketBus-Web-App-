@@ -1,7 +1,7 @@
 const initialState = {
   busses: [],
   pageInfo: {},
-  isLoading: true
+  isLoading: true,
   //showModal: false
 }
 
@@ -9,44 +9,52 @@ const busReducer = (state = initialState, action) => {
   console.log('ingg', action.type)
   console.log(action)
   switch (action.type) {
-
     case 'GET_BUS': {
-
       return {
         ...state,
         isLoading: false,
         busses: action.payload.data,
-        pageInfo: action.payload.pageInfo
+        pageInfo: action.payload.pageInfo,
       }
-    } case 'POST_BUS': {
+    }
+    case 'POST_BUS': {
       return {
         ...state,
         isLoading: false,
-        busses: action.payload
+        busses: action.payload,
       }
-    } case 'UPDATE_BUS': {
+    }
+    case 'UPDATE_BUS': {
       return {
         ...state,
         isLoading: false,
-        busses: action.payload
-
+        busses: action.payload,
       }
-    } case 'GET_BUS_BY_ID': {
+    }
+    case 'GET_BUS_BY_ID': {
       return {
         ...state,
         isLoading: false,
-        busses: action.payload
+        busses: action.payload,
       }
-    } case 'SEARCH_DATA_BUSSES': {
+    }
+    case 'SEARCH_DATA_BUSSES': {
       return {
         ...state,
-        busses: action.payload
+        busses: action.payload,
       }
-    } case 'MOVE_PAGE_BUSSES': {
+    }
+    case 'MOVE_PAGE_BUSSES': {
       return {
         ...state,
         busses: action.payload.data,
-        pageInfo: action.payload.pageInfo
+        pageInfo: action.payload.pageInfo,
+      }
+    }
+    case 'DELETE_BUSSES': {
+      return {
+        ...state,
+        busses: action.payload,
       }
     }
     default:
@@ -57,22 +65,22 @@ const busReducer = (state = initialState, action) => {
 export default busReducer
 
 // case 'GET_ALL_DATA_BUSSES':
-    //   return {
-    //     ...state,
-    //     busses: action.payload
-    //   }
-    // case 'DELETE_BUS':
-    //   return {
-    //     ...state,
-    //     busses: action.payload
-    //   }
-    // case 'UPDATE_DATA':
-    //   return {
-    //     ...state,
-    //     busses: action.payload
-    //   }
-    // case 'SEARCH_BUS':
-    //   return {
-    //     ...state,
-    //     busses: action.payload
-    //   }
+//   return {
+//     ...state,
+//     busses: action.payload
+//   }
+// case 'DELETE_BUS':
+//   return {
+//     ...state,
+//     busses: action.payload
+//   }
+// case 'UPDATE_DATA':
+//   return {
+//     ...state,
+//     busses: action.payload
+//   }
+// case 'SEARCH_BUS':
+//   return {
+//     ...state,
+//     busses: action.payload
+//   }

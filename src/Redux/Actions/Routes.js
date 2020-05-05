@@ -96,3 +96,17 @@ export const movePageRoutes = (page) => async (dispatch) => {
     console.log(error)
   }
 }
+
+export const deleteRoutes = (id) => async (dispatch) => {
+  try {
+    const query = `routes/${id}`
+    console.log('deletee routesss', id)
+    const res = await axios.delete(config.APP_BACKEND.concat(query))
+    dispatch({
+      type: 'DELETE_ROUTES',
+      payload: res.data,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}

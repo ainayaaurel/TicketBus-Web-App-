@@ -20,6 +20,7 @@ import MyProfil from './Pages/MyProfile/Profil'
 import EditProfile from './Pages/MyProfile/editprofile'
 import ProtectedRoute from './Components/ProtectedRoute'
 import HomeAuth from './Pages/HomeAuth'
+import './root.css'
 
 class App extends Component {
   render() {
@@ -30,7 +31,6 @@ class App extends Component {
             <Switch>
               <Route
                 path='/sign-in'
-                exact
                 render={(props) => <HomeAuth {...props} />}
               />
               {/* <Route
@@ -38,9 +38,9 @@ class App extends Component {
                 exact
                 render={props => <FormLogin {...props} />}
               /> */}
-              <ProtectedRoute path='/sign-in' exact component={HomeAuth} />
-              <ProtectedRoute path='/dashboard' exact component={Dashboard} />
-              <ProtectedRoute path='/myprofile' exact component={MyProfil} />
+              {/* <ProtectedRoute path='/sign-in' exact component={HomeAuth} /> */}
+              <Route path='/dashboard' component={Dashboard} />
+              <ProtectedRoute path='/myprofile' component={MyProfil} />
               <ProtectedRoute
                 path='/myprofile/edit/:id'
                 exact
@@ -55,7 +55,6 @@ class App extends Component {
               />
               <ProtectedRoute
                 path='/busses/create/'
-                exact
                 component={TabelCreateBus}
               />
               <ProtectedRoute path='/agents' exact component={TableAgents} />

@@ -23,6 +23,7 @@ import {
   searchDataSchedules,
   movePageSchedules,
   sortByTime,
+  deleteBus,
 } from '../../Redux/Actions/Schedules'
 import { connect } from 'react-redux'
 import {
@@ -60,6 +61,7 @@ class Schedules extends Component {
         nextLink: null,
         prevLink: null,
       },
+      id: 0,
       sortValue: 0,
       currentPage: 1,
       showModal: false,
@@ -91,6 +93,15 @@ class Schedules extends Component {
     })
     const query = `schedules/?date=2020-05-01&sort[value]=${this.state.sortValue}&sortBy=${column}`
     this.props.sortByTime(null, query)
+  }
+
+  deleteBus = (id) => {
+    this.props.deleteBus(id)
+    this.props.history.push('/schedules')
+    this.setState({
+      showModal: false,
+    })
+    this.props.getSchedules()
   }
 
   componentDidMount() {
@@ -164,34 +175,43 @@ class Schedules extends Component {
                 <tbody>
                   {this.props.schedules &&
                     this.props.schedules.length &&
-                    this.props.schedules.map((v, i) => (
-                      <tr key={this.props.schedules[i].id}>
-                        <td>{this.state.startFrom + i}</td>
-                        <td>{v.departure_at}</td>
-                        <td>{v.arrival_at}</td>
-                        <td>{v.name}</td>
-                        <td>{v.time}</td>
-                        <td>{v.class}</td>
-                        <td>{v.sheets}</td>
-                        <td>{v.price}</td>
-                        <td>
-                          <Link to={`schedules/edit/${v.id}`}>
-                            <FiEdit
+                    this.props.schedules.map((v, i) => {
+                      const { page, perPage } = this.props.pageInfo
+                      return (
+                        <tr key={this.props.schedules[i].id}>
+                          <td>{(page - 1) * perPage + (i + 1)}</td>
+                          <td>{v.departure_at}</td>
+                          <td>{v.arrival_at}</td>
+                          <td>{v.name}</td>
+                          <td>{v.time}</td>
+                          <td>{v.class}</td>
+                          <td>{v.sheets}</td>
+                          <td>{v.price}</td>
+                          <td>
+                            <Link to={`schedules/edit/${v.id}`}>
+                              <FiEdit
+                                color='black'
+                                size='25px'
+                                title='EDIT'
+                                position='center'
+                              />
+                            </Link>
+                            <FaTrashAlt
                               color='black'
                               size='25px'
-                              title='EDIT'
+                              title='DELETE'
                               position='center'
+                              onClick={() =>
+                                this.setState({
+                                  showModal: true,
+                                  selectedId: v.id,
+                                })
+                              }
                             />
-                          </Link>
-                          <FaTrashAlt
-                            color='black'
-                            size='25px'
-                            title='DELETE'
-                            position='center'
-                          />
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                        </tr>
+                      )
+                    })}
                 </tbody>
               </Table>
             ) : (
@@ -227,25 +247,13 @@ class Schedules extends Component {
           </Bar>
         </Container>
         <Modal isOpen={this.state.showModal}>
-          <ModalHeader>Edit User</ModalHeader>
-          <ModalBody></ModalBody>
-          <ModalFooter>
-            <Button color='success' onClick={this.saveEdit}>
-              OK
-            </Button>
-            <Button
-              color='danger'
-              onClick={() => this.setState({ showModal: false, selectedId: 0 })}
-            >
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
-        <Modal isOpen={this.state.showModal}>
           <ModalHeader>Delete Schedules</ModalHeader>
           <ModalBody>Really want to delete?</ModalBody>
           <ModalFooter>
-            <Button color='success' onClick={this.deleteData}>
+            <Button
+              color='success'
+              onClick={() => this.deleteBus(this.state.selectedId)}
+            >
               OK
             </Button>
             <Button
@@ -272,4 +280,5 @@ export default connect(mapStateToProps, {
   searchDataSchedules,
   movePageSchedules,
   sortByTime,
+  deleteBus,
 })(Schedules)

@@ -51,6 +51,12 @@ const routesReducer = (state = initialState, action) => {
         pageInfo: action.payload.pageInfo,
       }
     }
+    case 'DELETE_ROUTES': {
+      return {
+        ...state,
+        // routes: action.payload,
+      }
+    }
     default:
       return state
   }

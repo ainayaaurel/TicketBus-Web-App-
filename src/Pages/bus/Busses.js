@@ -5,6 +5,7 @@ import {
   getBus,
   searchDataBusses,
   movePageBusses,
+  deleteBuss,
 } from '../../Redux/Actions/Busses'
 import {
   Table,
@@ -75,7 +76,16 @@ class Busses extends Component {
       this.props.movePageBusses(currentPage)
       console.log(data)
     }
+    this.deleteBusses = (id) => {
+      this.props.deleteBuss(id)
+      this.props.history.push('/busses')
+      this.setState({
+        showModal: false,
+      })
+      this.props.getBus()
+    }
   }
+
   componentDidMount() {
     console.log('MOUNTED')
     this.props.getBus()
@@ -140,32 +150,41 @@ class Busses extends Component {
                 </thead>
                 <tbody>
                   {this.props.busses.length &&
-                    this.props.busses.map((v, i) => (
-                      <tr key={this.props.busses[i].id}>
-                        <td>{this.state.startFrom + i}</td>
-                        <td>{v.name}</td>
-                        <td>{v.class}</td>
-                        <td>{v.sheets}</td>
-                        <td>{v.price}</td>
-                        <td>{v.name_agents}</td>
-                        <td class='text-center'>
-                          <Link to={`busses/edit/${v.id}`}>
-                            <FiEdit
+                    this.props.busses.map((v, i) => {
+                      const { page, perPage } = this.props.pageInfo
+                      return (
+                        <tr key={this.props.busses[i].id}>
+                          <td>{(page - 1) * perPage + (i + 1)}</td>
+                          <td>{v.name}</td>
+                          <td>{v.class}</td>
+                          <td>{v.sheets}</td>
+                          <td>{v.price}</td>
+                          <td>{v.name_agents}</td>
+                          <td class='text-center'>
+                            <Link to={`busses/edit/${v.id}`}>
+                              <FiEdit
+                                color='black'
+                                size='25px'
+                                title='EDIT'
+                                position='center'
+                              />
+                            </Link>
+                            <FaTrashAlt
                               color='black'
                               size='25px'
-                              title='EDIT'
+                              title='DELETE'
                               position='center'
+                              onClick={() =>
+                                this.setState({
+                                  showModal: true,
+                                  selectedId: v.id,
+                                })
+                              }
                             />
-                          </Link>
-                          <FaTrashAlt
-                            color='black'
-                            size='25px'
-                            title='DELETE'
-                            position='center'
-                          />
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                        </tr>
+                      )
+                    })}
                 </tbody>
               </Table>
             ) : (
@@ -201,10 +220,21 @@ class Busses extends Component {
           </Bar>
         </Container>
         <Modal isOpen={this.state.showModal}>
-          <ModalHeader>Alert</ModalHeader>
-          <ModalBody>{this.state.modalMessage}</ModalBody>
+          <ModalHeader>Delete Bus</ModalHeader>
+          <ModalBody>Really want to delete?</ModalBody>
           <ModalFooter>
-            <Button onClick={this.dismissModal}>Ok</Button>
+            <Button
+              color='success'
+              onClick={() => this.deleteBusses(this.state.selectedId)}
+            >
+              OK
+            </Button>
+            <Button
+              color='danger'
+              onClick={() => this.setState({ showModal: false, selectedId: 0 })}
+            >
+              Cancel
+            </Button>
           </ModalFooter>
         </Modal>
       </>
@@ -223,4 +253,5 @@ export default connect(mapStateToProps, {
   getBus,
   searchDataBusses,
   movePageBusses,
+  deleteBuss,
 })(Busses)

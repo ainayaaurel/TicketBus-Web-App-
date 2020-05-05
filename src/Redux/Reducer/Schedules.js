@@ -56,6 +56,12 @@ const schedulesReducer = (state = initialState, action) => {
         schedules: action.payload,
       }
     }
+    case 'DELETE_BUS': {
+      return {
+        ...state,
+        schedules: action.payload,
+      }
+    }
     default:
       return state
   }
