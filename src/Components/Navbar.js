@@ -76,7 +76,7 @@ class Navbar extends Component {
       <div>
         <NavTop color='yellow' dark expand='md'>
           <Container>
-            <NavBrand>SHUTTLEBUS-ID</NavBrand>
+            <NavBrand>TICKET.BUS</NavBrand>
             <NavbarToggler />
             <Collapse isOpen={true} navbar>
               <Nav className='ml-auto'>

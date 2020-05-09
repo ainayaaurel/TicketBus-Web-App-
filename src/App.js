@@ -22,6 +22,7 @@ import ProtectedRoute from './Components/ProtectedRoute'
 import HomeAuth from './Pages/HomeAuth'
 import SignInForm from './Pages/SignInForm'
 import SignUpForm from './Pages/SignUpForm'
+import Reservations from './Pages/Reservation/Reservation'
 import './root.css'
 
 class App extends Component {
@@ -43,9 +44,9 @@ class App extends Component {
               /> */}
 
               {/* <ProtectedRoute path='/sign-in' exact component={HomeAuth} /> */}
-              <Route exact path='/dashboard' component={Dashboard} />
-              <Route exact path='/sign-in' component={SignInForm}></Route>
-              <Route exact path='/sign-up' component={SignUpForm}></Route>
+              <ProtectedRoute path='/dashboard' component={Dashboard} />
+              <ProtectedRoute path='/sign-in' component={SignInForm} />
+              <ProtectedRoute path='/sign-up' component={SignUpForm} />
               <ProtectedRoute path='/myprofile' component={MyProfil} />
               <ProtectedRoute
                 path='/myprofile/edit/:id'
@@ -54,6 +55,11 @@ class App extends Component {
               />
 
               <ProtectedRoute path='/busses' exact component={TableBus} />
+              <ProtectedRoute
+                path='/reservations'
+                exact
+                component={Reservations}
+              />
               <ProtectedRoute
                 path='/busses/edit/:id'
                 exact

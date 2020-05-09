@@ -30,12 +30,7 @@ import { FiEdit } from 'react-icons/fi'
 import { MdPlaylistAdd } from 'react-icons/md'
 
 const Bar = Styled('div')`
-position: absolute;
-top: 100px;
-margin-left: 50px;
-margin-top: 30px;
-/* width: 70%;
-height: 65vh; */
+
 `
 const BtnSearch = Styled(Button)`
   width: 40px;
@@ -96,124 +91,130 @@ class Routes extends Component {
     return (
       <>
         <NavbarMain />
-        <Row>
-          <Col md={1}>
+        <Row style={{ marginRight: 0 }}>
+          <Col md={2}>
             <Sidebar />
           </Col>
-        </Row>
-        <Container>
-          <Bar>
-            <Row>
-              <Col md={6}>
-                <Form>
-                  <FormGroup>
-                    <Input
-                      type='text'
-                      placeholder='Search Routes ...'
-                      onChange={this.searchRoutes}
+          <Col md={10}>
+            <Bar>
+              <Row>
+                <Col md={6}>
+                  <Form>
+                    <FormGroup>
+                      <Input
+                        type='text'
+                        placeholder='Search Routes ...'
+                        onChange={this.searchRoutes}
+                      />
+                    </FormGroup>
+                  </Form>
+                </Col>
+                <Col md={3}>
+                  <BtnSearch className='blue' onClick={this.ktikaDiKlik}>
+                    <FaSearch />
+                  </BtnSearch>
+                </Col>
+                <Col md={3}>
+                  <Link
+                    className='btn'
+                    to={`routes/create`}
+                    style={{
+                      marginLeft: '100px',
+                      backgroundColor: '#42A845',
+                    }}
+                  >
+                    <MdPlaylistAdd
+                      color='black'
+                      size='30px'
+                      title='CREATE ROUTES'
+                      position='center'
                     />
-                  </FormGroup>
-                </Form>
-              </Col>
-              <Col md={3}>
-                <BtnSearch className='blue' onClick={this.ktikaDiKlik}>
-                  <FaSearch />
-                </BtnSearch>
-              </Col>
-              <Col md={3}>
-                <Link
-                  className='btn'
-                  to={`routes/create`}
-                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}
-                >
-                  <MdPlaylistAdd
-                    color='black'
-                    size='30px'
-                    title='CREATE ROUTES'
-                    position='center'
-                  />
-                </Link>
-              </Col>
-            </Row>
-            {this.props.routes && this.props.routes.length !== 0 ? (
-              <Table bordered>
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Departure_at</th>
-                    <th>Arrival_at</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.routes &&
-                    this.props.routes.length !== 0 &&
-                    this.props.routes.map((v, i) => {
-                      const { page, perPage } = this.props.pageInfo
-                      return (
-                        <tr key={this.props.routes[i].id}>
-                          <td>{(page - 1) * perPage + (i + 1)}</td>
-                          <td>{v.departure_at}</td>
-                          <td>{v.arrival_at}</td>
-                          <td>
-                            <Link to={`routes/edit/${v.id}`}>
-                              <FiEdit
+                  </Link>
+                </Col>
+              </Row>
+              {this.props.routes && this.props.routes.length !== 0 ? (
+                <Table bordered>
+                  <thead>
+                    <tr>
+                      <th width='5%'>No</th>
+                      <th>Departure_at</th>
+                      <th>Arrival_at</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.props.routes &&
+                      this.props.routes.length !== 0 &&
+                      this.props.routes.map((v, i) => {
+                        const { page, perPage } = this.props.pageInfo
+                        return (
+                          <tr key={this.props.routes[i].id}>
+                            <td>{(page - 1) * perPage + (i + 1)}</td>
+                            <td>{v.departure_at}</td>
+                            <td>{v.arrival_at}</td>
+                            <td>
+                              <Link to={`routes/edit/${v.id}`}>
+                                <FiEdit
+                                  color='black'
+                                  size='25px'
+                                  title='EDIT'
+                                  position='center'
+                                />
+                              </Link>
+                              <FaTrashAlt
                                 color='black'
                                 size='25px'
-                                title='EDIT'
+                                title='DELETE'
                                 position='center'
+                                onClick={() =>
+                                  this.setState({
+                                    showModal: true,
+                                    selectedId: v.id,
+                                  })
+                                }
                               />
-                            </Link>
-                            <FaTrashAlt
-                              color='black'
-                              size='25px'
-                              title='DELETE'
-                              position='center'
-                              onClick={() =>
-                                this.setState({
-                                  showModal: true,
-                                  selectedId: v.id,
-                                })
-                              }
-                            />
-                          </td>
-                        </tr>
-                      )
-                    })}
-                </tbody>
-              </Table>
-            ) : (
-              <div>Data Tidak Tersedia</div>
-            )}
+                            </td>
+                          </tr>
+                        )
+                      })}
+                  </tbody>
+                </Table>
+              ) : (
+                <div>Data Tidak Tersedia</div>
+              )}
 
-            <Row>
-              <Col md={12} className='text-right'>
-                Page {this.props.pageInfo && this.props.pageInfo.page}/
-                {this.props.pageInfo && this.props.pageInfo.totalPage} Total
-                Data {this.props.pageInfo && this.props.pageInfo.totalData}{' '}
-                Limit {this.props.pageInfo && this.props.pageInfo.perPage}
-              </Col>
-            </Row>
-            <Row>
-              <Col
-                md={12}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Pagination
-                  totalRecords={
-                    this.props.pageInfo && this.props.pageInfo.totalData
-                  }
-                  pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
-                  pageNeighbours={0}
-                  onPageChanged={this.onPageChanged}
-                />
-              </Col>
-            </Row>
-          </Bar>
-        </Container>
+              <Row>
+                <Col md={12} className='text-right'>
+                  Page {this.props.pageInfo && this.props.pageInfo.page}/
+                  {this.props.pageInfo && this.props.pageInfo.totalPage} Total
+                  Data {this.props.pageInfo && this.props.pageInfo.totalData}{' '}
+                  Limit {this.props.pageInfo && this.props.pageInfo.perPage}
+                </Col>
+              </Row>
+              <Row>
+                <Col
+                  md={12}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Pagination
+                    totalRecords={
+                      this.props.pageInfo && this.props.pageInfo.totalData
+                    }
+                    pageLimit={
+                      this.props.pageInfo && this.props.pageInfo.perPage
+                    }
+                    pageNeighbours={0}
+                    onPageChanged={this.onPageChanged}
+                  />
+                </Col>
+              </Row>
+            </Bar>
+          </Col>
+        </Row>
+
         <Modal isOpen={this.state.showModal}>
           <ModalHeader>Delete User</ModalHeader>
           <ModalBody>Really want to delete?</ModalBody>

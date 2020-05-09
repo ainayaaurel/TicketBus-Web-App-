@@ -81,7 +81,7 @@ export default class Navbar extends Component {
       <div>
         <NavTop color='dark' dark expand='md'>
           <NavContainer>
-            <NavBrand>SHUTTLEBUS-ID</NavBrand>
+            <NavBrand>TICKET.BUS</NavBrand>
             <NavbarToggler />
             <Collapse isOpen={true} navbar>
               <Nav className='ml-auto'>
@@ -112,7 +112,7 @@ export default class Navbar extends Component {
                         size='37px'
                         title='LogOut'
                       ></IoMdLogOut>
-                      <Text>LogOut</Text>
+                      <Text></Text>
                     </Wr>
                   </Link>
                 </NavBarOne>

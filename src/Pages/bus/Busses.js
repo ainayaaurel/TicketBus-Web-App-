@@ -30,12 +30,6 @@ import { FaSearch, FaTrashAlt } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
 import { MdPlaylistAdd } from 'react-icons/md'
 
-const Bar = Styled('div')`
-position: absolute;
-top: 100px;
-margin-left: 50px;
-margin-top: 30px;
-`
 const BtnSearch = Styled(Button)`
   width: 40px;
   height: 38px;
@@ -96,129 +90,132 @@ class Busses extends Component {
     return (
       <>
         <NavbarMain />
-        <Row>
+        <Row style={{ marginRight: 0 }}>
           <Col md={1}>
             <Sidebar />
           </Col>
-        </Row>
-        <Container>
-          <Bar>
-            <Row>
-              <Col md={6}>
-                <Form>
-                  <FormGroup>
-                    <Input
-                      type='text'
-                      placeholder='Search Bus ...'
-                      onChange={this.searchBus}
+          <Col>
+            <Container style={{ marginTop: 20 }}>
+              <Row>
+                <Col md={6}>
+                  <Form>
+                    <FormGroup>
+                      <Input
+                        type='text'
+                        placeholder='Search Bus ...'
+                        onChange={this.searchBus}
+                      />
+                    </FormGroup>
+                  </Form>
+                </Col>
+                <Col md={3}>
+                  <BtnSearch className='blue' onClick={this.ktikaDiKlik}>
+                    <FaSearch />
+                  </BtnSearch>
+                </Col>
+                <Col md={3}>
+                  <Link
+                    className='btn'
+                    to={`busses/create`}
+                    style={{ marginLeft: '100px', backgroundColor: '#42A845' }}
+                  >
+                    <MdPlaylistAdd
+                      color='black'
+                      size='30px'
+                      title='CREATE BUS'
+                      position='center'
                     />
-                  </FormGroup>
-                </Form>
-              </Col>
-              <Col md={3}>
-                <BtnSearch className='blue' onClick={this.ktikaDiKlik}>
-                  <FaSearch />
-                </BtnSearch>
-              </Col>
-              <Col md={3}>
-                <Link
-                  className='btn'
-                  to={`busses/create`}
-                  style={{ marginLeft: '100px', backgroundColor: '#42A845' }}
-                >
-                  <MdPlaylistAdd
-                    color='black'
-                    size='30px'
-                    title='CREATE BUS'
-                    position='center'
-                  />
-                </Link>
-              </Col>
-            </Row>
-            {this.props.busses && this.props.busses.length !== 0 ? (
-              <Table bordered>
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th width='25%'>Name Bus</th>
-                    <th>Class Bus</th>
-                    <th>Sheets</th>
-                    <th>Price</th>
-                    <th width='30%'>Agents</th>
-                    <th width='15%'>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.busses.length &&
-                    this.props.busses.map((v, i) => {
-                      const { page, perPage } = this.props.pageInfo
-                      return (
-                        <tr key={this.props.busses[i].id}>
-                          <td>{(page - 1) * perPage + (i + 1)}</td>
-                          <td>{v.name}</td>
-                          <td>{v.class}</td>
-                          <td>{v.sheets}</td>
-                          <td>{v.price}</td>
-                          <td>{v.name_agents}</td>
-                          <td class='text-center'>
-                            <Link to={`busses/edit/${v.id}`}>
-                              <FiEdit
+                  </Link>
+                </Col>
+              </Row>
+              {this.props.busses && this.props.busses.length !== 0 ? (
+                <Table bordered>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th width='25%'>Name Bus</th>
+                      <th>Class Bus</th>
+                      <th>Sheets</th>
+                      <th>Price</th>
+                      <th width='30%'>Agents</th>
+                      <th width='15%'>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.props.busses.length &&
+                      this.props.busses.map((v, i) => {
+                        const { page, perPage } = this.props.pageInfo
+                        return (
+                          <tr key={this.props.busses[i].id}>
+                            <td>{(page - 1) * perPage + (i + 1)}</td>
+                            <td>{v.name}</td>
+                            <td>{v.class}</td>
+                            <td>{v.sheets}</td>
+                            <td>{v.price}</td>
+                            <td>{v.name_agents}</td>
+                            <td class='text-center'>
+                              <Link to={`busses/edit/${v.id}`}>
+                                <FiEdit
+                                  color='black'
+                                  size='25px'
+                                  title='EDIT'
+                                  position='center'
+                                />
+                              </Link>
+                              <FaTrashAlt
                                 color='black'
                                 size='25px'
-                                title='EDIT'
+                                title='DELETE'
                                 position='center'
+                                onClick={() =>
+                                  this.setState({
+                                    showModal: true,
+                                    selectedId: v.id,
+                                  })
+                                }
                               />
-                            </Link>
-                            <FaTrashAlt
-                              color='black'
-                              size='25px'
-                              title='DELETE'
-                              position='center'
-                              onClick={() =>
-                                this.setState({
-                                  showModal: true,
-                                  selectedId: v.id,
-                                })
-                              }
-                            />
-                          </td>
-                        </tr>
-                      )
-                    })}
-                </tbody>
-              </Table>
-            ) : (
-              <div>Data tidak tersedia</div>
-            )}
+                            </td>
+                          </tr>
+                        )
+                      })}
+                  </tbody>
+                </Table>
+              ) : (
+                <div>Data tidak tersedia</div>
+              )}
 
-            <Row>
-              <Col md={12} className='text-right'>
-                Page {this.props.pageInfo && this.props.pageInfo.page}/
-                {this.props.pageInfo && this.props.pageInfo.totalPage} Total
-                Data {this.props.pageInfo && this.props.pageInfo.totalData}{' '}
-                Limit {this.props.pageInfo && this.props.pageInfo.perPage}
-              </Col>
-            </Row>
-            <Row>
-              <Col
-                md={12}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Pagination
-                  totalRecords={
-                    this.props.pageInfo && this.props.pageInfo.totalData
-                  }
-                  pageLimit={this.props.pageInfo && this.props.pageInfo.perPage}
-                  pageNeighbours={0}
-                  onPageChanged={this.onPageChanged}
-                />
-              </Col>
-            </Row>
-          </Bar>
-        </Container>
+              <Row>
+                <Col md={12} className='text-right'>
+                  Page {this.props.pageInfo && this.props.pageInfo.page}/
+                  {this.props.pageInfo && this.props.pageInfo.totalPage} Total
+                  Data {this.props.pageInfo && this.props.pageInfo.totalData}{' '}
+                  Limit {this.props.pageInfo && this.props.pageInfo.perPage}
+                </Col>
+              </Row>
+              <Row>
+                <Col
+                  md={12}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Pagination
+                    totalRecords={
+                      this.props.pageInfo && this.props.pageInfo.totalData
+                    }
+                    pageLimit={
+                      this.props.pageInfo && this.props.pageInfo.perPage
+                    }
+                    pageNeighbours={0}
+                    onPageChanged={this.onPageChanged}
+                  />
+                </Col>
+              </Row>
+            </Container>
+          </Col>
+        </Row>
+
         <Modal isOpen={this.state.showModal}>
           <ModalHeader>Delete Bus</ModalHeader>
           <ModalBody>Really want to delete?</ModalBody>

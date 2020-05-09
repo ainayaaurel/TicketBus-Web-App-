@@ -44,7 +44,7 @@ const OriCard = Styles('div')`
   color: #fff;
   padding: 20px;
   height: 150px;
-  margin-top: -56vh;
+  margin-top : 30px;
     font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
@@ -89,9 +89,6 @@ class Dashboard extends Component {
                 </Coloumn>
               </Col>
             </Row>
-          </Container>
-          {/* <Col md={11}> */}
-          <Container>
             <Row>
               <Col md={3}>
                 <OriCard>
@@ -130,6 +127,8 @@ class Dashboard extends Component {
               </Col>
             </Row>
           </Container>
+
+          <Container></Container>
           <Container>
             {/* <Row>
               <Col md={12}>

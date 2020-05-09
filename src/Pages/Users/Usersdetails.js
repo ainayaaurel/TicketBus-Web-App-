@@ -28,12 +28,6 @@ import {
 import { connect } from 'react-redux'
 import { FaSearch } from 'react-icons/fa'
 
-const Bar = Styled('div')`
-position: absolute;
-top: 100px;
-margin-left: 50px;
-margin-top: 30px;
-`
 const BtnSearch = Styled(Button)`
   width: 40px;
   height: 38px;
@@ -84,13 +78,11 @@ class BiodataUsers extends Component {
     return (
       <>
         <NavbarMain />
-        <Row>
-          <Col md={1}>
+        <Row style={{ marginRight: 0 }}>
+          <Col md={2}>
             <Sidebar />
           </Col>
-        </Row>
-        <Container>
-          <Bar>
+          <Col md={10} style={{ marginTop: 20 }}>
             <Row>
               <Col md={9}>
                 <Form>
@@ -178,9 +170,8 @@ class BiodataUsers extends Component {
                 />
               </Col>
             </Row>
-          </Bar>
-        </Container>
-
+          </Col>
+        </Row>
         <Modal isOpen={this.state.showModal}>
           <ModalHeader>Delete User</ModalHeader>
           <ModalBody>Really want to delete?</ModalBody>

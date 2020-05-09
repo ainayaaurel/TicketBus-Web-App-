@@ -1,10 +1,22 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, FormGroup, Label, Input, Button, Container } from 'reactstrap'
+import {
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Container,
+} from 'reactstrap'
 import axios from 'axios'
 import config from '../../utils/config'
 import NavbarMain from '../../Components/NavbarMain'
 import { postBus } from '../../Redux/Actions/Busses'
 import { connect } from 'react-redux'
+import { getRoutes } from '../../Redux/Actions/Routes'
+import { getBus } from '../../Redux/Actions/Busses'
+import { getAgents } from '../../Redux/Actions/Agents'
 import Styled from 'styled-components'
 
 const Bar = Styled('div')`
@@ -22,18 +34,18 @@ class CreateBus extends Component {
       class: '',
       sheets: '',
       price: '',
-      agentsId: ''
+      agentsId: '',
     }
   }
 
-  OnSubmit = async e => {
+  OnSubmit = async (e) => {
     e.preventDefault()
     const create = {
       name: this.state.name,
       classbus: this.state.class,
       sheets: this.state.sheets,
       price: this.state.price,
-      agentsId: this.state.agentsId
+      agentsId: this.state.agentsId,
     }
     this.props.postBus(create)
     console.log('ini create', create)
@@ -41,28 +53,34 @@ class CreateBus extends Component {
   }
   changeBus = (e) => {
     this.setState({
-      name: e.currentTarget.value
+      name: e.currentTarget.value,
     })
   }
   changeClassBus = (e) => {
     this.setState({
-      class: e.currentTarget.value
+      class: e.currentTarget.value,
     })
   }
-  changeSheats = e => {
+  changeSheats = (e) => {
     this.setState({
-      sheets: e.currentTarget.value
+      sheets: e.currentTarget.value,
     })
   }
-  changePrice = e => {
+  changePrice = (e) => {
     this.setState({
-      price: e.currentTarget.value
+      price: e.currentTarget.value,
     })
   }
-  changeAgentsId = e => {
+  changeAgentsId = (e) => {
     this.setState({
-      agentsId: e.currentTarget.value
+      agentsId: e.currentTarget.value,
     })
+  }
+
+  componentDidMount() {
+    this.props.getRoutes()
+    this.props.getBus()
+    this.props.getAgents()
   }
   render() {
     return (
@@ -79,7 +97,7 @@ class CreateBus extends Component {
                       onChange={this.changeBus}
                       type='text'
                       value={this.state.name}
-                    />
+                    ></Input>
                   </FormGroup>
                   <FormGroup>
                     <Label>Class Bus</Label>
@@ -87,15 +105,15 @@ class CreateBus extends Component {
                       onChange={this.changeClassBus}
                       type='text'
                       value={this.state.class}
-                    />
+                    ></Input>
                   </FormGroup>
                   <FormGroup>
-                    <Label>Sheats Bus</Label>
+                    <Label>Seats Bus</Label>
                     <Input
                       onChange={this.changeSheats}
                       type='text'
                       value={this.state.sheets}
-                    />
+                    ></Input>
                   </FormGroup>
                   <FormGroup>
                     <Label>Price</Label>
@@ -109,9 +127,15 @@ class CreateBus extends Component {
                     <Label>Agents</Label>
                     <Input
                       onChange={this.changeAgentsId}
-                      type='text'
+                      type='select'
                       value={this.state.agentsId}
-                    />
+                    >
+                      {this.props.agents &&
+                        this.props.agents.length !== 0 &&
+                        this.props.agents.map((v, i) => (
+                          <option value={v.id}>{v.name_agents}</option>
+                        ))}
+                    </Input>
                   </FormGroup>
                   <Button color='success'>Save</Button>
                 </Form>
@@ -125,8 +149,16 @@ class CreateBus extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    busses: state.busses.busses
+    busses: state.busses.busses,
+    routes: state.routes.routes,
+
+    agents: state.agents.agents,
   }
 }
 
-export default connect(mapStateToProps, { postBus })(CreateBus)
+export default connect(mapStateToProps, {
+  postBus,
+  getRoutes,
+  getBus,
+  getAgents,
+})(CreateBus)

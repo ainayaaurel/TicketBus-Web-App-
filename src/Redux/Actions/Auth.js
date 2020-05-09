@@ -4,16 +4,21 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
   'token_admin'
 )}`
 
-export const loginAdmin = (data) => async (dispatch) => {
+export const loginAdmin = (data, callback) => async (dispatch) => {
   try {
     const query = `auth/login`
     const res = await axios.post(config.APP_BACKEND.concat(query), data)
     console.log('ini data', res)
-    localStorage.setItem('token_admin', res.data.token)
-    dispatch({
-      type: 'LOGIN_ADMIN',
-      payload: res.data.token,
-    })
+    if (res.data.success) {
+      localStorage.setItem('token_admin', res.data.token)
+      dispatch({
+        type: 'LOGIN_ADMIN',
+        payload: res.data.token,
+      })
+      callback(true)
+    } else {
+      callback(false)
+    }
   } catch (error) {
     console.log(error)
   }
