@@ -70,6 +70,7 @@ class Dashboard extends Component {
     this.props.getAgents()
     this.props.getRoutes()
     this.props.getSchedules()
+    document.title = 'Dashboard'
   }
 
   render() {

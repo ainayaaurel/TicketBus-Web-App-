@@ -108,6 +108,7 @@ class Schedules extends Component {
     setTimeout(() => {
       this.props.getSchedules()
     }, 1000)
+    document.title = 'Schedules'
   }
   render() {
     console.log('data', this.state.schedules)

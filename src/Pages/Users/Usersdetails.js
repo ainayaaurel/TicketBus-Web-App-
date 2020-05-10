@@ -72,6 +72,7 @@ class BiodataUsers extends Component {
     setTimeout(() => {
       this.props.getAllUsers()
     }, 1000)
+    document.title = 'Data Users'
   }
   render() {
     console.log('data', this.state.users_details)

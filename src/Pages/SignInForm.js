@@ -62,6 +62,10 @@ class SignInForm extends Component {
     }
   }
 
+  componentDidMount() {
+    document.title = 'Sign In'
+  }
+
   render() {
     return (
       <>

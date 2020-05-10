@@ -83,6 +83,7 @@ class Busses extends Component {
   componentDidMount() {
     console.log('MOUNTED')
     this.props.getBus()
+    document.title = 'Busses'
   }
   render() {
     console.log('props', this.props)

@@ -85,6 +85,7 @@ class Routes extends Component {
     setTimeout(() => {
       this.props.getRoutes()
     }, 1000)
+    document.title = 'Routes'
   }
   render() {
     console.log('data', this.state.routes)

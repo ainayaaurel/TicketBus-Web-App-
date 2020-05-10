@@ -67,6 +67,7 @@ class Agents extends Component {
   }
   componentDidMount() {
     this.props.getAgents()
+    document.title = 'Agents'
   }
   render() {
     console.log('data', this.state.agents)

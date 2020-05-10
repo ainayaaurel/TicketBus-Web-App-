@@ -91,6 +91,7 @@ class Reservations extends Component {
 
   componentDidMount() {
     console.log('MOUNTED')
+    document.title = 'Reservation'
   }
   render() {
     console.log('props', this.props)

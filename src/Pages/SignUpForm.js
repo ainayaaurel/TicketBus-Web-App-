@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { Input } from 'reactstrap'
 export default class SignUpForm extends Component {
+  componentDidMount() {
+    document.title = 'Sign Up'
+  }
   render() {
     return (
       <div className='FormCenter'>

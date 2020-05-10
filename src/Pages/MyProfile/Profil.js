@@ -123,6 +123,7 @@ class MyProfil extends Component {
         `files/${this.props.myprofile && this.props.myprofile.picture}`
       ),
     })
+    document.title = 'My Profile'
   }
 
   render() {
