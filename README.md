@@ -1,7 +1,7 @@
 <h1 align='center'>Ticket.Bus<br>Admin E-Ticket Reservation Web Application </h1>
 
 <p align='center'>
-    <img width="800" src='' />
+    <img width="800" src=''https://raw.githubusercontent.com/ainayaaurel/TicketBus-Web-App-/master/assets/web.png" />
 </p>
 <br>
 <br>
@@ -20,7 +20,7 @@ Ticket.Bus is web application that built with ReactJs, this software aims to bri
 
 ## How to Install
 
-1. Download this Project or you can type `git clone https://github.com/aldipee/travel-admin.git`
+1. Download this Project or you can type `https://github.com/ainayaaurel/TicketBus-Web-App-.git`
 2. Open app's directory in CMD or Terminal
 3. Type `npm install` or `yarn install`
 4. Type `npm start`
@@ -31,4 +31,4 @@ You can visit the web [`here`](http://159.89.196.9/)
 
 ## License
 
-© [Aldi Pranata](https://github.com/aldipee/)
+© [Ainaya Aurelya](https://github.com/ainayaaurel/)
