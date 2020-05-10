@@ -1,7 +1,7 @@
 <h1 align='center'>Ticket.Bus<br>Admin E-Ticket Reservation Web Application </h1>
 
 <p align='center'>
-    <img width="800" src=''https://raw.githubusercontent.com/ainayaaurel/TicketBus-Web-App-/master/assets/web.png" />
+    <img width="800" src="https://raw.githubusercontent.com/ainayaaurel/TicketBus-Web-App-/master/assets/web.png" />
 </p>
 <br>
 <br>
