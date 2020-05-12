@@ -1,34 +1,62 @@
 <h1 align='center'>Ticket.Bus<br>Admin E-Ticket Reservation Web Application </h1>
 
-<p align='center'>
-    <img width="800" src="https://raw.githubusercontent.com/ainayaaurel/TicketBus-Web-App-/master/assets/web.png" />
+<p align="center">
+<img width=300 src='https://raw.githubusercontent.com/ainayaaurel/TicketBus-WebApp-Admin/master/assets/logo.png' />
 </p>
+
 <br>
-<br>
 
-## Introduction
+**## Table of Contents**
 
-[![React](https://img.shields.io/badge/react-v16.12.0-blue)](https://github.com/facebook/react)
-Ticket.Bus is web application that built with ReactJs, this software aims to bring more ease for users to manage their travel transaction.
+- [Introduction](#introduction)
+- [Screenshots](#screenshots)
+- [Built With](#built-with)
+- [Features](#features)
+- [Usage](#usage-for-development)
+- [Related Project](#related-project-backend)
+- [Visit The Web](#visit-the-web)
+- [Contributors](#contributors)
 
-<p align='justify'></p>
+**## Introduction**
+Ticket.Bus is web application for admin, that built with React.js, this software aims to bring more ease for users to manage their travel transaction.
 
-## Requirements
+**## Screenshots**
 
-1. <a href="https://nodejs.org/en/download/">Node Js</a>
-2. Node_modules `npm install` or `yarn install`
+<p align='center'>
+<img width="500" src="https://raw.githubusercontent.com/ainayaaurel/TicketBus-Web-App-/master/assets/web.png" />
+</p>
 
-## How to Install
+**## Built with**
 
-1. Download this Project or you can type `https://github.com/ainayaaurel/TicketBus-Web-App-.git`
-2. Open app's directory in CMD or Terminal
-3. Type `npm install` or `yarn install`
-4. Type `npm start`
+- [`npm`](https://www.npmjs.com/get-npm)
+- [`react-js`](https://reactjs.org/docs/create-a-new-react-app.html)
+- [`redux`](https://redux.js.org/introduction/getting-started)
+- [`Backend-RESTful-API`](https://github.com/ainayaaurel/Backend-RESTful-API)
 
-## Visit the Web
+**## Features**
 
-You can visit the web [`here`](http://159.89.196.9/)
+- Login Admin
+- Manage Schedules, Busses, Agents and User
+- Read History Reservation
 
-## License
+**##Usage For Development**
 
+1. Open your CLI
+2. Clone this repo
+
+```
+git clone https://github.com/ainayaaurel/TicketBus-WebApp-Admin.git
+```
+
+3. Open the folder and type `yarn install` for install dependencies.
+4. Before run this application, you must run backend first and make sure it connected with database.
+5. Type `yarn start` to run this application.
+
+**## Related Project Backend**
+[`Backend-RESTful-API`](https://github.com/ainayaaurel/Backend-RESTful-API)
+
+**## Visit The Web**
+You can visit the web [`here`](bit.ly/ticketbuswebadmin)
+
+**## License**
 © [Ainaya Aurelya](https://github.com/ainayaaurel/)
