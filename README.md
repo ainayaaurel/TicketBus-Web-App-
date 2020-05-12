@@ -6,7 +6,7 @@
 
 <br>
 
-**## Table of Contents**
+**Table of Contents**
 
 - [Introduction](#introduction)
 - [Screenshots](#screenshots)
@@ -17,29 +17,29 @@
 - [Visit The Web](#visit-the-web)
 - [Contributors](#contributors)
 
-**## Introduction**
+**Introduction**
 Ticket.Bus is web application for admin, that built with React.js, this software aims to bring more ease for users to manage their travel transaction.
 
-**## Screenshots**
+**Screenshots**
 
 <p align='center'>
 <img width="500" src="https://raw.githubusercontent.com/ainayaaurel/TicketBus-Web-App-/master/assets/web.png" />
 </p>
 
-**## Built with**
+**Built with**
 
 - [`npm`](https://www.npmjs.com/get-npm)
 - [`react-js`](https://reactjs.org/docs/create-a-new-react-app.html)
 - [`redux`](https://redux.js.org/introduction/getting-started)
 - [`Backend-RESTful-API`](https://github.com/ainayaaurel/Backend-RESTful-API)
 
-**## Features**
+**Features**
 
 - Login Admin
 - Manage Schedules, Busses, Agents and User
 - Read History Reservation
 
-**##Usage For Development**
+**Usage For Development**
 
 1. Open your CLI
 2. Clone this repo
@@ -52,11 +52,11 @@ git clone https://github.com/ainayaaurel/TicketBus-WebApp-Admin.git
 4. Before run this application, you must run backend first and make sure it connected with database.
 5. Type `yarn start` to run this application.
 
-**## Related Project Backend**
+**Related Project Backend**
 [`Backend-RESTful-API`](https://github.com/ainayaaurel/Backend-RESTful-API)
 
-**## Visit The Web**
+**Visit The Web**
 You can visit the web [`here`](bit.ly/ticketbuswebadmin)
 
-**## License**
+**License**
 © [Ainaya Aurelya](https://github.com/ainayaaurel/)
